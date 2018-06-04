@@ -52,8 +52,17 @@ public class ComandsAdapter extends BaseAdapter implements ListAdapter {
         }
         TextView tvName = view.findViewById(R.id.tvComandName);
         tvName.setText(item);
-
         Button btnDell = view.findViewById(R.id.btnRemoveComand);
+
+      if(getCount()>2)
+      {
+          btnDell.setVisibility(View.VISIBLE);
+      }
+      else
+      {
+          btnDell.setVisibility(View.INVISIBLE);
+      }
+
         btnDell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

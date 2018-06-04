@@ -24,7 +24,7 @@
         <activity
             android:name=".RulesActivity"
             android:label="Правила игры" />
-        <activity android:name=".ComandsActivity"  android:label="Команды" />
+        <activity android:name=".ComandsActivity"  android:label="Настройки игры" />
     </application>
 
 </manifest>
