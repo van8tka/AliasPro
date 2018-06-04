@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Alias Pro</string>
+    <string name="headerRules1">Что нужно делать?</string>
+    <string name="textRules1">1. Поделиться на команды</string>
+    <string name="textRules2">2. Объяснить как можно больше слов своей команде за установленное время</string>
+    <string name="headerRules2">Ограничения</string>
+    <string name="textRules3">1. Нельзя использовать однокоренные слова для объяснения. Например слово шахматы нельзя объяснить как игра в которой ставится шах и мат, так как используются однокоренные слова</string>
+    <string name="textRules4">2. Нельзя переводить слово на иностранный язык</string>
+    <string name="headerRules3">Победа</string>
+    <string name="textRules5">1. Команда которая отгадала большее количество слов или набрала необходимое количество очков за установленное время, считается победителем.</string>
+    <string name="textRules6">2. Проигравшая команда выполняет желание победителей.</string>
+    <string name="btnLike">Поставить Like</string>
+    <string name="btnNewGame">Новая игра</string>
+    <string name="btnContinue">Продолжить</string>
+    <string name="btnHowToPlay">Как играть?</string>
+
+</resources>
