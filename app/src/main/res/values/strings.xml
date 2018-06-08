@@ -15,6 +15,6 @@
     <string name="btnHowToPlay">Как играть?</string>
     <string name="seekbarTitleWord">Количество слов для победы</string>
     <string name="seekbarTitleTime">Время раунда в секундах</string>
-    <string name="commandstring">Команды</string>
+    <string name="commandstring">Добавьте команды</string>
 
 </resources>
