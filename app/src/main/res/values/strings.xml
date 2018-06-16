@@ -24,5 +24,6 @@
     <string name="dictionaryStringDef">Выберите словарь</string>
     <string name="subtitleLastWord">После окончания времени, последнее слово может угадывать любая команда</string>
     <string name="titleLastWord">Последнее слово для всех</string>
+    <string name="sec">сек.</string>
 
 </resources>

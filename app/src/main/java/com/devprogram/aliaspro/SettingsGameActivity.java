@@ -95,5 +95,47 @@ public class SettingsGameActivity extends AppCompatActivity {
         Toast.makeText(this,"Choose dictionary to play the game",Toast.LENGTH_LONG).show();
     }
 
+    int increment = 10;
+   //word count
+    public void minusWords_onClick(View view) {
 
+       String count = tvWord.getText().toString();
+       int c = Integer.parseInt(count);
+       if(c>10)
+       {
+           c-=increment;
+           tvWord.setText(String.valueOf(c));
+       }
+    }
+    public void plusWords_onClick(View view) {
+
+        String count = tvWord.getText().toString();
+        int c = Integer.parseInt(count);
+        if(c<1000)
+        {
+            c+=increment;
+            tvWord.setText(String.valueOf(c));
+        }
+    }
+    //second count
+    public void minusSeconds_onClick(View view) {
+
+        String count = tvTime.getText().toString();
+        int c = Integer.parseInt(count);
+        if(c>10)
+        {
+            c-=increment;
+            tvTime.setText(String.valueOf(c));
+        }
+    }
+    public void plusSeconds_onClick(View view) {
+
+        String count = tvTime.getText().toString();
+        int c = Integer.parseInt(count);
+        if(c<1000)
+        {
+            c+=increment;
+            tvTime.setText(String.valueOf(c));
+        }
+    }
 }
