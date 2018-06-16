@@ -5,5 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#333333</color>
-    <color name="colorYellow">#ffff00</color>
+    <!--deep pink-->
+    <color name="colorYellow">#EE1289</color>
+    <!--green color-->
+    <color name="colorPrimaryCustom1">#00CD66</color>
+    <!--orange color-->
+    <color name="colorPrimaryCustom2">#FF4500</color>
 </resources>

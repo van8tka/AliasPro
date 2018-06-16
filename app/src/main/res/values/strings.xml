@@ -14,7 +14,15 @@
     <string name="btnContinue">Продолжить</string>
     <string name="btnHowToPlay">Как играть?</string>
     <string name="seekbarTitleWord">Количество слов для победы</string>
-    <string name="seekbarTitleTime">Время раунда в секундах</string>
-    <string name="commandstring">Добавьте команды</string>
+    <string name="seekbarTitleTime">Продолжительность раунда</string>
+    <string name="commandstring">Команды</string>
+    <string name="titleTask">Задания</string>
+    <string name="subtitleTask">Доп. шуточные задания при объяснении слов</string>
+    <string name="titlePenalty">Штраф</string>
+    <string name="subtitlePenalty">При пропуске слова вычитается 1 балл</string>
+    <string name="dictionaryString">Словарь</string>
+    <string name="dictionaryStringDef">Выберите словарь</string>
+    <string name="subtitleLastWord">После окончания времени, последнее слово может угадывать любая команда</string>
+    <string name="titleLastWord">Последнее слово для всех</string>
 
 </resources>

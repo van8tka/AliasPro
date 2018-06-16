@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity   {
 
@@ -17,7 +16,7 @@ public class MainActivity extends AppCompatActivity   {
 
     public void btnNewGame_Click(View v)
     {
-        Intent intent = new Intent(MainActivity.this, ComandsActivity.class);
+        Intent intent = new Intent(MainActivity.this, SettingsGameActivity.class);
         startActivity(intent);
     }
 
