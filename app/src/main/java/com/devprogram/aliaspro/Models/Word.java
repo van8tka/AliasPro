@@ -1,15 +1,13 @@
 package com.devprogram.aliaspro.Models;
-import java.util.OptionalInt;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Team extends RealmObject {
+public class Word extends RealmObject{
     @PrimaryKey
-    int idteam;
+    int idword;
+    int iddictionary;
     String name;
-    String avatar;
-    int score;
-    Boolean winner;
     int idlanguage;
+    int idwordstatus;
 }
