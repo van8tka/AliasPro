@@ -5,6 +5,22 @@ import io.realm.annotations.PrimaryKey;
 
 public class WordStatus  extends RealmObject {
     @PrimaryKey
-    int idwordstatus;
+    String idwordstatus;
     String status;
+
+    public String getIdwordstatus() {
+        return idwordstatus;
+    }
+
+    public void setIdwordstatus(String idwordstatus) {
+        this.idwordstatus = idwordstatus;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

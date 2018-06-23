@@ -6,9 +6,49 @@ import io.realm.annotations.PrimaryKey;
 
 public class Round extends RealmObject {
     @PrimaryKey
-    int idround;
+    String idround;
     String name;
-    RealmList<Team> idteam;
+    String idteam;
     RealmList<Word> words;
-    int idtask;
+    String idtask;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setIdteam(String idteam) {
+        this.idteam = idteam;
+    }
+
+    public String getIdteam() {
+        return idteam;
+    }
+
+    public void setWords(RealmList<Word> words) {
+        this.words = words;
+    }
+
+    public RealmList<Word> getWords() {
+        return words;
+    }
+
+    public String getIdround() {
+        return idround;
+    }
+
+    public void setIdround(String idround) {
+        this.idround = idround;
+    }
+
+    public String getIdtask() {
+        return idtask;
+    }
+
+    public void setIdtask(String idtask) {
+        this.idtask = idtask;
+    }
 }
