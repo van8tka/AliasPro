@@ -1,25 +1,28 @@
 package com.devprogram.aliaspro.Models;
+import java.io.Serializable;
 import java.util.OptionalInt;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
-public class Team extends RealmObject {
+public class Team extends RealmObject implements Serializable{
+   @Required
     @PrimaryKey
     String idteam;
     String name;
     String avatar;
     int score;
     Boolean winner;
-    String idlanguage;
+    Language language;
 
 
-    public String getIdlanguage() {
-        return idlanguage;
+    public Language getLanguage() {
+        return language;
     }
 
-    public void setIdlanguage(String idlanguage) {
-        this.idlanguage = idlanguage;
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
     public String getName() {

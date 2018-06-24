@@ -3,11 +3,13 @@ package com.devprogram.aliaspro.Models;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class Game extends RealmObject {
+   @Required
     @PrimaryKey
     String idgame;
-    String iddictionary;
+    Dictionary dictionary;
     RealmList<Team> teams;
     boolean istask;
     boolean islastword;
@@ -17,12 +19,12 @@ public class Game extends RealmObject {
     boolean isfinish;
     String datestart;
 
-    public String getIddictionary() {
-        return iddictionary;
+    public Dictionary getDictionary() {
+        return dictionary;
     }
 
-    public void setIddictionary(String iddictionary) {
-        this.iddictionary = iddictionary;
+    public void setDictionary(Dictionary dictionary) {
+        this.dictionary = dictionary;
     }
 
     public boolean getIsfinish() {

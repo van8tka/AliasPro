@@ -2,16 +2,18 @@ package com.devprogram.aliaspro.Models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class Task extends RealmObject {
-    @PrimaryKey
+   @Required
+   @PrimaryKey
    String idtask;
    String name;
    String description;
    String avatar;
    boolean complete;
    int addscore;
-   String idlanguage;
+   Language language;
 
    public void setIdtask(String idtask) {
       this.idtask = idtask;
@@ -37,12 +39,12 @@ public class Task extends RealmObject {
       this.avatar = avatar;
    }
 
-   public void setIdlanguage(String idlanguage) {
-      this.idlanguage = idlanguage;
+   public void setLanguage(Language language) {
+      this.language = language;
    }
 
-   public String getIdlanguage() {
-      return idlanguage;
+   public Language getLanguage() {
+      return language;
    }
 
    public void setDescription(String description) {

@@ -2,12 +2,14 @@ package com.devprogram.aliaspro.Models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class Difficulty extends RealmObject {
+    @Required
     @PrimaryKey
     String iddifficulty;
     String name;
-    String idlanguage;
+    Language language;
 
     public void setName(String name) {
         this.name = name;
@@ -17,12 +19,12 @@ public class Difficulty extends RealmObject {
         return name;
     }
 
-    public void setIdlanguage(String idlanguage) {
-        this.idlanguage = idlanguage;
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
-    public String getIdlanguage() {
-        return idlanguage;
+    public Language getLanguage() {
+        return language;
     }
 
     public void setIddifficulty(String iddifficulty) {

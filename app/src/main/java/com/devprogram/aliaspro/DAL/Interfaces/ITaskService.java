@@ -1,5 +1,6 @@
 package com.devprogram.aliaspro.DAL.Interfaces;
 
+import com.devprogram.aliaspro.Models.Language;
 import com.devprogram.aliaspro.Models.Task;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public interface ITaskService {
     Task getTask(String idtask);
     List<Task> getTasks();
-    String createTask(String idtask,String name, String description, String avatar, boolean complete,int addscore, String idlanguage);
-    String updateTask(String idtask,String name, String description, String avatar, boolean complete,int addscore, String idlanguage);
+    String createTask(String name, String description, String avatar, boolean complete,int addscore, Language language);
+    String updateTask(String idtask,String name, String description, String avatar, boolean complete,int addscore, Language language);
     String deleteTask(String idtask);
 }

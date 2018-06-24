@@ -1,5 +1,7 @@
 package com.devprogram.aliaspro;
 
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,35 +11,33 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.Models.Game;
+import com.devprogram.aliaspro.Models.Team;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import io.realm.RealmList;
 
 public class SettingsGameActivity extends AppCompatActivity {
-
-
-
-
-    ArrayList<String> listComands = new ArrayList<String>(){{
-                add("Орлы");
-                add("Непобедимые улитки");
-                add("Ромашки");
-                add("Дикие волки");
-                add("Знатоки");
-                add("Мангусты");
-                add("Шоколадные зайцы");
-    }} ;
-
-
-
-
 
     TextView tvTime;
     TextView tvWord;
     LinearLayout containerView;
-
+    List<Team> listTeam;
+    DbService dbService;
+    Game newGame;
+    public  List<Team> teamListInGame;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        dbService = new DbService();
+        teamListInGame = new ArrayList<Team>();
+        listTeam = dbService.getETeamService().getTeams();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         containerView = findViewById(R.id.llContainerComandItemsFragment);
         CreateDefaultComands();
@@ -47,13 +47,18 @@ public class SettingsGameActivity extends AppCompatActivity {
 //for create fragments default with comands
     private void CreateDefaultComands()
     {
-        CreateItemFragment(listComands.get(0));
-        CreateItemFragment(listComands.get(1));
+
+        int i1 = new Random().nextInt(listTeam.size()-1);
+        int i2 = new Random().nextInt(listTeam.size()-1);
+        CreateItemFragment(listTeam.get(i1));
+        CreateItemFragment(listTeam.get(i2));
+        teamListInGame.add(listTeam.get(i1));
+        teamListInGame.add(listTeam.get(i2));
     }
 //create fragments command
-    private void CreateItemFragment(String comandName) {
+    private void CreateItemFragment(Team team) {
         Bundle bnd= new Bundle();
-        bnd.putString("comandName",comandName);
+        bnd.putSerializable("team",(Serializable) team);
         ComandItemFragment fr = new ComandItemFragment();
         FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
         transaction.add(containerView.getId(), fr,"FragmentComandDefault");
@@ -72,16 +77,20 @@ public class SettingsGameActivity extends AppCompatActivity {
    int index=2;
    public void btnAddComand_click(View v)
    {
-       if(index<listComands.size())
-       {
-           CreateItemFragment(listComands.get(index));
-           index++;
-       }
+       DialogFragment dialogSetTeam = new DialogFragmentSetTeam();
+       dialogSetTeam.show(getFragmentManager(),"dialogsetteam");
    }
 
-   public void RemoveComand(String name)
+   public void AddComand(Team team)
    {
-       index--;
+       CreateItemFragment(team);
+       teamListInGame.add(team);
+   }
+
+
+   public void RemoveComand(Team team)
+   {
+       teamListInGame.remove(team);
    }
 
 
@@ -138,4 +147,12 @@ public class SettingsGameActivity extends AppCompatActivity {
             tvTime.setText(String.valueOf(c));
         }
     }
+
+    @Override
+    public void onDestroy()
+    {
+        dbService.Close();
+        super.onDestroy();
+    }
+
 }

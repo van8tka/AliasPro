@@ -1,9 +1,13 @@
 package com.devprogram.aliaspro.Models;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
-public class Language extends RealmObject {
+public class Language extends RealmObject implements Serializable{
+    @Required
     @PrimaryKey
     String idlanguage;
     String name;

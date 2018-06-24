@@ -2,21 +2,23 @@ package com.devprogram.aliaspro.Models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class Word extends RealmObject{
+   @Required
     @PrimaryKey
     String idword;
     String iddictionary;
     String name;
-    String idlanguage;
-    String idwordstatus;
+    Language language;
+    WordStatus wordstatus;
 
-    public void setIdwordstatus(String idwordstatus) {
-        this.idwordstatus = idwordstatus;
+    public void setWordstatus(WordStatus wordstatus) {
+        this.wordstatus = wordstatus;
     }
 
-    public String getIdwordstatus() {
-        return idwordstatus;
+    public WordStatus getWordstatus() {
+        return wordstatus;
     }
 
     public void setName(String name) {
@@ -27,8 +29,12 @@ public class Word extends RealmObject{
         return name;
     }
 
-    public void setIdlanguage(String idlanguage) {
-        this.idlanguage = idlanguage;
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+
+    public Language getLanguage() {
+        return language;
     }
 
     public void setIddictionary(String iddictionary) {
@@ -37,10 +43,6 @@ public class Word extends RealmObject{
 
     public String getIddictionary() {
         return iddictionary;
-    }
-
-    public String getIdlanguage() {
-        return idlanguage;
     }
 
     public String getIdword() {

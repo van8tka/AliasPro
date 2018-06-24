@@ -3,14 +3,16 @@ package com.devprogram.aliaspro.Models;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class Round extends RealmObject {
+    @Required
     @PrimaryKey
     String idround;
     String name;
-    String idteam;
+    Team team;
     RealmList<Word> words;
-    String idtask;
+    Task task;
 
     public void setName(String name) {
         this.name = name;
@@ -20,12 +22,12 @@ public class Round extends RealmObject {
         return name;
     }
 
-    public void setIdteam(String idteam) {
-        this.idteam = idteam;
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
-    public String getIdteam() {
-        return idteam;
+    public Team getTeam() {
+        return team;
     }
 
     public void setWords(RealmList<Word> words) {
@@ -44,11 +46,11 @@ public class Round extends RealmObject {
         this.idround = idround;
     }
 
-    public String getIdtask() {
-        return idtask;
+    public Task getTask() {
+        return task;
     }
 
-    public void setIdtask(String idtask) {
-        this.idtask = idtask;
+    public void setTask(Task task) {
+        this.task = task;
     }
 }
