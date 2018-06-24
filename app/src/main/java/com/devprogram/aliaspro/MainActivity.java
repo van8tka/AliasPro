@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.Models.Difficulty;
 import com.devprogram.aliaspro.Models.Language;
 import com.devprogram.aliaspro.Models.Team;
+import com.devprogram.aliaspro.Models.Word;
+import com.devprogram.aliaspro.Models.WordStatus;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,12 +37,12 @@ DbService dbService;
 
         if(dbService.getETeamService().getTeams().size()==0)
         {
-            String uuidRus = dbService.getELanguageService().createLanguage("Рус", null);
-            dbService.getELanguageService().createLanguage("Анг", null);
-            dbService.getELanguageService().createLanguage("Ger", null);
-            dbService.getELanguageService().createLanguage("Бел", null);
-            dbService.getELanguageService().createLanguage("Укр", null);
-            dbService.getELanguageService().createLanguage("Каз", null);
+            String uuidRus = dbService.getELanguageService().createLanguage("Рус", "languageimage_russia32");
+            dbService.getELanguageService().createLanguage("Анг", "languageimage_usa32");
+            dbService.getELanguageService().createLanguage("Ger", "languageimage_germany32");
+            dbService.getELanguageService().createLanguage("Бел", "languageimage_belarus32");
+            dbService.getELanguageService().createLanguage("Укр", "languageimage_ukraine32");
+            dbService.getELanguageService().createLanguage("Каз", "languageimage_kazakhstan32");
 
             Language langRus = dbService.getELanguageService().getLanguage(uuidRus);
             dbService.getETeamService().createTeam("Охотники за приведениями","teamimage_ghost64",0,false,langRus);
@@ -74,7 +77,65 @@ DbService dbService;
             dbService.getETeamService().createTeam("Единороги","teamimage_unicorn64",0,false,langRus);
             dbService.getETeamService().createTeam("Маги земли","teamimage_wizard64",0,false,langRus);
 
+            dbService.getEWordStatusService().createWordStatus("отгадано");
+            String idwordStatusDefault = dbService.getEWordStatusService().createWordStatus("не отгадано");
+            dbService.getEWordStatusService().createWordStatus("удалить");
+            WordStatus wordStatusDefault = dbService.getEWordStatusService().getWordStatus(idwordStatusDefault);
 
+
+            dbService.getEWordService().createWord("рыба",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("мясо ",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("книга",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("журнал",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("магазин",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("конь",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("шаурма",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("игрушка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("лось",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("тетрадь",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("чашка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("телефон",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("храп",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("сон",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("бег",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("мышь",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("игра",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("жатва",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("еда",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("ложка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("кружка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("подушка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("варенье",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("смех",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("окно",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("дверь",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("ребро",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("цветок",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("колесо",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("ключ",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("розетка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("телевизор",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("антена",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("градусник",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("микроволновка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("рубашка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("самолет",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("танк",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("стол",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("платье",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("краб",langRus,wordStatusDefault);
+
+            List<Word> listWords = dbService.getEWordService().getWords();
+
+            String iddifficulty = dbService.getEDifficultyService().createDifficulty("простой",langRus);
+            dbService.getEDifficultyService().createDifficulty("проще некуда",langRus);
+            dbService.getEDifficultyService().createDifficulty("средний",langRus);
+            dbService.getEDifficultyService().createDifficulty("сложный",langRus);
+            dbService.getEDifficultyService().createDifficulty("надо поднапрячься",langRus);
+            dbService.getEDifficultyService().createDifficulty("самые сложные",langRus);
+            Difficulty difficultyEmpty = dbService.getEDifficultyService().getDifficulty(iddifficulty);
+
+            dbService.getEDictionaryService().createDictionary(listWords,"Для всех","teamimage_alien64",null,"Самые простые слова для всех возврастов",langRus,difficultyEmpty);
 
         }
 
