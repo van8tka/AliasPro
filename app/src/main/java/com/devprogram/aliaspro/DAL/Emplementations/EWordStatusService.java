@@ -4,6 +4,7 @@ import com.devprogram.aliaspro.DAL.Interfaces.IWordStatusService;
 import com.devprogram.aliaspro.Models.WordStatus;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.realm.Realm;
 
@@ -15,26 +16,38 @@ public class EWordStatusService implements IWordStatusService {
     }
     @Override
     public WordStatus getWordStatus(String idwordstatus) {
-        return null;
+        return realm.where(WordStatus.class).equalTo("idwordstatus",idwordstatus).findFirst();
     }
 
     @Override
     public List<WordStatus> getWordsStatus() {
-        return null;
+        return realm.where(WordStatus.class).findAll();
     }
 
     @Override
     public String createWordStatus(String name) {
-        return null;
+        String idwordstatus = UUID.randomUUID().toString();
+        realm.beginTransaction();
+        WordStatus ws = realm.createObject(WordStatus.class,idwordstatus);
+        ws.setStatus(name);
+        realm.commitTransaction();
+        return idwordstatus;
     }
 
     @Override
     public String updateWordStatus(String idwordstatus, String name) {
-        return null;
+        realm.beginTransaction();
+        WordStatus ws = realm.where(WordStatus.class).equalTo("idwordstatus",idwordstatus).findFirst();
+        ws.setStatus(name);
+        realm.commitTransaction();
+        return idwordstatus;
     }
 
     @Override
     public String deleteWordStatus(String idwordstatus) {
-        return null;
+        realm.beginTransaction();
+        realm.where(WordStatus.class).equalTo("idwordstatus",idwordstatus).findFirst().deleteFromRealm();
+        realm.commitTransaction();
+        return idwordstatus;
     }
 }

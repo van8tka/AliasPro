@@ -37,6 +37,7 @@ DbService dbService;
 
         if(dbService.getETeamService().getTeams().size()==0)
         {
+            //язык
             String uuidRus = dbService.getELanguageService().createLanguage("Рус", "languageimage_russia32");
             dbService.getELanguageService().createLanguage("Анг", "languageimage_usa32");
             dbService.getELanguageService().createLanguage("Ger", "languageimage_germany32");
@@ -45,6 +46,7 @@ DbService dbService;
             dbService.getELanguageService().createLanguage("Каз", "languageimage_kazakhstan32");
 
             Language langRus = dbService.getELanguageService().getLanguage(uuidRus);
+            //teams
             dbService.getETeamService().createTeam("Охотники за приведениями","teamimage_ghost64",0,false,langRus);
             dbService.getETeamService().createTeam("Весёлые котята","teamimage_cat64",0,false,langRus);
             dbService.getETeamService().createTeam("Могучие львы","teamimage_lion64",0,false,langRus);
@@ -76,13 +78,13 @@ DbService dbService;
             dbService.getETeamService().createTeam("Танкисты игрушечных танков","teamimage_tank64",0,false,langRus);
             dbService.getETeamService().createTeam("Единороги","teamimage_unicorn64",0,false,langRus);
             dbService.getETeamService().createTeam("Маги земли","teamimage_wizard64",0,false,langRus);
-
+            //статус слов
             dbService.getEWordStatusService().createWordStatus("отгадано");
             String idwordStatusDefault = dbService.getEWordStatusService().createWordStatus("не отгадано");
             dbService.getEWordStatusService().createWordStatus("удалить");
             WordStatus wordStatusDefault = dbService.getEWordStatusService().getWordStatus(idwordStatusDefault);
 
-
+            //слова
             dbService.getEWordService().createWord("рыба",langRus,wordStatusDefault);
             dbService.getEWordService().createWord("мясо ",langRus,wordStatusDefault);
             dbService.getEWordService().createWord("книга",langRus,wordStatusDefault);
@@ -124,20 +126,31 @@ DbService dbService;
             dbService.getEWordService().createWord("стол",langRus,wordStatusDefault);
             dbService.getEWordService().createWord("платье",langRus,wordStatusDefault);
             dbService.getEWordService().createWord("краб",langRus,wordStatusDefault);
-
+            //список слов
             List<Word> listWords = dbService.getEWordService().getWords();
-
+            //уровни сложности
             String iddifficulty = dbService.getEDifficultyService().createDifficulty("простой",langRus);
             dbService.getEDifficultyService().createDifficulty("проще некуда",langRus);
             dbService.getEDifficultyService().createDifficulty("средний",langRus);
             dbService.getEDifficultyService().createDifficulty("сложный",langRus);
-            dbService.getEDifficultyService().createDifficulty("надо поднапрячься",langRus);
+            String iddifficulty2 = dbService.getEDifficultyService().createDifficulty("надо поднапрячься",langRus);
             dbService.getEDifficultyService().createDifficulty("самые сложные",langRus);
             Difficulty difficultyEmpty = dbService.getEDifficultyService().getDifficulty(iddifficulty);
-
+            Difficulty difficultyHard = dbService.getEDifficultyService().getDifficulty(iddifficulty2);
+            //словари
             dbService.getEDictionaryService().createDictionary(listWords,"Для всех","teamimage_alien64",null,"Самые простые слова для всех возврастов",langRus,difficultyEmpty);
+            dbService.getEDictionaryService().createDictionary(listWords,"Сложный набор","teamimage_wizard64","10","Сложный набор слов, специфическая терминология",langRus,difficultyHard);
 
-        }
+            //tasks
+            dbService.getETaskService().createTask("Улыбайся","В процессе объяснения слов необходимо постоянно улыбаться","task_happysmile64", false,2,langRus);
+            dbService.getETaskService().createTask("Стой на одной ноге","В процессе объяснения слов необходимо стоять на одной ноге","taskimage_oneleg64", false,2,langRus);
+            dbService.getETaskService().createTask("Черепашка","После каждого объяснения слова необходимо повторять выражение - Я черепашка","taskimage_tortoise64", false,2,langRus);
+            dbService.getETaskService().createTask("Скоро новый год","После каждого объяснения слова необходимо повторять выражение - Скоро новый год","taskimage_christmas64", false,2,langRus);
+            dbService.getETaskService().createTask("Попрыгунчик","В процессе объяснения слов необходимо постоянно прыгать","taskimage_jump64", false,2,langRus);
+            dbService.getETaskService().createTask("Посудомойка","В процессе объяснения слов необходимо имитировать мытье посуды","taskimage_dishwash64", false,2,langRus);
+            dbService.getETaskService().createTask("Закрытые глазки","Объяснять слова необходимо с закрытыми глазами","taskimage_closeyes64", false,2,langRus);
+
+         }
 
     }
 
