@@ -8,12 +8,16 @@ public class Dictionary  extends RealmObject {
     @PrimaryKey
     String iddictionary;
     RealmList<Word> words;
+    int countWords;
     String name;
     String avatar;
     String price;
     String description;
     Language language;
     Difficulty difficulty;
+
+    public void setCountWords(int count){this.countWords = count;}
+    public int getCountWords(){return countWords;}
 
     public void setIddictionary(String iddictionary) {
         this.iddictionary = iddictionary;

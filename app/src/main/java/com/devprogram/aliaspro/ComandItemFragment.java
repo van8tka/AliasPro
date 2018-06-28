@@ -22,7 +22,6 @@ public class ComandItemFragment extends Fragment {
    ImageView imgAvatar;
    Team team;
     public ComandItemFragment() {
-        // Required empty public constructor
     }
 
 

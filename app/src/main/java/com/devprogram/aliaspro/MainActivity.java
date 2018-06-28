@@ -35,7 +35,7 @@ DbService dbService;
 
     private void InitializeDbRealm() {
 
-        if(dbService.getETeamService().getTeams().size()==0)
+        if(dbService.getETaskService().getTasks().size()==0)
         {
             //язык
             String uuidRus = dbService.getELanguageService().createLanguage("Рус", "languageimage_russia32");

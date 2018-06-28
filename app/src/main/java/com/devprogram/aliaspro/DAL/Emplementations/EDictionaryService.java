@@ -39,6 +39,7 @@ public class EDictionaryService implements IDictionaryService {
         String iddictionary = UUID.randomUUID().toString();
         Dictionary myDictionary = realm.createObject(Dictionary.class,iddictionary);
         myDictionary.setWords((RealmList<Word>) words);
+        myDictionary.setCountWords(words.size());
         myDictionary.setName(name);
         myDictionary.setAvatar(avatar);
         myDictionary.setPrice(price);
@@ -54,6 +55,7 @@ public class EDictionaryService implements IDictionaryService {
         realm.beginTransaction();
         Dictionary myDictionary = realm.where(Dictionary.class).equalTo("iddictionary",iddictionary).findFirst();
         myDictionary.setWords((RealmList<Word>) words);
+        myDictionary.setCountWords(words.size());
         myDictionary.setName(name);
         myDictionary.setAvatar(avatar);
         myDictionary.setPrice(price);

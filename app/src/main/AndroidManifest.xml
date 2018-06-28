@@ -25,6 +25,7 @@
             android:name=".RulesActivity"
             android:label="Правила игры" />
         <activity android:name=".SettingsGameActivity"  android:label="Настройки игры" />
+        <activity android:name=".DictionaryActivity"  android:label="Словари" />
     </application>
 
 </manifest>

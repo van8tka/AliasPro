@@ -1,17 +1,17 @@
 package com.devprogram.aliaspro;
 
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.Models.Dictionary;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Team;
 
@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import io.realm.RealmList;
-
 public class SettingsGameActivity extends AppCompatActivity {
 
     TextView tvTime;
     TextView tvWord;
     LinearLayout containerView;
     List<Team> listTeam;
+    public Dictionary dictionary;
+
     DbService dbService;
     Game newGame;
     public  List<Team> teamListInGame;
@@ -47,7 +47,6 @@ public class SettingsGameActivity extends AppCompatActivity {
 //for create fragments default with comands
     private void CreateDefaultComands()
     {
-
         int i1 = new Random().nextInt(listTeam.size()-1);
         int i2 = new Random().nextInt(listTeam.size()-1);
         CreateItemFragment(listTeam.get(i1));
@@ -99,9 +98,12 @@ public class SettingsGameActivity extends AppCompatActivity {
         Toast.makeText(this,"Play the game",Toast.LENGTH_LONG).show();
     }
 
+
+    ///выбор словаря
     public void addDictionaryToGame_Click(View view)
     {
-        Toast.makeText(this,"Choose dictionary to play the game",Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(SettingsGameActivity.this,DictionaryActivity.class);
+        startActivity(intent);
     }
 
     int increment = 10;
