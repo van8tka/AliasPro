@@ -7,8 +7,10 @@ import com.devprogram.aliaspro.Models.Team;
 import com.devprogram.aliaspro.Models.Word;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 
 public class ERoundService implements IRoundService {
     Realm realm;
@@ -18,26 +20,42 @@ public class ERoundService implements IRoundService {
     }
     @Override
     public Round getRound(String idround) {
-        return null;
+        return realm.where(Round.class).equalTo("idround",idround).findFirst();
     }
 
     @Override
     public List<Round> getRounds() {
-        return null;
+        return realm.where(Round.class).findAll();
     }
 
     @Override
-    public String createRound(String name, List<Team> idteam, List<Word> words, Task task) {
-        return null;
+    public String createRound(String name, Team team, RealmList<Word> words, Task task) {
+        String idround = UUID.randomUUID().toString();
+        realm.beginTransaction();
+        Round round = realm.createObject(Round.class,idround);
+        round.setName(name);
+        round.setTask(task);
+        round.setTeam(team);
+        round.setWords(words);
+        realm.commitTransaction();
+        return idround;
     }
 
     @Override
-    public String updateRound(String idround, String name, List<Team> idteam, List<Word> words, Task task) {
-        return null;
+    public String updateRound(String idround, String name, Team team, RealmList<Word> words, Task task) {
+        realm.beginTransaction();
+        Round round = realm.where(Round.class).equalTo("idround",idround).findFirst();
+        round.setName(name);
+        round.setTask(task);
+        round.setTeam(team);
+        round.setWords(words);
+        realm.commitTransaction();
+        return idround;
     }
 
     @Override
-    public String deleteRound(String idround) {
-        return null;
+    public String deleteRound(String idround){
+        realm.where(Round.class).equalTo("idround",idround).findFirst().deleteFromRealm();
+        return idround;
     }
 }

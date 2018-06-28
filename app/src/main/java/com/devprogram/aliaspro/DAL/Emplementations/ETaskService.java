@@ -5,6 +5,7 @@ import com.devprogram.aliaspro.Models.Language;
 import com.devprogram.aliaspro.Models.Task;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.realm.Realm;
 
@@ -15,26 +16,47 @@ public class ETaskService implements ITaskService {
     }
     @Override
     public Task getTask(String idtask) {
-        return null;
+        return realm.where(Task.class).equalTo("idtask",idtask).findFirst();
     }
 
     @Override
     public List<Task> getTasks() {
-        return null;
+        return realm.where(Task.class).findAll();
     }
 
     @Override
     public String createTask(String name, String description, String avatar, boolean complete, int addscore, Language language) {
-        return null;
+        String idtask = UUID.randomUUID().toString();
+        realm.beginTransaction();
+        Task task = realm.createObject(Task.class,idtask);
+        task.setName(name);
+        task.setDescription(description);
+        task.setAvatar(avatar);
+        task.setComplete(complete);
+        task.setAddscore(addscore);
+        task.setLanguage(language);
+        realm.commitTransaction();
+        return idtask;
     }
 
     @Override
     public String updateTask(String idtask, String name, String description, String avatar, boolean complete, int addscore, Language language) {
-        return null;
+
+        realm.beginTransaction();
+        Task task = realm.where(Task.class).equalTo("idtask",idtask).findFirst();
+        task.setName(name);
+        task.setDescription(description);
+        task.setAvatar(avatar);
+        task.setComplete(complete);
+        task.setAddscore(addscore);
+        task.setLanguage(language);
+        realm.commitTransaction();
+        return idtask;
     }
 
     @Override
     public String deleteTask(String idtask) {
-        return null;
+        realm.where(Task.class).equalTo("idtask",idtask).findFirst().deleteFromRealm();
+        return idtask;
     }
 }
