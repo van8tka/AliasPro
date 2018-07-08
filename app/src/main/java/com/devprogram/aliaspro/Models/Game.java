@@ -55,7 +55,7 @@ public class Game extends RealmObject {
     }
 
     public void setTeams(RealmList<Team> teams) {
-        this.teams = teams;
+        this.teams.addAll(teams);
     }
 
     public String getDatestart() {

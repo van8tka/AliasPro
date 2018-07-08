@@ -12,7 +12,7 @@ import io.realm.RealmList;
 public interface IRoundService {
     Round getRound(String idround);
     List<Round> getRounds();
-    String createRound(String name, Team team, RealmList<Word> words, Task task);
-    String updateRound(String idround, String name, Team team, RealmList<Word> words, Task task);
+    String createRound(String name, Team team, RealmList<Word> words, Task task, int score);
+    String updateRound(String idround, String name, Team team, RealmList<Word> words, Task task, int score);
     String deleteRound(String idround);
 }

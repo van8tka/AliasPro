@@ -47,7 +47,9 @@ public class ComandItemFragment extends Fragment {
 
 
     public void btnRemoveComand_onClick() {
-       getActivity().getFragmentManager().beginTransaction().remove(this).commit();
-        ((SettingsGameActivity)getActivity()).RemoveComand(team);
+        if(((SettingsGameActivity)getActivity()).teamListInGame.size()>2) {
+            getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+            ((SettingsGameActivity) getActivity()).RemoveComand(team);
+        }
     }
 }

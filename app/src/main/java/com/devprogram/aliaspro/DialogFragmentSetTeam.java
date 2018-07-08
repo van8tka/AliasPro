@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Team;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class DialogFragmentSetTeam extends DialogFragment implements View.OnClic
 
     Team selectedTeam;
     Button btnAddTeam;
-    DbService dbService;
+    IDbService dbService;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class DialogFragmentSetTeam extends DialogFragment implements View.OnClic
     @Override
     public void onDestroy()
     {
-        dbService.Close();
+        dbService.CloseDb();
         super.onDestroy();
     }
 }

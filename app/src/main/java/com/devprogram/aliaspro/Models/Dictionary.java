@@ -1,5 +1,7 @@
 package com.devprogram.aliaspro.Models;
 
+import java.util.List;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -31,8 +33,8 @@ public class Dictionary  extends RealmObject {
         return words;
     }
 
-    public void setWords(RealmList<Word> words) {
-        this.words = words;
+    public void setWords(List<Word> words) {
+        this.words.addAll(words);
     }
 
     public Difficulty getDifficulty() {

@@ -35,7 +35,6 @@ public class EGameService implements IGameService {
         String idgame = UUID.randomUUID().toString();
         realm.beginTransaction();
         Game game = realm.createObject(Game.class,idgame);
-        game.setTeams(teams);
         game.setDictionary(dictionary);
         game.setIstask(istask);
         game.setIslastword(islastword);
@@ -44,6 +43,7 @@ public class EGameService implements IGameService {
         game.setIsfinish(isfinish);
         game.setSeconds(seconds);
         game.setDatestart(datestart);
+        game.setTeams(teams);
         realm.commitTransaction();
         return idgame;
     }

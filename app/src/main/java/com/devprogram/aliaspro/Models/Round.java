@@ -13,6 +13,10 @@ public class Round extends RealmObject {
     Team team;
     RealmList<Word> words;
     Task task;
+    int score;
+
+    public void setScore(int score){this.score = score;}
+    public int getScore() {return score;}
 
     public void setName(String name) {
         this.name = name;

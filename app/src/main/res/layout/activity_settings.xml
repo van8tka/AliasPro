@@ -115,10 +115,11 @@
                         android:text="@string/seekbarTitleWord"
                         android:textColor="@color/colorPrimaryCustom1"
                         android:textSize="16sp" />
+
                     <TextView
                         android:id="@+id/tvWordSet"
                         android:layout_width="match_parent"
-                        android:layout_height="30dp"
+                        android:layout_height="31dp"
                         android:gravity="right"
                         android:text="100"
                         android:textColor="@color/colorYellow"
@@ -180,7 +181,8 @@
                 <TextView
                     android:id="@+id/tvTimeSet"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="31dp"
+                    android:layout_margin="0dp"
                     android:layout_weight="3"
                     android:gravity="right"
                     android:text="60"
@@ -318,7 +320,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Дальше"
+        android:text="@string/btnNext"
         android:id="@+id/btnToWords"
         android:textColor="@color/colorWhite"
         android:onClick="btnNextToChooseWords_Click"

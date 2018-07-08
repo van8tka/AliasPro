@@ -1,5 +1,6 @@
 package com.devprogram.aliaspro;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Dictionary;
 
 
@@ -22,22 +24,33 @@ public class DictionaryActivity  extends AppCompatActivity  {
 
 
  ListView listView;
- DbService dbService;
+ IDbService dbService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.dictionary_list);
-        listView = findViewById(R.id.lvdictionary);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        List<Dictionary> listDictionary = dbService.getEDictionaryService().getDicitionaries();
-        listView.setAdapter(new DictionaryViewAdapter(this,listDictionary));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onSupportNavigateUp();
-            }
-        });
+        try{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dictionary_list);
+            listView = findViewById(R.id.lvdictionary);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            dbService = new DbService();
+            List<Dictionary> listDictionary = dbService.getEDictionaryService().getDicitionaries();
+            DictionaryViewAdapter adapter = new DictionaryViewAdapter(this,listDictionary);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent();
+                    intent.putExtra("idDictionarySelect",listDictionary.get(position).getIddictionary());
+                    setResult(RESULT_OK,intent);
+                    onSupportNavigateUp();
+                }
+            });
+        }
+        catch (Exception er)
+        {
+            String error = er.getMessage();
+        }
     }
     @Override
     public boolean onSupportNavigateUp()
@@ -49,7 +62,7 @@ public class DictionaryActivity  extends AppCompatActivity  {
     @Override
     public void onDestroy()
     {
-        dbService.Close();
+        dbService.CloseDb();
         super.onDestroy();
     }
 }
@@ -96,25 +109,26 @@ public class DictionaryActivity  extends AppCompatActivity  {
 
         TextView name = view.findViewById(R.id.tvDictionaryName);
         TextView description = view.findViewById(R.id.tvDictionaryDescription);
-        TextView lang = view.findViewById(R.id.tvDictionaryLanguage);
+       // TextView lang = view.findViewById(R.id.tvDictionaryLanguage);
+        ImageView lang = view.findViewById(R.id.imgDictionaryLanguage);
         TextView difficulty = view.findViewById(R.id.tvDictionaryDifficulty);
         TextView count = view.findViewById(R.id.tvDictionaryCounts);
         TextView price = view.findViewById(R.id.tvDictionaryPrice);
         ImageView img = view.findViewById(R.id.imgDictionary);
         int idImg = context.getResources().getIdentifier(dictionary.getAvatar(),"drawable",context.getPackageName());
         img.setImageResource(idImg);
-
         name.setText(dictionary.getName());
         description.setText(dictionary.getDescription());
-        lang.setText(dictionary.getLanguage().getName());
+        int idImgLang = context.getResources().getIdentifier(dictionary.getLanguage().getAvatar(),"drawable",context.getPackageName());
+        lang.setImageResource(idImgLang);
         difficulty.setText(dictionary.getDifficulty().getName());
-        count.setText(dictionary.getCountWords());
-        if(dictionary.getPrice()==null){
-            price.setText("free");
+        count.setText( Integer.toString(dictionary.getCountWords()));
+        if(dictionary.getPrice()!=null){
+            price.setText(dictionary.getPrice()+"$");
         }
         else
         {
-            price.setText(dictionary.getPrice());
+            price.setText("");
         }
         return view;
     }

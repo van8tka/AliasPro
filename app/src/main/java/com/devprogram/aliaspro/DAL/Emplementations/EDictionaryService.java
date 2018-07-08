@@ -38,7 +38,7 @@ public class EDictionaryService implements IDictionaryService {
         realm.beginTransaction();
         String iddictionary = UUID.randomUUID().toString();
         Dictionary myDictionary = realm.createObject(Dictionary.class,iddictionary);
-        myDictionary.setWords((RealmList<Word>) words);
+        myDictionary.setWords(words);
         myDictionary.setCountWords(words.size());
         myDictionary.setName(name);
         myDictionary.setAvatar(avatar);

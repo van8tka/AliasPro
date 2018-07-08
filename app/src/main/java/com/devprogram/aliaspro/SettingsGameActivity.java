@@ -3,47 +3,78 @@ package com.devprogram.aliaspro;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Dictionary;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Team;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
+
+import io.realm.RealmList;
 
 public class SettingsGameActivity extends AppCompatActivity {
 
     TextView tvTime;
     TextView tvWord;
+    Switch swTask;
+    Switch swFine;
+    Switch swLast;
+
     LinearLayout containerView;
     List<Team> listTeam;
-    public Dictionary dictionary;
+    IDbService dbService;
 
-    DbService dbService;
-    Game newGame;
-    public  List<Team> teamListInGame;
+    public Dictionary dictionary;
+    public  RealmList<Team> teamListInGame;
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         dbService = new DbService();
-        teamListInGame = new ArrayList<Team>();
+        teamListInGame = new RealmList<Team>();
         listTeam = dbService.getETeamService().getTeams();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         containerView = findViewById(R.id.llContainerComandItemsFragment);
         CreateDefaultComands();
+
+        swFine = findViewById(R.id.swBan);
+        swLast = findViewById(R.id.swLastWord);
+        swTask = findViewById(R.id.swDopTask);
+
         tvTime = findViewById(R.id.tvTimeSet);
         tvWord = findViewById(R.id.tvWordSet);
     }
+
+
+
+
+
+
+
+
 //for create fragments default with comands
     private void CreateDefaultComands()
     {
@@ -54,6 +85,12 @@ public class SettingsGameActivity extends AppCompatActivity {
         teamListInGame.add(listTeam.get(i1));
         teamListInGame.add(listTeam.get(i2));
     }
+
+
+
+
+
+
 //create fragments command
     private void CreateItemFragment(Team team) {
         Bundle bnd= new Bundle();
@@ -73,12 +110,18 @@ public class SettingsGameActivity extends AppCompatActivity {
     }
 
 
+
+
+
    int index=2;
    public void btnAddComand_click(View v)
    {
        DialogFragment dialogSetTeam = new DialogFragmentSetTeam();
        dialogSetTeam.show(getFragmentManager(),"dialogsetteam");
    }
+
+
+
 
    public void AddComand(Team team)
    {
@@ -87,24 +130,65 @@ public class SettingsGameActivity extends AppCompatActivity {
    }
 
 
+
    public void RemoveComand(Team team)
    {
-       teamListInGame.remove(team);
+           teamListInGame.remove(team);
    }
+
+
+
+
 
 
     public void btnNextToChooseWords_Click(View v)
     {
-        Toast.makeText(this,"Play the game",Toast.LENGTH_LONG).show();
+        if(dictionary == null)
+        {
+           String getDictionaryString = getResources().getString(R.string.getDictionaryStr);
+           Toast.makeText(this, getDictionaryString,Toast.LENGTH_LONG).show();
+           return;
+        }
+        DateFormat dtFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        String timeCreate = dtFormat.format(date).toString();
+        int cwords = Integer.parseInt(tvWord.getText().toString());
+        int ctime =Integer.parseInt(tvTime.getText().toString());
+        boolean isTask = swTask.isChecked();
+        boolean isFine = swFine.isChecked();
+        boolean isLast = swLast.isChecked();
+        String game = dbService.getEGameService().createGame(dictionary,teamListInGame,isTask,isLast,isFine,cwords, ctime,false, timeCreate);
+        Intent intent = new Intent(SettingsGameActivity.this, BeginGameActivity.class);
+        intent.putExtra("idGame",game);
+        startActivity(intent);
     }
 
 
+
+
+
+
+
+
+
+    int REQUEST_CODE_SELECT_DICTIONARY = 1;
     ///выбор словаря
     public void addDictionaryToGame_Click(View view)
     {
         Intent intent = new Intent(SettingsGameActivity.this,DictionaryActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_SELECT_DICTIONARY);
     }
+
+    @Override
+    protected  void onActivityResult(int recuestCode, int resultCode, Intent data)
+    {
+        if(data==null){return;}
+        String idDictionary = data.getStringExtra("idDictionarySelect");
+        dictionary = dbService.getEDictionaryService().getDictionary(idDictionary);
+        TextView tvDictionaryName = findViewById(R.id.tvDictionaryName);
+        tvDictionaryName.setText(dictionary.getName());
+    }
+
 
     int increment = 10;
    //word count
@@ -153,7 +237,7 @@ public class SettingsGameActivity extends AppCompatActivity {
     @Override
     public void onDestroy()
     {
-        dbService.Close();
+        dbService.CloseDb();
         super.onDestroy();
     }
 

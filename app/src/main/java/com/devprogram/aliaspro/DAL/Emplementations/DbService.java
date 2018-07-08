@@ -1,9 +1,11 @@
 package com.devprogram.aliaspro.DAL.Emplementations;
 
+import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
+
 import io.realm.Realm;
 
 
-public class DbService {
+public class DbService implements IDbService {
 
     private Realm realm;
     private EDictionaryService eDictionaryService;
@@ -65,8 +67,9 @@ public class DbService {
         this.eWordStatusService = new EWordStatusService(realm);
     }
 
-    public void Close()
-    {
+
+    @Override
+    public void CloseDb() {
         realm.close();
     }
 }
