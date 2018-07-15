@@ -31,7 +31,9 @@
             android:name=".DictionaryActivity"
             android:label="Словари" />
         <activity android:name=".BeginGameActivity"
-            android:label="Рэйтинг команд"></activity>
+            android:label="Рэйтинг команд"
+            android:configChanges="orientation|screenSize"
+            ></activity>
     </application>
 
 </manifest>

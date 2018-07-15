@@ -48,16 +48,6 @@
             android:text="@string/btnBack"
             android:textColor="@color/colorWhite" />
 
-        <Button
-            android:id="@+id/btnAddTeam"
-            android:enabled="false"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/button_rounded_corner"
-            android:text="@string/btnAdd"
-            android:textColor="@color/colorWhite" />
     </LinearLayout>
 
 

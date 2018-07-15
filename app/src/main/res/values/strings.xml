@@ -30,6 +30,11 @@
     <string name="btnBack">Назад</string>
     <string name="btnNext">Дальше</string>
     <string name="btnStart">Начинаем!</string>
+    <string name="strRound">Раунд</string>
+    <string name="strPlayTeam">играет команда: </string>
+    <string name="strTeam">Команда</string>
+    <string name="strScoreAll">Очки за игру</string>
+    <string name="strScore">Очки за раунд</string>
     <string name="getDictionaryStr">Для начала игры выберите словарь!</string>
     getDictionaryStr
 </resources>

@@ -5,6 +5,7 @@ import com.devprogram.aliaspro.Models.Language;
 import com.devprogram.aliaspro.Models.Task;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import io.realm.Realm;
@@ -17,6 +18,13 @@ public class ETaskService implements ITaskService {
     @Override
     public Task getTask(String idtask) {
         return realm.where(Task.class).equalTo("idtask",idtask).findFirst();
+    }
+    @Override
+    public Task getTaskRandom() {
+        int count = (int)realm.where(Task.class).count();
+        int index = new Random().nextInt( count-1);
+        Task tsk = realm.where(Task.class).findAll().get(index);
+        return tsk;
     }
 
     @Override

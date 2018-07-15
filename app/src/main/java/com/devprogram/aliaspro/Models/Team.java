@@ -13,9 +13,18 @@ public class Team extends RealmObject implements Serializable{
     String name;
     String avatar;
     int score;
+    int scoreAll;
     Boolean winner;
     Language language;
 
+
+    public int getScoreAll() {
+        return scoreAll;
+    }
+    public void setScoreAll(int scoreAll)
+    {
+        this.scoreAll = scoreAll;
+    }
 
     public Language getLanguage() {
         return language;

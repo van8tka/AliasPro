@@ -1,6 +1,7 @@
 package com.devprogram.aliaspro.DAL.Emplementations;
 
 import com.devprogram.aliaspro.DAL.Interfaces.IRoundService;
+import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Round;
 import com.devprogram.aliaspro.Models.Task;
 import com.devprogram.aliaspro.Models.Team;
@@ -29,28 +30,31 @@ public class ERoundService implements IRoundService {
     }
 
     @Override
-    public String createRound(String name, Team team, RealmList<Word> words, Task task, int score) {
+    public String createRound(String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound) {
         String idround = UUID.randomUUID().toString();
         realm.beginTransaction();
         Round round = realm.createObject(Round.class,idround);
         round.setName(name);
         round.setTask(task);
-        round.setTeam(team);
+
         round.setWords(words);
-        round.setScore(score);
+        round.setGame(game);
+        round.setNumber(numberRound);
+        round.setTeam(team);
         realm.commitTransaction();
         return idround;
     }
 
     @Override
-    public String updateRound(String idround, String name, Team team, RealmList<Word> words, Task task, int score) {
+    public String updateRound(String idround, String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound) {
         realm.beginTransaction();
         Round round = realm.where(Round.class).equalTo("idround",idround).findFirst();
         round.setName(name);
         round.setTask(task);
         round.setTeam(team);
         round.setWords(words);
-        round.setScore(score);
+        round.setGame(game);
+        round.setNumber(numberRound);
         realm.commitTransaction();
         return idround;
     }

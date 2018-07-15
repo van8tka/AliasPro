@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -16,6 +17,7 @@ import com.devprogram.aliaspro.DAL.Emplementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Dictionary;
 import com.devprogram.aliaspro.Models.Game;
+import com.devprogram.aliaspro.Models.Task;
 import com.devprogram.aliaspro.Models.Team;
 
 import java.io.Serializable;
@@ -45,6 +47,7 @@ public class SettingsGameActivity extends AppCompatActivity {
     public Dictionary dictionary;
     public  RealmList<Team> teamListInGame;
 
+    private static final String  TAG_LOG = "SettingsGameActivity";
 
 
 
@@ -143,24 +146,37 @@ public class SettingsGameActivity extends AppCompatActivity {
 
     public void btnNextToChooseWords_Click(View v)
     {
-        if(dictionary == null)
-        {
-           String getDictionaryString = getResources().getString(R.string.getDictionaryStr);
-           Toast.makeText(this, getDictionaryString,Toast.LENGTH_LONG).show();
-           return;
+        try{
+            if(dictionary == null)
+            {
+                String getDictionaryString = getResources().getString(R.string.getDictionaryStr);
+                Toast.makeText(this, getDictionaryString,Toast.LENGTH_LONG).show();
+                return;
+            }
+            DateFormat dtFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date date = new Date();
+            String timeCreate = dtFormat.format(date).toString();
+            int cwords = Integer.parseInt(tvWord.getText().toString());
+            int ctime =Integer.parseInt(tvTime.getText().toString());
+            boolean isTask = swTask.isChecked();
+            boolean isFine = swFine.isChecked();
+            boolean isLast = swLast.isChecked();
+            Task taskInGame = null;
+            if(isTask)
+                taskInGame = dbService.getETaskService().getTaskRandom();
+            Team teamFirst = dbService.getETeamService().getTeam(teamListInGame.get(0).getIdteam());
+            String game = dbService.getEGameService().createGame(dictionary,teamListInGame,isTask,isLast,isFine,cwords, ctime,false, timeCreate);
+             String round = dbService.getERoundService().createRound("Роунд 1",teamFirst,null,taskInGame,dbService.getEGameService().getGame(game), 0);
+            Intent intent = new Intent(SettingsGameActivity.this, BeginGameActivity.class);
+            intent.putExtra("idGame",game);
+            intent.putExtra("idRound",round);
+            startActivity(intent);
         }
-        DateFormat dtFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-        String timeCreate = dtFormat.format(date).toString();
-        int cwords = Integer.parseInt(tvWord.getText().toString());
-        int ctime =Integer.parseInt(tvTime.getText().toString());
-        boolean isTask = swTask.isChecked();
-        boolean isFine = swFine.isChecked();
-        boolean isLast = swLast.isChecked();
-        String game = dbService.getEGameService().createGame(dictionary,teamListInGame,isTask,isLast,isFine,cwords, ctime,false, timeCreate);
-        Intent intent = new Intent(SettingsGameActivity.this, BeginGameActivity.class);
-        intent.putExtra("idGame",game);
-        startActivity(intent);
+        catch(Exception er)
+        {
+            Log.e(TAG_LOG, er.getMessage());
+        }
+
     }
 
 

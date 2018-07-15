@@ -36,16 +36,12 @@ import io.realm.RealmResults;
 public class DialogFragmentSetTeam extends DialogFragment implements View.OnClickListener{
 
     Team selectedTeam;
-    Button btnAddTeam;
     IDbService dbService;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
           View v = inflater.inflate(R.layout.dialogfragment_teamsetforgame,null);
           dbService = new DbService();
-          btnAddTeam = v.findViewById(R.id.btnAddTeam);
-          btnAddTeam.setEnabled(false);
-          btnAddTeam.setOnClickListener(this);
           v.findViewById(R.id.btnBackTeam).setOnClickListener(this);
           final ListView listView = v.findViewById(R.id.lvSetTeamList);
          List<Team> inGameTeam =  ((SettingsGameActivity)this.getActivity()).teamListInGame;
@@ -61,13 +57,15 @@ public class DialogFragmentSetTeam extends DialogFragment implements View.OnClic
                 }
             }
         listView.setAdapter(new ListTeamAdapter(this.getActivity(),listTeams));
-          listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        listView.setChoiceMode(AbsListView.CHOICE_MODE_SINGLE);
+        SettingsGameActivity currentAct = ((SettingsGameActivity)this.getActivity());
           listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
              @Override
              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                 btnAddTeam.setEnabled(true);
                  selectedTeam = listTeams.get(position);
                  listView.setSelected(true);
+                 currentAct.AddComand(selectedTeam);
+                 dismiss();
              }
          });
          return v;
@@ -75,14 +73,10 @@ public class DialogFragmentSetTeam extends DialogFragment implements View.OnClic
 
     @Override
     public void onClick(View v) {
-       switch (v.getId())
+       if (v.getId() == R.id.btnBackTeam)
        {
-           case R.id.btnAddTeam:
-               ((SettingsGameActivity)this.getActivity()).AddComand(selectedTeam);
-           case R.id.btnBackTeam:
-               dismiss();
+           dismiss();
        }
-
     }
     @Override
     public void onDestroy()

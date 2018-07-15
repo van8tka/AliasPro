@@ -8,7 +8,7 @@ import java.util.List;
 public interface ITeamService {
     Team getTeam(String id);
     List<Team> getTeams();
-    String createTeam(String name,String avatar,int score,Boolean winner,Language language);
-    String updateTeam(String idteam,String name,String avatar,int score,Boolean winner,Language language);
+    String createTeam(String name,String avatar,int score,int scoreAll,Boolean winner,Language language);
+    String updateTeam(String idteam,String name,String avatar,int score,int scoreAll,Boolean winner,Language language);
     String deleteTeam(String idteam);
 }

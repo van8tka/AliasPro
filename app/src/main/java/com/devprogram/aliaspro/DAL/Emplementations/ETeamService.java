@@ -31,7 +31,7 @@ public class ETeamService implements ITeamService {
     }
 
     @Override
-    public String createTeam(String name, String avatar, int score, Boolean winner, Language language) {
+    public String createTeam(String name, String avatar, int score,int scoreAll, Boolean winner, Language language) {
         realm.beginTransaction();
         String idteam = UUID.randomUUID().toString();
         Team myTeam = realm.createObject(Team.class,idteam);
@@ -45,7 +45,7 @@ public class ETeamService implements ITeamService {
     }
 
     @Override
-    public String updateTeam(String idteam, String name, String avatar, int score, Boolean winner, Language language) {
+    public String updateTeam(String idteam, String name, String avatar, int score,int scoreAll, Boolean winner, Language language) {
         realm.beginTransaction();
         Team myTeam = realm.where(Team.class).equalTo("idteam",idteam).findFirst();
         myTeam.setName(name);
