@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="5"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="15dp"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/strTimeLabel"
+        android:textSize="13sp"
+        android:textColor="@color/colorPrimaryCustom2"
+        />
+    <TextView
+        android:id="@+id/tvTimeDuration"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:background="@drawable/round_textview_timeduration"
+        android:paddingTop="5dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp" />
+
+</LinearLayout>
+
+          <TextView
+              android:id="@+id/tvCoutGuessed"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerInParent="true"
+              android:text="0"
+              android:textColor="@color/colorPrimaryCustom1"
+              android:textSize="28sp"
+              android:textStyle="bold"/>
+      </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryCustom1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="@string/strIsguessed"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="3"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="28sp"
+            android:background="@drawable/button_round_startgame"
+            android:layout_centerInParent="true"
+            android:text="@string/btnStart"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/strIsskipped"
+            android:textColor="@color/colorYellow"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="@color/colorYellow"
+            android:textSize="28sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+
+</LinearLayout>

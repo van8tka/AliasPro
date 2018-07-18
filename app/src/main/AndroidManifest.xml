@@ -23,17 +23,19 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RulesActivity"
-            android:label="Правила игры" />
+            android:label="@string/label_rules_activity" />
         <activity
             android:name=".SettingsGameActivity"
-            android:label="Настройки игры" />
+            android:label="@string/label_settings_activity" />
         <activity
             android:name=".DictionaryActivity"
-            android:label="Словари" />
-        <activity android:name=".BeginGameActivity"
-            android:label="Рэйтинг команд"
+            android:label="@string/label_dictionaries_activity" />
+        <activity
+            android:name=".BeginGameActivity"
             android:configChanges="orientation|screenSize"
-            ></activity>
+            android:label="@string/label_rating_activity" />
+        <activity
+            android:name=".PlayGameActivity"  />
     </application>
 
 </manifest>

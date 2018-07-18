@@ -36,5 +36,14 @@
     <string name="strScoreAll">Очки за игру</string>
     <string name="strScore">Очки за раунд</string>
     <string name="getDictionaryStr">Для начала игры выберите словарь!</string>
-    getDictionaryStr
+    <string name="strIsskipped">ПРОПУЩЕНО</string>
+    <string name="strIsguessed">ОТГАДАНО</string>
+    <string name="strTimeLabel">Время:</string>
+
+
+    <string name="label_rules_activity">Правила игры</string>
+    <string name="label_settings_activity">Настройки игры</string>
+    <string name="label_dictionaries_activity">Словари</string>
+    <string name="label_rating_activity">Рейтинг команд</string>
+
 </resources>

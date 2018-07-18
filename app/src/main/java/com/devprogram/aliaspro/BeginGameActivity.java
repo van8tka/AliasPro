@@ -1,6 +1,7 @@
 package com.devprogram.aliaspro;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -125,6 +126,10 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
 
 
     public void btnStartGame_Click(View view) {
+        Intent intent = new Intent(this, PlayGameActivity.class) ;
+        intent.putExtra("idGame",currentGame.getIdgame());
+        intent.putExtra("idRound",currentRound.getIdround());
+        startActivity(intent);
     }
 
     @Override
