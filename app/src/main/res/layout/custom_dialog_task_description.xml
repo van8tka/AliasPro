@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textColor="@color/colorPrimaryCustom2"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:text="@string/strCustomDialogTaskDescrHeader"/>
+    <LinearLayout
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:id="@+id/imgTaskAvatarDialog"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:text="Gam na style! Op! Op!"
+            android:gravity="center_vertical"
+            android:id="@+id/tvTaskNameDialog"
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gam gam"
+        android:textSize="18sp"
+        android:id="@+id/tvTaskDescriptionDialog"
+        android:textColor="@color/colorPrimary"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:id="@+id/btnCloseTaskDescriptionDialog"
+        android:text="@string/btnNextStep"
+        />
+</LinearLayout>

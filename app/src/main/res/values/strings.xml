@@ -29,6 +29,7 @@
     <string name="btnAdd">Добавить</string>
     <string name="btnBack">Назад</string>
     <string name="btnNext">Дальше</string>
+    <string name="btnNextStep">Продолжить</string>
     <string name="btnStart">Начинаем!</string>
     <string name="strRound">Раунд</string>
     <string name="strPlayTeam">играет команда: </string>
@@ -39,6 +40,9 @@
     <string name="strIsskipped">ПРОПУЩЕНО</string>
     <string name="strIsguessed">ОТГАДАНО</string>
     <string name="strTimeLabel">Время:</string>
+    <string name="strCustDialogLastWordWinTeam">Последнее слово отгадала команда?</string>
+    <string name="strCustomDialogTaskDescrHeader">Дополнительное задание:</string>
+
 
 
     <string name="label_rules_activity">Правила игры</string>

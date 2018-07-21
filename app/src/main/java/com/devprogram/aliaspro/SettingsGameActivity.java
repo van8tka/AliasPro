@@ -39,14 +39,11 @@ public class SettingsGameActivity extends AppCompatActivity {
     Switch swTask;
     Switch swFine;
     Switch swLast;
-
     LinearLayout containerView;
     List<Team> listTeam;
     IDbService dbService;
-
     public Dictionary dictionary;
     public  RealmList<Team> teamListInGame;
-
     private static final String  TAG_LOG = "SettingsGameActivity";
 
 
@@ -54,21 +51,27 @@ public class SettingsGameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        dbService = new DbService();
-        teamListInGame = new RealmList<Team>();
-        listTeam = dbService.getETeamService().getTeams();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        containerView = findViewById(R.id.llContainerComandItemsFragment);
-        CreateDefaultComands();
+        try{
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_settings);
+            dbService = new DbService();
+            teamListInGame = new RealmList<Team>();
+            listTeam = dbService.getETeamService().getTeams();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            containerView = findViewById(R.id.llContainerComandItemsFragment);
+            CreateDefaultComands();
 
-        swFine = findViewById(R.id.swBan);
-        swLast = findViewById(R.id.swLastWord);
-        swTask = findViewById(R.id.swDopTask);
+            swFine = findViewById(R.id.swBan);
+            swLast = findViewById(R.id.swLastWord);
+            swTask = findViewById(R.id.swDopTask);
 
-        tvTime = findViewById(R.id.tvTimeSet);
-        tvWord = findViewById(R.id.tvWordSet);
+            tvTime = findViewById(R.id.tvTimeSet);
+            tvWord = findViewById(R.id.tvWordSet);
+        }
+      catch (Exception er)
+      {
+          Log.e(TAG_LOG,er.getMessage());
+      }
     }
 
 
@@ -82,7 +85,11 @@ public class SettingsGameActivity extends AppCompatActivity {
     private void CreateDefaultComands()
     {
         int i1 = new Random().nextInt(listTeam.size()-1);
-        int i2 = new Random().nextInt(listTeam.size()-1);
+        int i2;
+        do {
+           i2 = new Random().nextInt(listTeam.size()-1);
+        }
+        while(i1==i2);
         CreateItemFragment(listTeam.get(i1));
         CreateItemFragment(listTeam.get(i2));
         teamListInGame.add(listTeam.get(i1));
