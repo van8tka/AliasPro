@@ -10,11 +10,13 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +30,7 @@ import com.devprogram.aliaspro.Models.Word;
 
 import java.util.List;
 
-public class PlayGameActivity extends AppCompatActivity {
+public class PlayGameActivity extends AppCompatActivity implements View.OnTouchListener {
 
     boolean _timeRoundIsFinish = false;
     IDbService dbService;
@@ -40,6 +42,8 @@ public class PlayGameActivity extends AppCompatActivity {
     TextView tvGuesed;
     TextView tvSkipped;
     TextView tvTimeDur;
+    TextView tvWord;
+    RelativeLayout rlDialog;
     public static final String TAG_PLAY_GAME = "PlayGameActivity";
 
     @Override
@@ -56,10 +60,15 @@ public class PlayGameActivity extends AppCompatActivity {
             tvGuesed = findViewById(R.id.tvCoutGuessed);
             tvSkipped = findViewById(R.id.tvCountSkipped);
             tvTimeDur = findViewById(R.id.tvTimeDuration);
+            tvWord = findViewById(R.id.tvWordPlayGame);
+            rlDialog = findViewById(R.id.rlDialogFonPlayGame);
             tvTimeDur.setText(Integer.toString(game.getSeconds()));
+            rlDialog.setOnTouchListener(this);
             SetTask();
-            CreateDialogTaskDescription();
-
+            boolean isTask = game.getIstask();
+            if(isTask){
+                CreateDialogTaskDescription();
+            }
         }
         catch (Exception er)
         {
@@ -67,6 +76,7 @@ public class PlayGameActivity extends AppCompatActivity {
         }
     }
 
+    //создание диалогового окна описания дополнительной задачи
     private void CreateDialogTaskDescription() {
         CustomDialogTaskDescription taskDescriptionDialog = new CustomDialogTaskDescription(this, task);
         taskDescriptionDialog.show();
@@ -115,6 +125,7 @@ public class PlayGameActivity extends AppCompatActivity {
         try{
             Button btnStart = findViewById(R.id.btnStartPlayGame);
             btnStart.setVisibility(View.GONE);
+            rlDialog.setVisibility(View.VISIBLE);
             TimerStart();
         }
         catch(Exception er)
@@ -142,9 +153,41 @@ public class PlayGameActivity extends AppCompatActivity {
         }.start();
     }
 
-
+//отображение описания задачи
     public void TaskToShowDescription_OnClick(View view) {
         Toast.makeText(this, task.getDescription(), Toast.LENGTH_LONG).show();
+    }
+
+
+    float dX=0,dY=0;
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if(v instanceof RelativeLayout)
+        {
+        switch(event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+            {
+                dY = v.getY() - event.getY();
+                break;
+            }
+            case MotionEvent.ACTION_MOVE :
+            {
+                v.animate()
+                        .y(event.getY()+dY)
+                        .setDuration(0)
+                        .start();
+//                v.setScaleX(-0.005f);
+//                v.setScaleY(-0.005f);
+                break;
+            }
+            default: return false;
+        }
+
+
+        }
+
+        return true;
     }
 }
 class CustomDialogTimeFinish extends Dialog {
@@ -166,7 +209,7 @@ class CustomDialogTimeFinish extends Dialog {
 //    }
 }
 
-
+//класс диалогового окна с описанием задачи загружается при первом появлении страницы PlayGameActivity
 class CustomDialogTaskDescription extends Dialog implements View.OnClickListener {
 
     Task task;
