@@ -3,6 +3,7 @@ package com.devprogram.aliaspro;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.pm.ActivityInfo;
+import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,12 +42,20 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     Task task;
     List<Word> wordList;
     TextView tvGuesed;
+    int countGuesedWord;
+    int countSkipedWord;
+    private int  _yDelta;
+
     TextView tvSkipped;
     TextView tvTimeDur;
     TextView tvWord;
     RelativeLayout rlDialog;
+    RelativeLayout parentDialog;
+    ViewConfiguration defView;
+    LinearLayout linearGues;
+    LinearLayout linearSkip;
     public static final String TAG_PLAY_GAME = "PlayGameActivity";
-
+    float YDef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try
@@ -62,8 +72,15 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             tvTimeDur = findViewById(R.id.tvTimeDuration);
             tvWord = findViewById(R.id.tvWordPlayGame);
             rlDialog = findViewById(R.id.rlDialogFonPlayGame);
+            defView = ViewConfiguration.get(rlDialog.getContext());
+            parentDialog = findViewById(R.id.rellayrootDialog);
             tvTimeDur.setText(Integer.toString(game.getSeconds()));
+            linearGues = findViewById(R.id.linGues);
+            linearSkip = findViewById(R.id.linSkip);
             rlDialog.setOnTouchListener(this);
+
+            countGuesedWord = 0;
+            countSkipedWord = 0;
             SetTask();
             boolean isTask = game.getIstask();
             if(isTask){
@@ -75,6 +92,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
          Log.e(TAG_PLAY_GAME,er.getMessage());
         }
     }
+
+
 
     //создание диалогового окна описания дополнительной задачи
     private void CreateDialogTaskDescription() {
@@ -159,35 +178,69 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     }
 
 
-    float dX=0,dY=0;
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if(v instanceof RelativeLayout)
         {
-        switch(event.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
+            switch(event.getAction() & MotionEvent.ACTION_MASK)
             {
-                dY = v.getY() - event.getY();
-                break;
+                case MotionEvent.ACTION_DOWN:
+                {
+                    _yDelta = (int)(v.getY() - event.getRawY());
+                    break;
+                }
+                case MotionEvent.ACTION_MOVE :
+                {
+                    v.animate().y(event.getRawY() + _yDelta).setDuration(0).start();
+                    break;
+                }
+                case MotionEvent.ACTION_UP :
+                {
+                    boolean isChangeState = CheckStateWord(v);
+//                    if(isChangeState)
+//                        return true;
+                    break;
+                }
+                default: return true;
             }
-            case MotionEvent.ACTION_MOVE :
-            {
-                v.animate()
-                        .y(event.getY()+dY)
-                        .setDuration(0)
-                        .start();
-//                v.setScaleX(-0.005f);
-//                v.setScaleY(-0.005f);
-                break;
-            }
-            default: return false;
         }
-
-
-        }
-
+        parentDialog.invalidate();
         return true;
+    }
+//при перемещении проверяем нахождение слова в границах отгаданого или пропущенного слова и смены состояния
+    private boolean CheckStateWord(View v) {
+       try{
+           int topWord = (int)v.getY()+100;
+           int bottomWord = (int)v.getY()+v.getHeight()-100;
+           int guessBorder = (int) linearGues.getY()+linearGues.getHeight();
+           int skipeBorder = (int) linearSkip.getY();
+           boolean isChange = false;
+           if(topWord<guessBorder)
+           {
+               countGuesedWord++;
+               tvGuesed.setText(String.valueOf(countGuesedWord));
+                v.setY(YDef);
+               isChange = true;
+           }
+           if(bottomWord>skipeBorder)
+           {
+               countSkipedWord++;
+               tvSkipped.setText(String.valueOf(countSkipedWord));
+               v.setY(YDef);
+               isChange = true;
+           }
+           ShowNextWord();
+           return isChange;
+       }
+       catch(Exception er)
+       {
+           Log.e("ERROR CHECK STATE WORD",er.getMessage());
+           return false;
+       }
+    }
+
+    private void ShowNextWord() {
     }
 }
 class CustomDialogTimeFinish extends Dialog {

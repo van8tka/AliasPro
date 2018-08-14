@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:id="@+id/rellayrootDialog"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -44,11 +45,8 @@
     </RelativeLayout>
 
 
-
-
-
-
     <LinearLayout
+        android:id="@+id/linGues"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
@@ -108,50 +106,53 @@
 
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
+        android:id="@+id/linSkip"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
         android:gravity="center"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/strIsskipped"
             android:textColor="@color/colorYellow"
             android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
+
         <TextView
+            android:id="@+id/tvCountSkipped"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tvCountSkipped"
             android:text="0"
             android:textColor="@color/colorYellow"
             android:textSize="28sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
 
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="horizontal"
-               android:id="@+id/llTaskInGame"
-               android:gravity="center"
-               >
-               <ImageView
-                   android:id="@+id/imgTaskAvatarInGame"
-                   android:layout_width="45dp"
-                   android:layout_height="45dp" />
-               <TextView
-                   android:layout_width="wrap_content"
-                   android:layout_height="match_parent"
-                   android:textSize="18sp"
-                   android:textColor="@color/colorPrimary"
-                   android:text="Gam na style! Op! Op!"
-                   android:gravity="center_vertical"
-                   android:id="@+id/tvTaskNameInGame"
-                   android:onClick="TaskToShowDescription_OnClick"
-                   />
-           </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llTaskInGame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imgTaskAvatarInGame"
+                android:layout_width="45dp"
+                android:layout_height="45dp" />
+
+            <TextView
+                android:id="@+id/tvTaskNameInGame"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:onClick="TaskToShowDescription_OnClick"
+                android:text="Gam na style! Op! Op!"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+        </LinearLayout>
 
     </LinearLayout>
 
