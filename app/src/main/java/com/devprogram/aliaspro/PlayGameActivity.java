@@ -1,5 +1,8 @@
 package com.devprogram.aliaspro;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.pm.ActivityInfo;
@@ -15,6 +18,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -183,6 +188,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     public boolean onTouch(View v, MotionEvent event) {
         if(v instanceof RelativeLayout)
         {
+            YDef = v.getTop();
             switch(event.getAction() & MotionEvent.ACTION_MASK)
             {
                 case MotionEvent.ACTION_DOWN:
@@ -220,15 +226,17 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            {
                countGuesedWord++;
                tvGuesed.setText(String.valueOf(countGuesedWord));
-                v.setY(YDef);
+                SetAnimationTransitionView(v);
                isChange = true;
+               ShowNextWord();
            }
            if(bottomWord>skipeBorder)
            {
                countSkipedWord++;
                tvSkipped.setText(String.valueOf(countSkipedWord));
-               v.setY(YDef);
+               SetAnimationTransitionView(v);
                isChange = true;
+               ShowNextWord();
            }
            ShowNextWord();
            return isChange;
@@ -238,6 +246,24 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            Log.e("ERROR CHECK STATE WORD",er.getMessage());
            return false;
        }
+    }
+//for change scale view with word and set default position
+    private void SetAnimationTransitionView(View v) {
+        AnimatorSet setScale = new AnimatorSet();
+        Animator scaleX = ObjectAnimator.ofFloat(v,"scaleX",0);
+        Animator scaleY = ObjectAnimator.ofFloat(v,"scaleY",0);
+        setScale.playTogether(scaleX,scaleY);
+        setScale.setDuration(800);
+        setScale.start();
+        Animator defPosition = ObjectAnimator.ofFloat(v,"Y",YDef);
+        Animator scaleXdef = ObjectAnimator.ofFloat(v,"scaleX",1f);
+        Animator scaleYdef = ObjectAnimator.ofFloat(v,"scaleY",1f);
+        AnimatorSet setDef = new AnimatorSet();
+        setDef.playTogether(defPosition,scaleXdef,scaleYdef);
+        setDef.setDuration(0);
+        AnimatorSet setChain = new AnimatorSet();
+        setChain.playSequentially(setScale,setDef);
+        setChain.start();
     }
 
     private void ShowNextWord() {
