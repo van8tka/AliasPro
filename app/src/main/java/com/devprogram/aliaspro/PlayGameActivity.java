@@ -34,7 +34,9 @@ import com.devprogram.aliaspro.Models.Round;
 import com.devprogram.aliaspro.Models.Task;
 import com.devprogram.aliaspro.Models.Team;
 import com.devprogram.aliaspro.Models.Word;
+import com.devprogram.aliaspro.Models.WordStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayGameActivity extends AppCompatActivity implements View.OnTouchListener {
@@ -46,6 +48,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     Round round;
     Task task;
     List<Word> wordList;
+    List<Word> showedWordList;
     TextView tvGuesed;
     int countGuesedWord;
     int countSkipedWord;
@@ -76,6 +79,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             tvSkipped = findViewById(R.id.tvCountSkipped);
             tvTimeDur = findViewById(R.id.tvTimeDuration);
             tvWord = findViewById(R.id.tvWordPlayGame);
+            tvWord.setText(showedWordList.get(showedWordList.size()-1).getName());
             rlDialog = findViewById(R.id.rlDialogFonPlayGame);
             defView = ViewConfiguration.get(rlDialog.getContext());
             parentDialog = findViewById(R.id.rellayrootDialog);
@@ -83,7 +87,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             linearGues = findViewById(R.id.linGues);
             linearSkip = findViewById(R.id.linSkip);
             rlDialog.setOnTouchListener(this);
-
             countGuesedWord = 0;
             countSkipedWord = 0;
             SetTask();
@@ -134,9 +137,28 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         game = dbService.getEGameService().getGame(idGame);
         round = dbService.getERoundService().getRound(idRound);
         task = round.getTask();
+        wordList = dbService.getEGameService().getGame(idGame).getDictionary().getWords();
+        showedWordList = new ArrayList<Word>();
+        GetNextShowWord(wordList);
     }
 
-//метод выхода из активити
+    List<Integer> indexMas = new ArrayList<Integer>();
+    private void GetNextShowWord(List<Word> wordList) {
+        boolean isNewWord = false;
+        int indexWord;
+        int count = wordList.size()-1;
+        do
+        {
+
+            indexWord = (int)(Math.random()*((count-0)+1))+0;
+             isNewWord = indexMas.contains(indexWord);
+        }
+        while(isNewWord);
+        indexMas.add(indexWord);
+        showedWordList.add(wordList.get(indexWord));
+    }
+
+    //метод выхода из активити
     @Override
     public boolean onSupportNavigateUp(){
         finish();
@@ -228,7 +250,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                tvGuesed.setText(String.valueOf(countGuesedWord));
                 SetAnimationTransitionView(v);
                isChange = true;
-               ShowNextWord();
+               ShowNextWord(true);
            }
            if(bottomWord>skipeBorder)
            {
@@ -236,9 +258,9 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                tvSkipped.setText(String.valueOf(countSkipedWord));
                SetAnimationTransitionView(v);
                isChange = true;
-               ShowNextWord();
+               ShowNextWord(false);
            }
-           ShowNextWord();
+
            return isChange;
        }
        catch(Exception er)
@@ -266,7 +288,21 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         setChain.start();
     }
 
-    private void ShowNextWord() {
+    private void ShowNextWord(boolean isGues) {
+        WordStatus status;
+        if(isGues)
+        {
+            status = dbService.getEWordStatusService().getWordsStatus().get(0);
+        }
+        else
+        {
+            status = dbService.getEWordStatusService().getWordsStatus().get(1);
+        }
+        Word showedWord = showedWordList.get(showedWordList.size()-1);
+        dbService.getEWordService().updareWord(showedWord.getIdword(),showedWord.getName(),showedWord.getLanguage(),status);
+      //  Log.e("STATUS WORD",showedWord.getWordstatus().getStatus());
+        GetNextShowWord(wordList);
+        tvWord.setText(showedWordList.get(showedWordList.size()-1).getName());
     }
 }
 class CustomDialogTimeFinish extends Dialog {
