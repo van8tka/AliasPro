@@ -33,17 +33,45 @@ public class EWordService implements IWordService {
         word.setName(name);
         word.setLanguage(language);
         word.setWordstatus(wordstatus);
+        word.setIsshowed(false);
         realm.commitTransaction();
         return idword;
     }
 
     @Override
-    public String updareWord(String idword, String name, Language language, WordStatus wordstatus) {
+    public String updareWord(String idword, String name, Language language, WordStatus wordstatus, boolean isshowed) {
         realm.beginTransaction();
         Word word = realm.where(Word.class).equalTo("idword",idword).findFirst();
         word.setName(name);
         word.setLanguage(language);
         word.setWordstatus(wordstatus);
+        word.setIsshowed(isshowed);
+        realm.commitTransaction();
+        return idword;
+    }
+
+    @Override
+    public String resetWord(String idword) {
+        realm.beginTransaction();
+        Word word = realm.where(Word.class).equalTo("idword",idword).findFirst();
+        WordStatus ws = realm.where(WordStatus.class).equalTo("status","не отгадано").findFirst();
+        word.setWordstatus(ws);
+        word.setIsshowed(false);
+        realm.commitTransaction();
+        return idword;
+    }
+
+    public String updateStatusOfWord(String idword, WordStatus ws){
+        realm.beginTransaction();
+        Word word = realm.where(Word.class).equalTo("idword",idword).findFirst();
+        word.setWordstatus(ws);
+        realm.commitTransaction();
+        return idword;
+    }
+    public String updateShowedOfWord(String idword, boolean isshowed){
+        realm.beginTransaction();
+        Word word = realm.where(Word.class).equalTo("idword",idword).findFirst();
+        word.setIsshowed(isshowed);
         realm.commitTransaction();
         return idword;
     }

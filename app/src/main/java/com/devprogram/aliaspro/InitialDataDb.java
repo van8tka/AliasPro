@@ -18,8 +18,9 @@ public class InitialDataDb {
 
 
     public void InitializeDbRealm() {
-
-        if(dbService.getETaskService().getTasks().size()==0)
+int k = 8;
+       // if(dbService.getETaskService().getTasks().size()==0)
+        if(k>0)
         {
             //язык
             String uuidRus = dbService.getELanguageService().createLanguage("Рус", "languageimage_russia64");

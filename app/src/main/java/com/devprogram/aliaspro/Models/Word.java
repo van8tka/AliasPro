@@ -12,9 +12,18 @@ public class Word extends RealmObject{
     String name;
     Language language;
     WordStatus wordstatus;
+    Boolean isshowed;
 
     public void setWordstatus(WordStatus wordstatus) {
         this.wordstatus = wordstatus;
+    }
+
+    public Boolean getIsshowed() {
+        return isshowed;
+    }
+    public void setIsshowed(boolean isshow)
+    {
+        isshowed = isshow;
     }
 
     public WordStatus getWordstatus() {

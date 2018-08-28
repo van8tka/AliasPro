@@ -142,20 +142,22 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         GetNextShowWord(wordList);
     }
 
-    List<Integer> indexMas = new ArrayList<Integer>();
+   // List<Integer> indexMas = new ArrayList<Integer>();
     private void GetNextShowWord(List<Word> wordList) {
-        boolean isNewWord = false;
+      //  boolean isNewWord = false;
+        boolean isShowedWord = true;
         int indexWord;
         int count = wordList.size()-1;
         do
         {
-
-            indexWord = (int)(Math.random()*((count-0)+1))+0;
-             isNewWord = indexMas.contains(indexWord);
+             indexWord = (int)(Math.random()*((count-0)+1))+0;
+          //   isNewWord = indexMas.contains(indexWord);
+            isShowedWord = wordList.get(indexWord).getIsshowed();
         }
-        while(isNewWord);
-        indexMas.add(indexWord);
+        while(isShowedWord);
+      //  indexMas.add(indexWord);
         showedWordList.add(wordList.get(indexWord));
+        dbService.getEWordService().updateShowedOfWord(wordList.get(indexWord).getIdword(),true);
     }
 
     //метод выхода из активити
@@ -299,7 +301,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             status = dbService.getEWordStatusService().getWordsStatus().get(1);
         }
         Word showedWord = showedWordList.get(showedWordList.size()-1);
-        dbService.getEWordService().updareWord(showedWord.getIdword(),showedWord.getName(),showedWord.getLanguage(),status);
+        dbService.getEWordService().updateStatusOfWord(showedWord.getIdword(),status);
       //  Log.e("STATUS WORD",showedWord.getWordstatus().getStatus());
         GetNextShowWord(wordList);
         tvWord.setText(showedWordList.get(showedWordList.size()-1).getName());

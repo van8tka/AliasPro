@@ -7,7 +7,11 @@ public class WordStatus  extends RealmObject {
     @PrimaryKey
     String idwordstatus;
     String status;
-
+//
+//       dbService.getEWordStatusService().createWordStatus("отгадано");
+//    String idwordStatusDefault = dbService.getEWordStatusService().createWordStatus("не отгадано");
+//            dbService.getEWordStatusService().createWordStatus("удалить");
+//
     public String getIdwordstatus() {
         return idwordstatus;
     }
