@@ -31,11 +31,14 @@
             android:name=".DictionaryActivity"
             android:label="@string/label_dictionaries_activity" />
         <activity
+            android:name=".RoundResultActivity"
+            android:label="@string/label_roundresult_activity" />
+        <activity
             android:name=".BeginGameActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/label_rating_activity" />
-        <activity
-            android:name=".PlayGameActivity"  />
+        <activity android:name=".PlayGameActivity" />
+
     </application>
 
 </manifest>

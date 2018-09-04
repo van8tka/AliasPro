@@ -1,5 +1,7 @@
 package com.devprogram.aliaspro.DAL.Emplementations;
 
+import android.util.Log;
+
 import com.devprogram.aliaspro.DAL.Interfaces.IRoundService;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Round;
@@ -29,6 +31,25 @@ public class ERoundService implements IRoundService {
         return realm.where(Round.class).findAll();
     }
 
+    public String addWordRound(String idround, Word word)
+    {
+        try{
+            realm.beginTransaction();
+            Round round = realm.where(Round.class).equalTo("idround", idround).findFirst();
+            RealmList<Word> list = round.getWords();
+            list.add(word);
+            round.setWords(list);
+            realm.commitTransaction();
+            return idround;
+        }
+        catch(Exception er)
+        {
+            Log.e("EROUNDSERVICE",er.getMessage());
+            return idround;
+        }
+    }
+
+
     @Override
     public String createRound(String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound) {
         String idround = UUID.randomUUID().toString();
@@ -36,7 +57,6 @@ public class ERoundService implements IRoundService {
         Round round = realm.createObject(Round.class,idround);
         round.setName(name);
         round.setTask(task);
-
         round.setWords(words);
         round.setGame(game);
         round.setNumber(numberRound);

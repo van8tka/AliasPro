@@ -5,11 +5,13 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -98,6 +100,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         catch (Exception er)
         {
          Log.e(TAG_PLAY_GAME,er.getMessage());
+            Toast.makeText(this,er.getMessage(),Toast.LENGTH_LONG);
         }
     }
 
@@ -131,31 +134,33 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
     //установка данных при запуске активити
     private void GetData() {
-        String idGame = getIntent().getStringExtra("idGame");
-        String idRound = getIntent().getStringExtra("idRound");
-        dbService = new DbService();
-        game = dbService.getEGameService().getGame(idGame);
-        round = dbService.getERoundService().getRound(idRound);
-        task = round.getTask();
-        wordList = dbService.getEGameService().getGame(idGame).getDictionary().getWords();
-        showedWordList = new ArrayList<Word>();
-        GetNextShowWord(wordList);
+        try{
+            String idGame = getIntent().getStringExtra("idGame");
+            String idRound = getIntent().getStringExtra("idRound");
+            dbService = new DbService();
+            game = dbService.getEGameService().getGame(idGame);
+            round = dbService.getERoundService().getRound(idRound);
+            task = round.getTask();
+            wordList = dbService.getEGameService().getGame(idGame).getDictionary().getWords();
+            showedWordList = new ArrayList<Word>();
+            GetNextShowWord(wordList);
+        }
+        catch(Exception er)
+        {
+            Log.e("ERROR GET DATA",er.getMessage());
+        }
     }
 
-   // List<Integer> indexMas = new ArrayList<Integer>();
     private void GetNextShowWord(List<Word> wordList) {
-      //  boolean isNewWord = false;
         boolean isShowedWord = true;
         int indexWord;
         int count = wordList.size()-1;
         do
         {
-             indexWord = (int)(Math.random()*((count-0)+1))+0;
-          //   isNewWord = indexMas.contains(indexWord);
+            indexWord = (int)(Math.random()*((count-0)+1))+0;
             isShowedWord = wordList.get(indexWord).getIsshowed();
         }
         while(isShowedWord);
-      //  indexMas.add(indexWord);
         showedWordList.add(wordList.get(indexWord));
         dbService.getEWordService().updateShowedOfWord(wordList.get(indexWord).getIdword(),true);
     }
@@ -228,8 +233,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                 case MotionEvent.ACTION_UP :
                 {
                     boolean isChangeState = CheckStateWord(v);
-//                    if(isChangeState)
-//                        return true;
+                    if(isChangeState)
+                        tvWord.setText(showedWordList.get(showedWordList.size()-1).getName());
                     break;
                 }
                 default: return true;
@@ -250,7 +255,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            {
                countGuesedWord++;
                tvGuesed.setText(String.valueOf(countGuesedWord));
-                SetAnimationTransitionView(v);
+               SetAnimationTransitionView(v);
                isChange = true;
                ShowNextWord(true);
            }
@@ -262,7 +267,12 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                isChange = true;
                ShowNextWord(false);
            }
-
+           if(_timeRoundIsFinish)
+           {
+               Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
+               intent.putExtra("idroundCurrent",round.getIdround());
+               startActivity(intent);
+           }
            return isChange;
        }
        catch(Exception er)
@@ -302,9 +312,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
         Word showedWord = showedWordList.get(showedWordList.size()-1);
         dbService.getEWordService().updateStatusOfWord(showedWord.getIdword(),status);
-      //  Log.e("STATUS WORD",showedWord.getWordstatus().getStatus());
+        dbService.getERoundService().addWordRound(round.getIdround(),showedWord);
         GetNextShowWord(wordList);
-        tvWord.setText(showedWordList.get(showedWordList.size()-1).getName());
     }
 }
 class CustomDialogTimeFinish extends Dialog {

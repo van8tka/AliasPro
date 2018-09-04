@@ -16,4 +16,5 @@ public interface IRoundService {
     String createRound(String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound);
     String updateRound(String idround, String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound);
     String deleteRound(String idround);
+    String addWordRound(String idround, Word word);
 }

@@ -42,12 +42,12 @@
     <string name="strTimeLabel">Время:</string>
     <string name="strCustDialogLastWordWinTeam">Последнее слово отгадала команда?</string>
     <string name="strCustomDialogTaskDescrHeader">Дополнительное задание:</string>
-
-
+    <string name="strRoundPointsName">Количество баллов</string>
 
     <string name="label_rules_activity">Правила игры</string>
     <string name="label_settings_activity">Настройки игры</string>
     <string name="label_dictionaries_activity">Словари</string>
     <string name="label_rating_activity">Рейтинг команд</string>
+    <string name="label_roundresult_activity">Результат раунда</string>
 
 </resources>
