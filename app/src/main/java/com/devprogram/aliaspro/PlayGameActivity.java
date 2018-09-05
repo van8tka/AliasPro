@@ -104,7 +104,12 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
     }
 
-
+    @Override
+    public void onDestroy()
+    {
+        dbService.CloseDb();
+        super.onDestroy();
+    }
 
     //создание диалогового окна описания дополнительной задачи
     private void CreateDialogTaskDescription() {
@@ -114,20 +119,26 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
     //установка задачи если выбрана в настройках
     private void SetTask() {
-        LinearLayout llTask = findViewById(R.id.llTaskInGame);
-        TextView tvTask = findViewById(R.id.tvTaskNameInGame);
-        ImageView imgTask = findViewById(R.id.imgTaskAvatarInGame);
+        try{
+            LinearLayout llTask = findViewById(R.id.llTaskInGame);
+            TextView tvTask = findViewById(R.id.tvTaskNameInGame);
+            ImageView imgTask = findViewById(R.id.imgTaskAvatarInGame);
 
-        if(game.getIstask())
-        {
-            llTask.setVisibility(View.VISIBLE);
-            tvTask.setText(task.getName());
-            int idres = this.getResources().getIdentifier(task.getAvatar(),"drawable",getPackageName());
-            imgTask.setImageResource(idres);
+            if(game.getIstask())
+            {
+                llTask.setVisibility(View.VISIBLE);
+                tvTask.setText(task.getName());
+                int idres = this.getResources().getIdentifier(task.getAvatar(),"drawable",getPackageName());
+                imgTask.setImageResource(idres);
+            }
+            else
+            {
+                llTask.setVisibility(View.GONE);
+            }
         }
-        else
+        catch (Exception er)
         {
-            llTask.setVisibility(View.GONE);
+            Log.e("SETTASK",er.getMessage());
         }
     }
 
@@ -152,17 +163,30 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     }
 
     private void GetNextShowWord(List<Word> wordList) {
-        boolean isShowedWord = true;
-        int indexWord;
-        int count = wordList.size()-1;
-        do
-        {
-            indexWord = (int)(Math.random()*((count-0)+1))+0;
-            isShowedWord = wordList.get(indexWord).getIsshowed();
+        try{
+            boolean isShowedWord = true;
+            int indexWord;
+            int count = wordList.size()-1;
+
+//            Customer james = customers.stream()
+//                    .filter(customer -> "James".equals(customer.getName()))
+//                    .findAny()
+//                    .orElse(null);
+//необходима проверка есть ли непоказанные слова в списке если есть то выбираем иначе - слова закочились или заново
+//            if(wordList.stream().filter(w->))
+            do
+            {
+                indexWord = (int)(Math.random()*((count-0)+1))+0;
+                isShowedWord = wordList.get(indexWord).getIsshowed();
+            }
+            while(isShowedWord);
+            showedWordList.add(wordList.get(indexWord));
+            dbService.getEWordService().updateShowedOfWord(wordList.get(indexWord).getIdword(),true);
         }
-        while(isShowedWord);
-        showedWordList.add(wordList.get(indexWord));
-        dbService.getEWordService().updateShowedOfWord(wordList.get(indexWord).getIdword(),true);
+        catch (Exception er)
+        {
+            Log.e("GETNEXTSHWord",er.getMessage());
+        }
     }
 
     //метод выхода из активити
@@ -215,33 +239,42 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if(v instanceof RelativeLayout)
+        try
         {
-            YDef = v.getTop();
-            switch(event.getAction() & MotionEvent.ACTION_MASK)
+            if(v instanceof RelativeLayout)
             {
-                case MotionEvent.ACTION_DOWN:
+                YDef = v.getTop();
+                switch(event.getAction() & MotionEvent.ACTION_MASK)
                 {
-                    _yDelta = (int)(v.getY() - event.getRawY());
-                    break;
+                    case MotionEvent.ACTION_DOWN:
+                    {
+                        _yDelta = (int)(v.getY() - event.getRawY());
+                        break;
+                    }
+                    case MotionEvent.ACTION_MOVE :
+                    {
+                        v.animate().y(event.getRawY() + _yDelta).setDuration(0).start();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP :
+                    {
+                        boolean isChangeState = CheckStateWord(v);
+                        if(isChangeState)
+                            tvWord.setText(showedWordList.get(showedWordList.size()-1).getName());
+                        break;
+                    }
+                    default: return true;
                 }
-                case MotionEvent.ACTION_MOVE :
-                {
-                    v.animate().y(event.getRawY() + _yDelta).setDuration(0).start();
-                    break;
-                }
-                case MotionEvent.ACTION_UP :
-                {
-                    boolean isChangeState = CheckStateWord(v);
-                    if(isChangeState)
-                        tvWord.setText(showedWordList.get(showedWordList.size()-1).getName());
-                    break;
-                }
-                default: return true;
             }
+            parentDialog.invalidate();
+            return true;
         }
-        parentDialog.invalidate();
-        return true;
+        catch(Exception er)
+        {
+            Log.e("ONTOUCH",er.getMessage());
+            return false;
+        }
+
     }
 //при перемещении проверяем нахождение слова в границах отгаданого или пропущенного слова и смены состояния
     private boolean CheckStateWord(View v) {
@@ -283,37 +316,51 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     }
 //for change scale view with word and set default position
     private void SetAnimationTransitionView(View v) {
-        AnimatorSet setScale = new AnimatorSet();
-        Animator scaleX = ObjectAnimator.ofFloat(v,"scaleX",0);
-        Animator scaleY = ObjectAnimator.ofFloat(v,"scaleY",0);
-        setScale.playTogether(scaleX,scaleY);
-        setScale.setDuration(800);
-        setScale.start();
-        Animator defPosition = ObjectAnimator.ofFloat(v,"Y",YDef);
-        Animator scaleXdef = ObjectAnimator.ofFloat(v,"scaleX",1f);
-        Animator scaleYdef = ObjectAnimator.ofFloat(v,"scaleY",1f);
-        AnimatorSet setDef = new AnimatorSet();
-        setDef.playTogether(defPosition,scaleXdef,scaleYdef);
-        setDef.setDuration(0);
-        AnimatorSet setChain = new AnimatorSet();
-        setChain.playSequentially(setScale,setDef);
-        setChain.start();
+        try
+        {
+            AnimatorSet setScale = new AnimatorSet();
+            Animator scaleX = ObjectAnimator.ofFloat(v,"scaleX",0);
+            Animator scaleY = ObjectAnimator.ofFloat(v,"scaleY",0);
+            setScale.playTogether(scaleX,scaleY);
+            setScale.setDuration(800);
+            setScale.start();
+            Animator defPosition = ObjectAnimator.ofFloat(v,"Y",YDef);
+            Animator scaleXdef = ObjectAnimator.ofFloat(v,"scaleX",1f);
+            Animator scaleYdef = ObjectAnimator.ofFloat(v,"scaleY",1f);
+            AnimatorSet setDef = new AnimatorSet();
+            setDef.playTogether(defPosition,scaleXdef,scaleYdef);
+            setDef.setDuration(0);
+            AnimatorSet setChain = new AnimatorSet();
+            setChain.playSequentially(setScale,setDef);
+            setChain.start();
+        }
+        catch(Exception er)
+        {
+            Log.e("SetANIM",er.getMessage());
+        }
     }
 
     private void ShowNextWord(boolean isGues) {
-        WordStatus status;
-        if(isGues)
-        {
-            status = dbService.getEWordStatusService().getWordsStatus().get(0);
+        try{
+            WordStatus status;
+            if(isGues)
+            {
+                status = dbService.getEWordStatusService().getWordsStatus().get(0);
+            }
+            else
+            {
+                status = dbService.getEWordStatusService().getWordsStatus().get(1);
+            }
+            Word showedWord = showedWordList.get(showedWordList.size()-1);
+            dbService.getEWordService().updateStatusOfWord(showedWord.getIdword(),status);
+            dbService.getERoundService().addWordRound(round.getIdround(),showedWord);
+            GetNextShowWord(wordList);
         }
-        else
+        catch (Exception er)
         {
-            status = dbService.getEWordStatusService().getWordsStatus().get(1);
+            Log.e("SHOWNEXTWORD",er.getMessage());
         }
-        Word showedWord = showedWordList.get(showedWordList.size()-1);
-        dbService.getEWordService().updateStatusOfWord(showedWord.getIdword(),status);
-        dbService.getERoundService().addWordRound(round.getIdround(),showedWord);
-        GetNextShowWord(wordList);
+
     }
 }
 class CustomDialogTimeFinish extends Dialog {
@@ -351,18 +398,25 @@ class CustomDialogTaskDescription extends Dialog implements View.OnClickListener
     @Override
     protected void onCreate(Bundle instance)
     {
-        super.onCreate(instance);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.custom_dialog_task_description);
-        TextView tvTaskName = findViewById(R.id.tvTaskNameDialog);
-        TextView tvTaskDesc = findViewById(R.id.tvTaskDescriptionDialog);
-        ImageView imgTaskAvatar = findViewById(R.id.imgTaskAvatarDialog);
-        tvTaskName.setText(task.getName());
-        tvTaskDesc.setText(task.getDescription());
-        int id = activity.getResources().getIdentifier(task.getAvatar(),"drawable",activity.getPackageName());
-        imgTaskAvatar.setImageResource(id);
-        Button btn = findViewById(R.id.btnCloseTaskDescriptionDialog);
-        btn.setOnClickListener(this);
+        try
+        {
+            super.onCreate(instance);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.custom_dialog_task_description);
+            TextView tvTaskName = findViewById(R.id.tvTaskNameDialog);
+            TextView tvTaskDesc = findViewById(R.id.tvTaskDescriptionDialog);
+            ImageView imgTaskAvatar = findViewById(R.id.imgTaskAvatarDialog);
+            tvTaskName.setText(task.getName());
+            tvTaskDesc.setText(task.getDescription());
+            int id = activity.getResources().getIdentifier(task.getAvatar(),"drawable",activity.getPackageName());
+            imgTaskAvatar.setImageResource(id);
+            Button btn = findViewById(R.id.btnCloseTaskDescriptionDialog);
+            btn.setOnClickListener(this);
+        }
+        catch(Exception er)
+        {
+            Log.e("ONCREATECUSTOMDIALDESC",er.getMessage());
+        }
     }
 
     @Override

@@ -12,10 +12,11 @@
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="56dp"
         android:orientation="horizontal"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
+        android:paddingTop="12dp"
         android:background="@color/colorPrimary"
         >
 
@@ -39,13 +40,13 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <!--<ListVie-->
-        <!--android:id="@+id/lvShowWordRound"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--&gt;-->
+    <ListView
+        android:id="@+id/lvShowWordRound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
-    <!--</ListVie>-->
+    </ListView>
 </LinearLayout>
 
     <Button
@@ -57,6 +58,6 @@
         android:textColor="@color/colorWhite"
         android:layout_alignParentBottom="true"
         android:layout_weight="1"
-        android:onClick="btnGoToChoseNextTeam"
+        android:onClick="btnGoToChoseNextTeam_Click"
        />
 </LinearLayout>

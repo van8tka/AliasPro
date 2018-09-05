@@ -114,6 +114,51 @@ int k = 8;
             dbService.getEWordService().createWord("стол",langRus,wordStatusDefault);
             dbService.getEWordService().createWord("платье",langRus,wordStatusDefault);
             dbService.getEWordService().createWord("краб",langRus,wordStatusDefault);
+
+
+
+
+            dbService.getEWordService().createWord("дорога",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("столб",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("тратуар",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("газон",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("обочина",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("канава",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("мост",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("разметка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("тормоз",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("знак",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("поворот",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("бардюр",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("поребрик",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("разделительная полоса",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("зеленая зона",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("шлагбаум",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("дпс",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("светофор",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("зебра",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("пешеходный переход",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("эстакада",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("авиадук",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("разводной мост",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("стоп-линия",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("разворот",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("крюк",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("заправка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("кемпинг",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("парковка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("лавка",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("выезд",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("помеха справа",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("обгон",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("гонки",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("погоня",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("учитель",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("бэха",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("ремонт дороги",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("круговое движение",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("поворот на право",langRus,wordStatusDefault);
+            dbService.getEWordService().createWord("поворот на лево",langRus,wordStatusDefault);
             //список слов
             List<Word> listWords = dbService.getEWordService().getWords();
             //уровни сложности

@@ -44,47 +44,64 @@ public class BeginGameActivity extends AppCompatActivity {
     LinearLayout linRound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        isChangeOrientation = false;
-        setContentView(R.layout.activity_begin_game);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        String idGame = getIntent().getStringExtra("idGame");
-        String idRound = getIntent().getStringExtra("idRound");
-        dbService = new DbService();
-        currentGame = dbService.getEGameService().getGame(idGame);
-        currentRound = dbService.getERoundService().getRound(idRound);
-        listTeam = currentGame.getTeams();
-        countTeamsInGame = listTeam.size();
-        listView = findViewById(R.id.lvTeamInGame);
-        tvNameTeamGame = findViewById(R.id.tvPlayTeamName);
-        imgAvatarTeamGame = findViewById(R.id.imgPlayTeamAvatar);
-        textvRoundName = findViewById(R.id.tvRoundName);
-        linRound = findViewById(R.id.linRoundBegin);
-
-        //след играют
-        SetNextCommandPlay();
-        listView.setAdapter(new TeamGameAdapter(this,listTeam));
+        try
+        {
+            super.onCreate(savedInstanceState);
+            isChangeOrientation = false;
+            setContentView(R.layout.activity_begin_game);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            String idGame = getIntent().getStringExtra("idGame");
+            String idRound = getIntent().getStringExtra("idRound");
+            dbService = new DbService();
+            currentGame = dbService.getEGameService().getGame(idGame);
+            currentRound = dbService.getERoundService().getRound(idRound);
+            listTeam = currentGame.getTeams();
+            countTeamsInGame = listTeam.size();
+            listView = findViewById(R.id.lvTeamInGame);
+            tvNameTeamGame = findViewById(R.id.tvPlayTeamName);
+            imgAvatarTeamGame = findViewById(R.id.imgPlayTeamAvatar);
+            textvRoundName = findViewById(R.id.tvRoundName);
+            linRound = findViewById(R.id.linRoundBegin);
+            //след играют
+            SetNextCommandPlay();
+            listView.setAdapter(new TeamGameAdapter(this,listTeam));
+        }catch(Exception er)
+        {
+            Log.e("ONCREBEGINACT",er.getMessage());
+        }
     }
 
-
+    @Override
+    public void onDestroy()
+    {
+        dbService.CloseDb();
+        super.onDestroy();
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig)
     {
-        super.onConfigurationChanged(newConfig);
-           isChangeOrientation = true;
-        if(newConfig.orientation == ORIENTATION_LANDSCAPE)
+        try
         {
-            linRound.setOrientation(LinearLayout.HORIZONTAL);
+            super.onConfigurationChanged(newConfig);
+            isChangeOrientation = true;
+            if(newConfig.orientation == ORIENTATION_LANDSCAPE)
+            {
+                linRound.setOrientation(LinearLayout.HORIZONTAL);
+            }
+            if(newConfig.orientation == ORIENTATION_PORTRAIT)
+            {
+                linRound.setOrientation(LinearLayout.VERTICAL);
+            }
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.gravity = Gravity.CENTER;
+            linRound.setLayoutParams(lp);
+            linRound.setGravity(Gravity.CENTER);
         }
-        if(newConfig.orientation == ORIENTATION_PORTRAIT)
+        catch (Exception er)
         {
-            linRound.setOrientation(LinearLayout.VERTICAL);
+            Log.e("CONFCHANGE",er.getMessage());
         }
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.gravity = Gravity.CENTER;
-        linRound.setLayoutParams(lp);
-        linRound.setGravity(Gravity.CENTER);
     }
 
 
@@ -126,10 +143,18 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
 
 
     public void btnStartGame_Click(View view) {
-        Intent intent = new Intent(this, PlayGameActivity.class) ;
-        intent.putExtra("idGame",currentGame.getIdgame());
-        intent.putExtra("idRound",currentRound.getIdround());
-        startActivity(intent);
+        try
+        {
+            Intent intent = new Intent(this, PlayGameActivity.class) ;
+            intent.putExtra("idGame",currentGame.getIdgame());
+            intent.putExtra("idRound",currentRound.getIdround());
+            startActivity(intent);
+        }
+        catch(Exception er)
+        {
+            Log.e("btnGoToPlayGAmeA",er.getMessage());
+        }
+
     }
 
     @Override
