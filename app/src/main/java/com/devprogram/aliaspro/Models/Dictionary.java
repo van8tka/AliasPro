@@ -9,8 +9,6 @@ import io.realm.annotations.PrimaryKey;
 public class Dictionary  extends RealmObject {
     @PrimaryKey
     String iddictionary;
-    RealmList<Word> words;
-    int countWords;
     String name;
     String avatar;
     String price;
@@ -18,23 +16,12 @@ public class Dictionary  extends RealmObject {
     Language language;
     Difficulty difficulty;
 
-    public void setCountWords(int count){this.countWords = count;}
-    public int getCountWords(){return countWords;}
-
     public void setIddictionary(String iddictionary) {
         this.iddictionary = iddictionary;
     }
 
     public String getIddictionary() {
         return iddictionary;
-    }
-
-    public RealmList<Word> getWords() {
-        return words;
-    }
-
-    public void setWords(List<Word> words) {
-        this.words.addAll(words);
     }
 
     public Difficulty getDifficulty() {

@@ -26,10 +26,11 @@ public class EWordService implements IWordService {
     }
 
     @Override
-    public String createWord(String name, Language language, WordStatus wordstatus) {
+    public String createWord(String name,String idDictionary, Language language, WordStatus wordstatus) {
         String idword = UUID.randomUUID().toString();
         realm.beginTransaction();
         Word word = realm.createObject(Word.class,idword);
+        word.setIddictionary(idDictionary);
         word.setName(name);
         word.setLanguage(language);
         word.setWordstatus(wordstatus);

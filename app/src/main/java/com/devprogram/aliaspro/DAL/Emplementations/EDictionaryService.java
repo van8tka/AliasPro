@@ -34,12 +34,10 @@ public class EDictionaryService implements IDictionaryService {
     }
 
     @Override
-    public String createDictionary(List<Word> words, String name, String avatar, String price, String description, Language language, Difficulty difficulty) {
+    public String createDictionary(String name, String avatar, String price, String description, Language language, Difficulty difficulty) {
         realm.beginTransaction();
         String iddictionary = UUID.randomUUID().toString();
         Dictionary myDictionary = realm.createObject(Dictionary.class,iddictionary);
-        myDictionary.setWords(words);
-        myDictionary.setCountWords(words.size());
         myDictionary.setName(name);
         myDictionary.setAvatar(avatar);
         myDictionary.setPrice(price);
@@ -51,11 +49,9 @@ public class EDictionaryService implements IDictionaryService {
     }
 
     @Override
-    public String updateDictionary(String iddictionary, List<Word> words, String name, String avatar, String price, String description, Language language, Difficulty difficulty) {
+    public String updateDictionary(String iddictionary,  String name, String avatar, String price, String description, Language language, Difficulty difficulty) {
         realm.beginTransaction();
         Dictionary myDictionary = realm.where(Dictionary.class).equalTo("iddictionary",iddictionary).findFirst();
-        myDictionary.setWords((RealmList<Word>) words);
-        myDictionary.setCountWords(words.size());
         myDictionary.setName(name);
         myDictionary.setAvatar(avatar);
         myDictionary.setPrice(price);

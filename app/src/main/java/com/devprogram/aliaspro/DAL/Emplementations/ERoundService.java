@@ -81,7 +81,9 @@ public class ERoundService implements IRoundService {
 
     @Override
     public String deleteRound(String idround){
+        realm.beginTransaction();
         realm.where(Round.class).equalTo("idround",idround).findFirst().deleteFromRealm();
+        realm.commitTransaction();
         return idround;
     }
 }

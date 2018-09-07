@@ -10,7 +10,7 @@ import java.util.List;
 public interface IDictionaryService {
     Dictionary getDictionary(String iddictionary);
     List<Dictionary> getDicitionaries();
-    String createDictionary(List<Word> words, String name, String avatar, String price, String description, Language language, Difficulty difficulty);
-    String updateDictionary(String iddictionary, List<Word> words, String name, String avatar, String price, String description, Language language, Difficulty difficulty);
+    String createDictionary(  String name, String avatar, String price, String description, Language language, Difficulty difficulty);
+    String updateDictionary(String iddictionary,   String name, String avatar, String price, String description, Language language, Difficulty difficulty);
     String deleteDictionary(String iddictionary);
 }

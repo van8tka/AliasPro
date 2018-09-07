@@ -173,7 +173,19 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 //                    .findAny()
 //                    .orElse(null);
 //необходима проверка есть ли непоказанные слова в списке если есть то выбираем иначе - слова закочились или заново
-//            if(wordList.stream().filter(w->))
+        boolean isNotExistShowedWord = false;
+        for(Word wd:wordList)
+         {
+            if(!wd.getIsshowed())
+            {
+                isNotExistShowedWord = true;
+                break;
+            }
+         }
+         if(isNotExistShowedWord)
+         {
+             endGame();
+         }
             do
             {
                 indexWord = (int)(Math.random()*((count-0)+1))+0;
@@ -187,6 +199,10 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         {
             Log.e("GETNEXTSHWord",er.getMessage());
         }
+    }
+//если закончились все слова
+    private void endGame() {
+        //TODO диалоговое окно - закончился список слов - игра закончена
     }
 
     //метод выхода из активити
