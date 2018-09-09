@@ -1,14 +1,21 @@
-package com.devprogram.aliaspro;
+package com.devprogram.aliaspro.Initializer.Emplementations;
+
+import android.util.Log;
+import android.widget.Toast;
 
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
+import com.devprogram.aliaspro.Initializer.Interfaces.IInitDB;
 import com.devprogram.aliaspro.Models.Difficulty;
 import com.devprogram.aliaspro.Models.Language;
+import com.devprogram.aliaspro.Models.Round;
+import com.devprogram.aliaspro.Models.Task;
+import com.devprogram.aliaspro.Models.Team;
 import com.devprogram.aliaspro.Models.Word;
 import com.devprogram.aliaspro.Models.WordStatus;
 
 import java.util.List;
 
-public class InitialDataDb {
+public class InitialDataDb implements IInitDB {
     private IDbService dbService;
 
     public InitialDataDb(IDbService dbService)
@@ -17,8 +24,32 @@ public class InitialDataDb {
     }
 
 
-    public void InitializeDbRealm() {
-int k = 8;
+
+    //сброс данных в БД
+    public void RestoreItems() {
+                try { List<Word> words = dbService.getEWordService().getWords();
+                    WordStatus statusWordSkeep = dbService.getEWordStatusService().getWordsStatus().get(1);
+                    for (int i=0;i<words.size()-1;i++)
+                        dbService.getEWordService().updareWord(words.get(i).getIdword(), words.get(i).getName(), words.get(i).getLanguage(), statusWordSkeep, false);
+                    List<Team> teams = dbService.getETeamService().getTeams();
+                    Language rus = dbService.getELanguageService().getLanguages().get(0);
+                    for (int i=0;i<teams.size()-1;i++)
+                        dbService.getETeamService().updateTeam(teams.get(i).getIdteam(), teams.get(i).getName(), teams.get(i).getAvatar(), 0, 0, false, rus);
+                    List<Task> tasks = dbService.getETaskService().getTasks();
+                    for (int i=0;i<tasks.size();i++)
+                        dbService.getETaskService().updateTask(tasks.get(i).getIdtask(), tasks.get(i).getName(), tasks.get(i).getDescription(), tasks.get(i).getAvatar(), false, 2, tasks.get(i).getLanguage());
+                    List<Round> rounds = dbService.getERoundService().getRounds();
+                    //FIXME
+//            for (Round rd : rounds) and game
+//                dbService.getERoundService().deleteRound(rd.getIdround());
+                } catch (Exception er) {
+                    Log.e("RESETDATAinDB", er.getMessage());
+                }
+    }
+
+
+
+    public void InitializeItems() {
         if(dbService.getETaskService().getTasks().size()==0)
         {
             //язык

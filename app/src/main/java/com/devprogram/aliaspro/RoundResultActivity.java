@@ -21,6 +21,7 @@ import com.devprogram.aliaspro.Models.Dictionary;
 import com.devprogram.aliaspro.Models.Round;
 import com.devprogram.aliaspro.Models.Team;
 import com.devprogram.aliaspro.Models.Word;
+import com.devprogram.aliaspro.Models.WordStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class RoundResultActivity extends AppCompatActivity {
             TextView tvScore = findViewById(R.id.tvPointsCountRound);
             tvScore.setText(Integer.toString(points));
             listView = findViewById(R.id.lvShowWordRound);
-            listView.setAdapter(new RoundResultViewAdapter(this,allShowedWords));
+            listView.setAdapter(new RoundResultViewAdapter(this,allShowedWords,dbService, team,tvScore));
         }
         catch(Exception er)
         {
@@ -69,11 +70,7 @@ public class RoundResultActivity extends AppCompatActivity {
             round = dbService.getERoundService().getRound(idRound);
             allShowedWords = round.getWords();
             team = round.getTeam();
-            for(Word item: allShowedWords)
-            {
-                if(item.getWordstatus().getStatus()=="отгадано")
-                    points++;
-            }
+            points = team.getScore();
         }
         catch(Exception er)
         {
@@ -95,19 +92,37 @@ public class RoundResultActivity extends AppCompatActivity {
     }
 }
 
+
+
+
+
+
+
+
 ////
 ////ADAPTER RoundResult
 ////
 
 
-class RoundResultViewAdapter extends BaseAdapter {
+class RoundResultViewAdapter extends BaseAdapter implements View.OnClickListener{
 
     private final List<Word> items;
     private final Context context;
+    private IDbService dbService;
+    TextView tvScore;
 
-    public RoundResultViewAdapter(Context context,List<Word> items) {
+    WordStatus stGues;
+    WordStatus stSkip;
+    Team team;
+
+    public RoundResultViewAdapter(Context context,List<Word> items, IDbService dbService,Team team, TextView tvScore) {
         this.items = items;
         this.context = context;
+        this.dbService = dbService;
+        stGues = dbService.getEWordStatusService().getWordsStatus().get(0);
+        stSkip = dbService.getEWordStatusService().getWordsStatus().get(1);
+        this.team = team;
+        this.tvScore = tvScore;
     }
 
 
@@ -137,23 +152,56 @@ class RoundResultViewAdapter extends BaseAdapter {
             }
             TextView nameWord = view.findViewById(R.id.tvWordNameShowed);
             nameWord.setText(word.getName());
-            Button btnAdd = view.findViewById(R.id.btnShowGouseWord);
-            Button btnRemove = view.findViewById(R.id.btnShowSkipWord);
-            if(word.getWordstatus().getStatus()=="отгадано")
+             Button btnStatusWord = view.findViewById(R.id.btnShowGouseWord);
+            Log.i("STAT",word.getWordstatus().getStatus());
+            String stat = word.getWordstatus().getStatus();
+            if(stat.compareTo("не отгадано")==0)
             {
-
+                btnStatusWord.setBackgroundResource(R.drawable.round_word_delete64);
             }
-            else if(word.getWordstatus().getStatus()=="не отгадано")
+            else
             {
-
+                if(stat.compareTo("отгадано")==0)
+                {
+                    btnStatusWord.setBackgroundResource(R.drawable.round_word_add64);
+                }
             }
+            btnStatusWord.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int allScore = dbService.getETeamService().getScoreAllTeam(team.getIdteam());
+                    int roundScore = dbService.getETeamService().getScoreRoundTeam(team.getIdteam());
 
+                    if(stat.compareTo("отгадано")==0)//если отгаданоч
+                    {//то конвертируем в неотгадано
+                        ((Button)v).setBackgroundResource(R.drawable.round_word_delete64);
+                         dbService.getEWordService().updateStatusOfWord(word.getIdword(),stSkip);
+                         dbService.getETeamService().setScoreAllTeam(team.getIdteam(),allScore-1);
+                         dbService.getETeamService().setScoreRoundTeam(team.getIdteam(),roundScore-1);
+                        tvScore.setText(Integer.toString(roundScore-1));
+                    }
+                    else
+                    {
+                        ((Button)v).setBackgroundResource(R.drawable.round_word_add64);
+                        dbService.getEWordService().updateStatusOfWord(word.getIdword(),stGues);
+                        dbService.getETeamService().setScoreAllTeam(team.getIdteam(),allScore+1);
+                        dbService.getETeamService().setScoreRoundTeam(team.getIdteam(),roundScore+1);
+                        tvScore.setText(Integer.toString(roundScore+1));
+                    }
+                    RoundResultViewAdapter.this.notifyDataSetChanged();
+                }
+            });
         }
         catch (Exception er)
         {
             Log.e("GRTVIEWROUNRES",er.getMessage());
         }
-
         return view;
+    }
+
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

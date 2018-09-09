@@ -64,4 +64,30 @@ public class ETeamService implements ITeamService {
         realm.commitTransaction();
         return idteam;
     }
+
+    @Override
+    public int setScoreRoundTeam(String idteam, int score) {
+        realm.beginTransaction();
+        realm.where(Team.class).equalTo("idteam",idteam).findFirst().setScore(score);
+        realm.commitTransaction();
+        return score;
+    }
+
+    @Override
+    public int setScoreAllTeam(String idteam, int score) {
+        realm.beginTransaction();
+        realm.where(Team.class).equalTo("idteam",idteam).findFirst().setScoreAll(score);
+        realm.commitTransaction();
+        return score;
+    }
+
+    @Override
+    public int getScoreRoundTeam(String idteam) {
+        return  realm.where(Team.class).equalTo("idteam",idteam).findFirst().getScore();
+    }
+
+    @Override
+    public int getScoreAllTeam(String idteam) {
+        return  realm.where(Team.class).equalTo("idteam",idteam).findFirst().getScoreAll();
+    }
 }

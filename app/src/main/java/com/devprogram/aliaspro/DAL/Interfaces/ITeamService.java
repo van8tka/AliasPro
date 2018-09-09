@@ -11,4 +11,8 @@ public interface ITeamService {
     String createTeam(String name,String avatar,int score,int scoreAll,Boolean winner,Language language);
     String updateTeam(String idteam,String name,String avatar,int score,int scoreAll,Boolean winner,Language language);
     String deleteTeam(String idteam);
+    int setScoreRoundTeam(String idteam, int score);
+    int setScoreAllTeam(String idteam, int score);
+    int getScoreRoundTeam(String idteam);
+    int getScoreAllTeam(String idteam);
 }

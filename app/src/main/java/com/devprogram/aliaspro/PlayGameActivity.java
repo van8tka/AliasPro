@@ -153,6 +153,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             dbService = new DbService();
             game = dbService.getEGameService().getGame(idGame);
             round = dbService.getERoundService().getRound(idRound);
+            team = round.getTeam();
             task = round.getTask();
             dictionary = dbService.getEGameService().getGame(idGame).getDictionary();
             wordList = dbService.getEDictionaryService().getWordsDictionary(dictionary.getIddictionary());
@@ -341,6 +342,9 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            {
                Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
                intent.putExtra("idroundCurrent",round.getIdround());
+               dbService.getETeamService().setScoreRoundTeam(team.getIdteam(),countGuesedWord);
+               int countAllscroeTeam =  dbService.getETeamService().getScoreAllTeam(team.getIdteam());
+               dbService.getETeamService().setScoreAllTeam(team.getIdteam(),countGuesedWord+countAllscroeTeam);
                startActivity(intent);
            }
            return isChange;
