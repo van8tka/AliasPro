@@ -35,7 +35,7 @@ public class DictionaryActivity  extends AppCompatActivity  {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             dbService = new DbService();
             List<Dictionary> listDictionary = dbService.getEDictionaryService().getDicitionaries();
-            DictionaryViewAdapter adapter = new DictionaryViewAdapter(this,listDictionary);
+            DictionaryViewAdapter adapter = new DictionaryViewAdapter(this,listDictionary, dbService);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -76,10 +76,12 @@ public class DictionaryActivity  extends AppCompatActivity  {
 
     private final List<Dictionary> items;
     private final Context context;
+    private IDbService dbService;
 
-    public DictionaryViewAdapter(Context context,List<Dictionary> items) {
+    public DictionaryViewAdapter(Context context,List<Dictionary> items, IDbService dbService) {
         this.items = items;
         this.context = context;
+        this.dbService=dbService;
     }
 
 
@@ -122,7 +124,8 @@ public class DictionaryActivity  extends AppCompatActivity  {
         int idImgLang = context.getResources().getIdentifier(dictionary.getLanguage().getAvatar(),"drawable",context.getPackageName());
         lang.setImageResource(idImgLang);
         difficulty.setText(dictionary.getDifficulty().getName());
-        count.setText( Integer.toString(dictionary.getCountWords()));
+        int countWords = dbService.getEDictionaryService().getWordsCount(dictionary.getIddictionary());
+        count.setText( Integer.toString(countWords));
         if(dictionary.getPrice()!=null){
             price.setText(dictionary.getPrice()+"$");
         }

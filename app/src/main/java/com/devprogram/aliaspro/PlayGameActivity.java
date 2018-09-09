@@ -37,6 +37,7 @@ import com.devprogram.aliaspro.Models.Task;
 import com.devprogram.aliaspro.Models.Team;
 import com.devprogram.aliaspro.Models.Word;
 import com.devprogram.aliaspro.Models.WordStatus;
+import com.devprogram.aliaspro.Models.Dictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     Team team;
     Game game;
     Round round;
+    Dictionary dictionary;
     Task task;
     List<Word> wordList;
     List<Word> showedWordList;
@@ -152,7 +154,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             game = dbService.getEGameService().getGame(idGame);
             round = dbService.getERoundService().getRound(idRound);
             task = round.getTask();
-            wordList = dbService.getEGameService().getGame(idGame).getDictionary().getWords();
+            dictionary = dbService.getEGameService().getGame(idGame).getDictionary();
+            wordList = dbService.getEDictionaryService().getWordsDictionary(dictionary.getIddictionary());
             showedWordList = new ArrayList<Word>();
             GetNextShowWord(wordList);
         }
@@ -167,25 +170,19 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             boolean isShowedWord = true;
             int indexWord;
             int count = wordList.size()-1;
-
-//            Customer james = customers.stream()
-//                    .filter(customer -> "James".equals(customer.getName()))
-//                    .findAny()
-//                    .orElse(null);
 //необходима проверка есть ли непоказанные слова в списке если есть то выбираем иначе - слова закочились или заново
-        boolean isNotExistShowedWord = false;
-        for(Word wd:wordList)
+        boolean isNotExistShowedWord = true;
+        for(int i=0;i<wordList.size()-1;i++)
          {
-            if(!wd.getIsshowed())
+            if(!wordList.get(i).getIsshowed())
             {
-                isNotExistShowedWord = true;
+                isNotExistShowedWord = false;
                 break;
             }
          }
          if(isNotExistShowedWord)
-         {
-             endGame();
-         }
+             DoWordsForShow();
+
             do
             {
                 indexWord = (int)(Math.random()*((count-0)+1))+0;
@@ -201,8 +198,32 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
     }
 //если закончились все слова
-    private void endGame() {
-        //TODO диалоговое окно - закончился список слов - игра закончена
+    private void DoWordsForShow() {
+        try{
+          for(int i=0;i<wordList.size()-1;i++)
+          {
+              Boolean contains=false;
+
+              for(int j=0;j<showedWordList.size()-1;j++)
+              {
+                  if(wordList.get(i) == showedWordList.get(i))
+                  {
+                      contains = true;
+                      break;
+                  }
+              }
+              if(!contains)
+              {
+                  dbService.getEWordService().updateShowedOfWord(wordList.get(i).getIdword(),false);
+                  WordStatus ws = dbService.getEWordStatusService().getWordsStatus().get(1);
+                  dbService.getEWordService().updateStatusOfWord(wordList.get(i).getIdword(),ws);
+              }
+          }
+      }
+      catch (Exception er)
+      {
+          Log.e("finishWORDS", er.getMessage());
+      }
     }
 
     //метод выхода из активити

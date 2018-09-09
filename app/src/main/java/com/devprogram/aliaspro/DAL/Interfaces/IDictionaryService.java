@@ -13,4 +13,6 @@ public interface IDictionaryService {
     String createDictionary(  String name, String avatar, String price, String description, Language language, Difficulty difficulty);
     String updateDictionary(String iddictionary,   String name, String avatar, String price, String description, Language language, Difficulty difficulty);
     String deleteDictionary(String iddictionary);
+    int getWordsCount(String iddictionary);
+    List<Word> getWordsDictionary(String iddictionary);
 }

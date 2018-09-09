@@ -70,4 +70,19 @@ public class EDictionaryService implements IDictionaryService {
         return iddictionary;
     }
 
+    public int getWordsCount(String iddictionary)
+    {
+        int count = 0;
+        realm.beginTransaction();
+        List<Word> words = realm.where(Word.class).equalTo("iddictionary",iddictionary).findAll();
+        count = words.size();
+        realm.commitTransaction();
+        return count;
+    }
+
+    public List<Word> getWordsDictionary(String iddictionary)
+    {
+        return realm.where(Word.class).equalTo("iddictionary",iddictionary).findAll();
+    }
+
 }
