@@ -150,7 +150,7 @@ public class SettingsGameActivity extends AppCompatActivity {
 
 
 
-
+//ПРОВЕРКА НАСТРОЕК ИГРЫ И ПЕРЕХОД К УСТАНОВКАМ РАУНДА
     public void btnNextToChooseWords_Click(View v)
     {
         try{
@@ -187,21 +187,13 @@ public class SettingsGameActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
     int REQUEST_CODE_SELECT_DICTIONARY = 1;
-    ///выбор словаря
+//ВЫБОР СЛОВАРЯ ДЛЯ ИГРЫ
     public void addDictionaryToGame_Click(View view)
     {
         Intent intent = new Intent(SettingsGameActivity.this,DictionaryActivity.class);
         startActivityForResult(intent, REQUEST_CODE_SELECT_DICTIONARY);
     }
-
     @Override
     protected  void onActivityResult(int recuestCode, int resultCode, Intent data)
     {
@@ -212,7 +204,7 @@ public class SettingsGameActivity extends AppCompatActivity {
         tvDictionaryName.setText(dictionary.getName());
     }
 
-
+//НАСТРОЙКА КОЛИЧЕСТВА СЛОВ ДЛЯ ПОБЕДЫ
     int increment = 10;
    //word count
     public void minusWords_onClick(View view) {
@@ -235,7 +227,7 @@ public class SettingsGameActivity extends AppCompatActivity {
             tvWord.setText(String.valueOf(c));
         }
     }
-    //second count
+    //НАСТРОЙКА ВРЕМЕНИ РАУНДА
     public void minusSeconds_onClick(View view) {
 
         String count = tvTime.getText().toString();

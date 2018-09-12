@@ -118,13 +118,14 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                 Team getLastTeam = currentRound.getTeam();
                 int indexLast = listTeam.indexOf(getLastTeam);
                 int numberRound = currentRound.getNumber();
+                numberRound++;
                 //проверитьна переполнение
-                if (indexLast < countTeamsInGame) {
+                if (indexLast < countTeamsInGame-1 && numberRound != 1) {
                     indexLast++;
-                } else ;
+                }
+                else
                 {
                     indexLast = 0;
-                    numberRound++;
                 }
                 String nameRound = this.getResources().getString(R.string.strRound) + " " + Integer.toString(numberRound);
                 textvRoundName.setText(nameRound);
@@ -203,8 +204,8 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                 TextView scoreAll = view.findViewById(R.id.tvScoreAll);
                 TextView scoreRound = view.findViewById(R.id.tvScoreRound);
                 teamName.setText(team.getName());
-                scoreAll.setText(String.valueOf(team.getScore()));
-                scoreRound.setText("0");
+                scoreAll.setText(String.valueOf(team.getScoreAll()));
+                scoreRound.setText(String.valueOf(team.getScore()));
                 int idImg = context.getResources().getIdentifier(team.getAvatar(),"drawable", context.getPackageName());
                 imgAvatar.setImageResource(idImg);
                 return view;
