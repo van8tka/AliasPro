@@ -51,7 +51,7 @@ public class ERoundService implements IRoundService {
 
 
     @Override
-    public String createRound(String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound) {
+    public String createRound(String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound, int numberGame) {
         String idround = UUID.randomUUID().toString();
         realm.beginTransaction();
         Round round = realm.createObject(Round.class,idround);
@@ -61,12 +61,13 @@ public class ERoundService implements IRoundService {
         round.setGame(game);
         round.setNumber(numberRound);
         round.setTeam(team);
+        round.setNumberGame(numberGame);
         realm.commitTransaction();
         return idround;
     }
 
     @Override
-    public String updateRound(String idround, String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound) {
+    public String updateRound(String idround, String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound, int numberGame) {
         realm.beginTransaction();
         Round round = realm.where(Round.class).equalTo("idround",idround).findFirst();
         round.setName(name);
@@ -75,6 +76,7 @@ public class ERoundService implements IRoundService {
         round.setWords(words);
         round.setGame(game);
         round.setNumber(numberRound);
+        round.setNumberGame(numberGame);
         realm.commitTransaction();
         return idround;
     }

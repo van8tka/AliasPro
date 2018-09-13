@@ -311,8 +311,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 //при перемещении проверяем нахождение слова в границах отгаданого или пропущенного слова и смены состояния
     private boolean CheckStateWord(View v) {
        try{
-           int topWord = (int)v.getY()+100;
-           int bottomWord = (int)v.getY()+v.getHeight()-100;
+           int topWord = (int)v.getY()+150;
+           int bottomWord = (int)v.getY()+v.getHeight()-150;
            int guessBorder = (int) linearGues.getY()+linearGues.getHeight();
            int skipeBorder = (int) linearSkip.getY();
            boolean isChange = false;

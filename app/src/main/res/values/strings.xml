@@ -49,5 +49,6 @@
     <string name="label_dictionaries_activity">Словари</string>
     <string name="label_rating_activity">Рейтинг команд</string>
     <string name="label_roundresult_activity">Результат раунда</string>
+    <string name="label_congratulate_activity">Поздравление победителя</string>
 
 </resources>

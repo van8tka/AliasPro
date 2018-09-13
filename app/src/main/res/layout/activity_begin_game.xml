@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:onClick="btnStartGame_Click"
-        android:text="@string/btnStart"
+        android:text="@string/btnContinue"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         />

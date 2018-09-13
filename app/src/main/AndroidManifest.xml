@@ -23,26 +23,28 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RulesActivity"
-            android:noHistory="true"
-            android:label="@string/label_rules_activity" />
+            android:label="@string/label_rules_activity"
+            android:noHistory="true" />
         <activity
             android:name=".SettingsGameActivity"
             android:label="@string/label_settings_activity" />
         <activity
             android:name=".DictionaryActivity"
-            android:noHistory="true"
-            android:label="@string/label_dictionaries_activity" />
+            android:label="@string/label_dictionaries_activity"
+            android:noHistory="true" />
         <activity
             android:name=".RoundResultActivity"
-            android:noHistory="true"
-            android:label="@string/label_roundresult_activity" />
+            android:label="@string/label_roundresult_activity"
+            android:noHistory="true" />
         <activity
             android:name=".BeginGameActivity"
-            android:noHistory="true"
             android:configChanges="orientation|screenSize"
-            android:label="@string/label_rating_activity" />
-        <activity android:name=".PlayGameActivity" android:noHistory="true" />
-
+            android:label="@string/label_rating_activity"
+            android:noHistory="true" />
+        <activity
+            android:name=".PlayGameActivity"
+            android:noHistory="true" />
+        <activity android:name=".CongratulationActivity" android:noHistory="true" android:label="@string/label_congratulate_activity"/>
     </application>
 
 </manifest>

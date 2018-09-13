@@ -15,6 +15,15 @@ public class Round extends RealmObject {
     Task task;
     Game game;
     int number;
+    int numberGame;
+
+    public int getNumberGame() {
+        return numberGame;
+    }
+
+    public void setNumberGame(int numberGame) {
+        this.numberGame = numberGame;
+    }
 
     public void setGame(Game game) {
         this.game = game;

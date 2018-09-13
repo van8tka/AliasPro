@@ -117,15 +117,22 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
             if (!isChangeOrientation) {
                 Team getLastTeam = currentRound.getTeam();
                 int indexLast = listTeam.indexOf(getLastTeam);
+                int numberGame = currentRound.getNumberGame();
+                numberGame++;
                 int numberRound = currentRound.getNumber();
-                numberRound++;
+                //ели отиграла первая команда меняем всем очки раунда на 0 кроме первой
+                if(indexLast==0)
+                    SetTeamsCurentRoundScoreNull(listTeam);
+
                 //проверитьна переполнение
-                if (indexLast < countTeamsInGame-1 && numberRound != 1) {
+                if (indexLast < countTeamsInGame-1 && numberGame!=1 && numberRound!=0) {
                     indexLast++;
                 }
                 else
                 {
                     indexLast = 0;
+                    numberRound++;
+                    CheckResultGameForDetectWinner();
                 }
                 String nameRound = this.getResources().getString(R.string.strRound) + " " + Integer.toString(numberRound);
                 textvRoundName.setText(nameRound);
@@ -133,13 +140,23 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                 tvNameTeamGame.setText(newTeamPlay.getName());
                 int idImg = this.getResources().getIdentifier(newTeamPlay.getAvatar(), "drawable", this.getPackageName());
                 imgAvatarTeamGame.setImageResource(idImg);
-                dbService.getERoundService().updateRound(currentRound.getIdround(), currentRound.getName(), newTeamPlay, null, dbService.getETaskService().getTaskRandom(), currentGame, numberRound);
+                dbService.getERoundService().updateRound(currentRound.getIdround(), currentRound.getName(), newTeamPlay, null, dbService.getETaskService().getTaskRandom(), currentGame, numberRound, numberGame);
             }
         }
         catch (Exception er)
         {
             Log.e(TAG_BEGIN_GAME,er.getMessage());
         }
+    }
+    //ели отиграла первая команда меняем всем очки раунда на 0 кроме первой
+    private void SetTeamsCurentRoundScoreNull(List<Team> listTeam) {
+        for(int i=1;i<=listTeam.size()-1;i++)
+            dbService.getETeamService().setScoreRoundTeam(listTeam.get(i).getIdteam(),0);
+    }
+
+    //  ПРОВЕРКА РЕЗУЛЬТАТОВ ИГРЫ ДЛЯ ОПРЕДЕЛЕНИЯ ПОБЕДИТЕЛЯ
+    private void CheckResultGameForDetectWinner() {
+
     }
 
 
@@ -166,7 +183,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
 }
 
 
-
+///АДАПТЕР ДЛЯ ВЫВОДА СПИСКА КОМАНД УЧАСТВУЮЩИХ В ИГРЕ
     class TeamGameAdapter extends BaseAdapter {
 
     final List<Team> listTeam;

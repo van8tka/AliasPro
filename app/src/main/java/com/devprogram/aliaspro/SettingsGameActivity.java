@@ -173,7 +173,7 @@ public class SettingsGameActivity extends AppCompatActivity {
                 taskInGame = dbService.getETaskService().getTaskRandom();
             Team teamFirst = dbService.getETeamService().getTeam(teamListInGame.get(0).getIdteam());
             String game = dbService.getEGameService().createGame(dictionary,teamListInGame,isTask,isLast,isFine,cwords, ctime,false, timeCreate);
-             String round = dbService.getERoundService().createRound("Роунд 1",teamFirst,null,taskInGame,dbService.getEGameService().getGame(game), 0);
+             String round = dbService.getERoundService().createRound("Роунд 1",teamFirst,null,taskInGame,dbService.getEGameService().getGame(game), 0, 0);
             Intent intent = new Intent(SettingsGameActivity.this, BeginGameActivity.class);
             intent.putExtra("idGame",game);
             intent.putExtra("idRound",round);
