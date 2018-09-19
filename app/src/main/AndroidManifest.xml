@@ -44,7 +44,10 @@
         <activity
             android:name=".PlayGameActivity"
             android:noHistory="true" />
-        <activity android:name=".CongratulationActivity" android:noHistory="true" android:label="@string/label_congratulate_activity"/>
+        <activity
+            android:name=".CongratulationActivity"
+            android:noHistory="true"
+            android:label="@string/label_congratulate_activity"/>
     </application>
 
 </manifest>

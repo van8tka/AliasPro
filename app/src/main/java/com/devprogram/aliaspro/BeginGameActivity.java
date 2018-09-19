@@ -42,6 +42,8 @@ public class BeginGameActivity extends AppCompatActivity {
     long countTeamsInGame;
     Boolean isChangeOrientation ;
     LinearLayout linRound;
+    Team winnerTeam = null;
+    boolean isCheckWinnerNeed = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try
@@ -132,7 +134,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                 {
                     indexLast = 0;
                     numberRound++;
-                    CheckResultGameForDetectWinner();
+                    isCheckWinnerNeed = true;
                 }
                 String nameRound = this.getResources().getString(R.string.strRound) + " " + Integer.toString(numberRound);
                 textvRoundName.setText(nameRound);
@@ -155,24 +157,55 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
     }
 
     //  ПРОВЕРКА РЕЗУЛЬТАТОВ ИГРЫ ДЛЯ ОПРЕДЕЛЕНИЯ ПОБЕДИТЕЛЯ
-    private void CheckResultGameForDetectWinner() {
-
+    private boolean CheckResultGameForDetectWinner() {
+        for(Team tm: listTeam)
+        {
+            if(tm.getScoreAll()>=currentGame.getCountwords() || (winnerTeam!=null && tm.getScoreAll()>=currentGame.getCountwords() && tm.getScoreAll()> winnerTeam.getScoreAll()))
+                winnerTeam = tm;
+        }
+        if(winnerTeam!=null)
+            return true;
+        else
+            return false;
     }
 
 
     public void btnStartGame_Click(View view) {
         try
         {
-            Intent intent = new Intent(this, PlayGameActivity.class) ;
-            intent.putExtra("idGame",currentGame.getIdgame());
-            intent.putExtra("idRound",currentRound.getIdround());
-            startActivity(intent);
+
+            if(isCheckWinnerNeed)
+            {
+                if(CheckResultGameForDetectWinner())
+                    ConratulationWinner();
+                else
+                    NextGame();
+            }
+
+            else
+            {
+                NextGame();
+            }
+
         }
         catch(Exception er)
         {
             Log.e("btnGoToPlayGAmeA",er.getMessage());
         }
 
+    }
+
+    private void ConratulationWinner() {
+        Intent intent = new Intent(this, CongratulationActivity.class);
+        intent.putExtra("idTeam", winnerTeam.getIdteam());
+        startActivity(intent);
+    }
+
+    private void NextGame() {
+        Intent intent = new Intent(this, PlayGameActivity.class) ;
+        intent.putExtra("idGame",currentGame.getIdgame());
+        intent.putExtra("idRound",currentRound.getIdround());
+        startActivity(intent);
     }
 
     @Override

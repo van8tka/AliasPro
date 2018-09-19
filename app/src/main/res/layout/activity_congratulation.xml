@@ -1,27 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/congrat"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
     >
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="ПОЗДРАВЛЯЕМ!"
+    android:text="@string/strCongratulation"
     android:textSize="25sp"
     />
-    <TextView
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/strWinnerIsTeam"
+    android:textSize="25sp"
+    />
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Жулики"
+    android:textSize="30sp"
+    android:id="@+id/tvWinerTeamName"
+    />
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="победила команда"
-        android:textSize="25sp"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/strRoundPointsName"
+            android:textSize="20sp"
+            android:layout_marginRight="2dp"
         />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Жулики"
-        android:textSize="30sp"
-        android:id="@+id/tvWinerTeamName"
-        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9999"
+            android:textSize="20sp"
+            android:id="@+id/tvWinerScore"
+            />
+    </LinearLayout>
+
 </LinearLayout>
+    <Button
+        android:id="@+id/btnEndGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:onClick="btnEndGame_Click"
+        android:text="@string/btnContinue"
+        android:textColor="@color/colorWhite"
+        android:layout_alignParentBottom="true"
+        />
+</RelativeLayout>
