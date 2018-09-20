@@ -11,9 +11,7 @@ public class Task extends RealmObject {
    String name;
    String description;
    String avatar;
-   boolean complete;
-   int addscore;
-   Language language;
+   String idlanguage;
 
    public void setIdtask(String idtask) {
       this.idtask = idtask;
@@ -39,12 +37,10 @@ public class Task extends RealmObject {
       this.avatar = avatar;
    }
 
-   public void setLanguage(Language language) {
-      this.language = language;
-   }
+   public void setLanguage(String idlanguage) { this.idlanguage = idlanguage;  }
 
-   public Language getLanguage() {
-      return language;
+   public String getLanguage() {
+      return idlanguage;
    }
 
    public void setDescription(String description) {
@@ -55,19 +51,4 @@ public class Task extends RealmObject {
       return description;
    }
 
-   public int getAddscore() {
-      return addscore;
-   }
-
-   public void setAddscore(int addscore) {
-      this.addscore = addscore;
-   }
-
-   public void setComplete(boolean complete) {
-      this.complete = complete;
-   }
-
-   public boolean getIscomplete() {
-      return complete;
-   }
-}
+  }

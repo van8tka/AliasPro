@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity   {
     {
         //перед началом игры сбросим все данные
       //FIXME restore after Win or end game
-        initDb.RestoreItems();
+     //   initDb.RestoreItems();
         Intent intent = new Intent(MainActivity.this, SettingsGameActivity.class);
         startActivity(intent);
     }

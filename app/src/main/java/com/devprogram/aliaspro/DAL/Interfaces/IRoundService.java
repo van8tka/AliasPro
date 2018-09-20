@@ -13,8 +13,11 @@ import io.realm.RealmList;
 public interface IRoundService {
     Round getRound(String idround);
     List<Round> getRounds();
-    String createRound(String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound, int numberGame);
-    String updateRound(String idround, String name, Team team, RealmList<Word> words, Task task, Game game, int numberRound, int numberGame);
+    String createRound(String idteam, String idtask, String idgame, int numberRound, int numberGame, String idTeamLastWord, Boolean taskComplete );
+    String updateRound(String idround, String idteam, String idtask, String idgame, int numberRound, int numberGame, String idTeamLastWord, Boolean taskComplete );
     String deleteRound(String idround);
-    String addWordRound(String idround, Word word);
+    String changeTaskComplete(String idround, boolean isComplete);
+    String setIdTeamLastWord(String idround, String idTeam);
+    String setNumberRound(String idround, int numberRound);
+    String setNumberGame(String idround, int numberGame);
 }

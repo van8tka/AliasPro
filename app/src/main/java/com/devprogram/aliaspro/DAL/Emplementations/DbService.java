@@ -50,7 +50,8 @@ public class DbService implements IDbService {
     {
         return eWordStatusService;
     }
-
+    private EPlayingTeamsService ePlayingTeamsService;
+   public EPlayingTeamsService getEPlayingTeamsService(){return ePlayingTeamsService;}
 
     //ctor
     public DbService()
@@ -65,6 +66,7 @@ public class DbService implements IDbService {
         this.eTeamService = new ETeamService(realm);
         this.eWordService = new EWordService(realm);
         this.eWordStatusService = new EWordStatusService(realm);
+        this.ePlayingTeamsService = new EPlayingTeamsService(realm);
     }
 
 

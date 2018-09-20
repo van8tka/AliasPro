@@ -11,10 +11,7 @@ import java.util.List;
 public interface IWordService {
     Word getWord(String idword);
     List<Word> getWords();
-    String createWord(String name,String idDictionary ,Language language, WordStatus wordstatus);
-    String updareWord(String idword, String name, Language language, WordStatus wordstatus, boolean isshowed);
+    String createWord(String name,String idDictionary ,String idlanguage);
+    String updareWord(String idword, String name, String idDictionary ,String idlanguage);
     String deleteWord(String idword);
-    String resetWord(String idword);
-    String updateStatusOfWord(String idword, WordStatus ws);
-    String updateShowedOfWord(String idword, boolean isshowed);
 }

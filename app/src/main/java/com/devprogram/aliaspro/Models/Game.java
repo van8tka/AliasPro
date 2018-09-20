@@ -9,29 +9,20 @@ public class Game extends RealmObject {
    @Required
     @PrimaryKey
     String idgame;
-    Dictionary dictionary;
-    RealmList<Team> teams;
+    String iddictionary;
     boolean istask;
     boolean islastword;
     boolean penalty;
     int countwords;
     int seconds;
-    boolean isfinish;
-    String datestart;
 
-    public Dictionary getDictionary() {
-        return dictionary;
+
+    public String getDictionary() {
+        return iddictionary;
     }
 
-    public void setDictionary(Dictionary dictionary) {
-        this.dictionary = dictionary;
-    }
-
-    public boolean getIsfinish() {
-        return isfinish;
-    }
-    public void setIsfinish(boolean isfinish){
-        this.isfinish = isfinish;
+    public void setDictionary(String iddictionary) {
+        this.iddictionary = iddictionary;
     }
 
     public int getCountwords() {
@@ -48,22 +39,6 @@ public class Game extends RealmObject {
 
     public void setSeconds(int seconds) {
         this.seconds = seconds;
-    }
-
-    public RealmList<Team> getTeams() {
-        return teams;
-    }
-
-    public void setTeams(RealmList<Team> teams) {
-        this.teams.addAll(teams);
-    }
-
-    public String getDatestart() {
-        return datestart;
-    }
-
-    public void setDatestart(String datestart) {
-        this.datestart = datestart;
     }
 
     public String getIdgame() {

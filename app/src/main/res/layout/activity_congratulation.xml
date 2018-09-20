@@ -14,17 +14,20 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/strCongratulation"
+    android:textColor="@color/colorWhite"
     android:textSize="25sp"
     />
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/strWinnerIsTeam"
+    android:textColor="@color/colorWhite"
     android:textSize="25sp"
     />
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:textColor="@color/colorWhite"
     android:text="Жулики"
     android:textSize="30sp"
     android:id="@+id/tvWinerTeamName"
@@ -37,12 +40,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/strRoundPointsName"
+            android:textColor="@color/colorWhite"
             android:textSize="20sp"
             android:layout_marginRight="2dp"
         />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite"
             android:text="9999"
             android:textSize="20sp"
             android:id="@+id/tvWinerScore"

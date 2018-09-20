@@ -9,13 +9,13 @@ public class Round extends RealmObject {
     @Required
     @PrimaryKey
     String idround;
-    String name;
-    Team team;
-    RealmList<Word> words;
-    Task task;
-    Game game;
+    String idteam;
+    String idtask;
+    String idgame;
     int number;
     int numberGame;
+    String idteamLastWord;
+    boolean isTaskComplete;
 
     public int getNumberGame() {
         return numberGame;
@@ -25,12 +25,12 @@ public class Round extends RealmObject {
         this.numberGame = numberGame;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public void setGame(String game) {
+        this.idgame = idgame;
     }
 
-    public Game getGame() {
-        return game;
+    public String getGame() {
+        return idgame;
     }
 
     public void setNumber(int number) {
@@ -41,28 +41,12 @@ public class Round extends RealmObject {
         return number;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTeam(String team) {
+            this.idteam = idteam;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setTeam(Team team) {
-            this.team = team;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setWords(RealmList<Word> words) {
-        this.words = words;
-    }
-
-    public RealmList<Word> getWords() {
-        return words;
+    public String getTeam() {
+        return idteam;
     }
 
     public String getIdround() {
@@ -73,11 +57,28 @@ public class Round extends RealmObject {
         this.idround = idround;
     }
 
-    public Task getTask() {
-        return task;
+    public String getTask() {
+        return idtask;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
+    public void setTask(String idtask) {
+        this.idtask = idtask;
     }
+
+    public String getIdteamLastWord() {
+        return idteamLastWord;
+    }
+
+    public void setIdteamLastWord(String idteamLastWord) {
+        this.idteamLastWord = idteamLastWord;
+    }
+
+    public Boolean getIsTaskComplete() {
+        return isTaskComplete;
+    }
+
+    public void setTask(Boolean isTaskComplete) {
+        this.isTaskComplete = isTaskComplete;
+    }
+
 }

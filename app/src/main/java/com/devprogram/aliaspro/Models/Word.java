@@ -10,25 +10,7 @@ public class Word extends RealmObject{
     String idword;
     String iddictionary;
     String name;
-    Language language;
-    WordStatus wordstatus;
-    Boolean isshowed;
-
-    public void setWordstatus(WordStatus wordstatus) {
-        this.wordstatus = wordstatus;
-    }
-
-    public Boolean getIsshowed() {
-        return isshowed;
-    }
-    public void setIsshowed(boolean isshow)
-    {
-        isshowed = isshow;
-    }
-
-    public WordStatus getWordstatus() {
-        return wordstatus;
-    }
+    String idlanguage;
 
     public void setName(String name) {
         this.name = name;
@@ -38,12 +20,12 @@ public class Word extends RealmObject{
         return name;
     }
 
-    public void setLanguage(Language language) {
-        this.language = language;
+    public void setLanguage(String idlanguage) {
+        this.idlanguage = idlanguage;
     }
 
-    public Language getLanguage() {
-        return language;
+    public String getLanguage() {
+        return idlanguage;
     }
 
     public void setIddictionary(String iddictionary) {

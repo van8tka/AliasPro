@@ -4,6 +4,7 @@ import com.devprogram.aliaspro.DAL.Emplementations.EDictionaryService;
 import com.devprogram.aliaspro.DAL.Emplementations.EDifficultyService;
 import com.devprogram.aliaspro.DAL.Emplementations.EGameService;
 import com.devprogram.aliaspro.DAL.Emplementations.ELanguageService;
+import com.devprogram.aliaspro.DAL.Emplementations.EPlayingTeamsService;
 import com.devprogram.aliaspro.DAL.Emplementations.ERoundService;
 import com.devprogram.aliaspro.DAL.Emplementations.ETaskService;
 import com.devprogram.aliaspro.DAL.Emplementations.ETeamService;
@@ -21,5 +22,5 @@ public interface IDbService {
      ETeamService getETeamService();
      EWordService getEWordService();
      EWordStatusService getEWordStatusService();
-
+     EPlayingTeamsService getEPlayingTeamsService();
 }

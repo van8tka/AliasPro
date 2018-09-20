@@ -6,12 +6,12 @@ import io.realm.annotations.PrimaryKey;
 public class WordStatus  extends RealmObject {
     @PrimaryKey
     String idwordstatus;
-    String status;
-//
-//       dbService.getEWordStatusService().createWordStatus("отгадано");
-//    String idwordStatusDefault = dbService.getEWordStatusService().createWordStatus("не отгадано");
-//            dbService.getEWordStatusService().createWordStatus("удалить");
-//
+    int status;
+    String idwordShowed;
+    String idGame;
+
+//1-отгадано 0-неотгадано
+
     public String getIdwordstatus() {
         return idwordstatus;
     }
@@ -20,11 +20,27 @@ public class WordStatus  extends RealmObject {
         this.idwordstatus = idwordstatus;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getIdwordShowed() {
+        return idwordstatus;
+    }
+
+    public void setIdwordShowed(String idword) {
+        this.idwordstatus = idword;
+    }
+
+    public String getIdGame() {
+        return idGame;
+    }
+
+    public void setIdGame(String idGame) {
+        this.idGame = idGame;
     }
 }

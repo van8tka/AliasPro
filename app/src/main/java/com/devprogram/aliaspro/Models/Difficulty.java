@@ -9,7 +9,7 @@ public class Difficulty extends RealmObject {
     @PrimaryKey
     String iddifficulty;
     String name;
-    Language language;
+    String idlanguage;
 
     public void setName(String name) {
         this.name = name;
@@ -19,12 +19,12 @@ public class Difficulty extends RealmObject {
         return name;
     }
 
-    public void setLanguage(Language language) {
-        this.language = language;
+    public void setLanguage(String idlanguage) {
+        this.idlanguage = idlanguage;
     }
 
-    public Language getLanguage() {
-        return language;
+    public String getLanguage() {
+        return idlanguage;
     }
 
     public void setIddifficulty(String iddifficulty) {

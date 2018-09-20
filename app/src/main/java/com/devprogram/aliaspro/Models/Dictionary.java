@@ -13,8 +13,8 @@ public class Dictionary  extends RealmObject {
     String avatar;
     String price;
     String description;
-    Language language;
-    Difficulty difficulty;
+    String idlanguage;
+    String iddifficulty;
 
     public void setIddictionary(String iddictionary) {
         this.iddictionary = iddictionary;
@@ -24,20 +24,20 @@ public class Dictionary  extends RealmObject {
         return iddictionary;
     }
 
-    public Difficulty getDifficulty() {
-        return difficulty;
+    public String getDifficulty() {
+        return iddifficulty;
     }
 
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
+    public void setDifficulty(String iddifficulty) {
+        this.iddifficulty = iddifficulty;
     }
 
-    public Language getLanguage() {
-        return language;
+    public String getLanguage() {
+        return idlanguage;
     }
 
-    public void setLanguage(Language language) {
-        this.language = language;
+    public void setLanguage(String idlanguage) {
+        this.idlanguage = idlanguage;
     }
 
     public String getAvatar() {
