@@ -1,15 +1,15 @@
 package com.devprogram.aliaspro.DAL.Interfaces;
 
-import com.devprogram.aliaspro.DAL.Emplementations.EDictionaryService;
-import com.devprogram.aliaspro.DAL.Emplementations.EDifficultyService;
-import com.devprogram.aliaspro.DAL.Emplementations.EGameService;
-import com.devprogram.aliaspro.DAL.Emplementations.ELanguageService;
-import com.devprogram.aliaspro.DAL.Emplementations.EPlayingTeamsService;
-import com.devprogram.aliaspro.DAL.Emplementations.ERoundService;
-import com.devprogram.aliaspro.DAL.Emplementations.ETaskService;
-import com.devprogram.aliaspro.DAL.Emplementations.ETeamService;
-import com.devprogram.aliaspro.DAL.Emplementations.EWordService;
-import com.devprogram.aliaspro.DAL.Emplementations.EWordStatusService;
+import com.devprogram.aliaspro.DAL.Implementations.EDictionaryService;
+import com.devprogram.aliaspro.DAL.Implementations.EDifficultyService;
+import com.devprogram.aliaspro.DAL.Implementations.EGameService;
+import com.devprogram.aliaspro.DAL.Implementations.ELanguageService;
+import com.devprogram.aliaspro.DAL.Implementations.EPlayingTeamsService;
+import com.devprogram.aliaspro.DAL.Implementations.ERoundService;
+import com.devprogram.aliaspro.DAL.Implementations.ETaskService;
+import com.devprogram.aliaspro.DAL.Implementations.ETeamService;
+import com.devprogram.aliaspro.DAL.Implementations.EWordService;
+import com.devprogram.aliaspro.DAL.Implementations.EWordStatusService;
 
 public interface IDbService {
    void CloseDb();

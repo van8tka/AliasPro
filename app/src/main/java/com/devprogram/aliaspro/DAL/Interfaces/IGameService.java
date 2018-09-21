@@ -12,8 +12,9 @@ public interface IGameService {
     Game getGame(String idgame);
     List<Game> getGames();
     String createGame(String iddictionary, boolean istask, boolean islastword
-            , boolean penalty, int countwords, int seconds);
+            , boolean penalty, int countwords, int seconds,boolean isfinishgame);
     String updateGame(String idgame, String iddictionary,  boolean istask, boolean islastword
-            ,boolean penalty, int countwords, int seconds);
+            ,boolean penalty, int countwords, int seconds,boolean isfinishgame);
     String deleteGame(String idgame);
+    String setFinishGame(String idgame,boolean isfinishgame);
 }

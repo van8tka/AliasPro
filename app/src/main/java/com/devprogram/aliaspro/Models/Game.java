@@ -15,6 +15,7 @@ public class Game extends RealmObject {
     boolean penalty;
     int countwords;
     int seconds;
+    boolean isfinishgame;
 
 
     public String getDictionary() {
@@ -72,4 +73,7 @@ public class Game extends RealmObject {
     public void setPenalty(boolean penalty) {
         this.penalty = penalty;
     }
+
+    public boolean getIsfinishgame(){return isfinishgame;}
+    public void setIsfinishgame(boolean isfinishgame){this.isfinishgame = isfinishgame;}
 }

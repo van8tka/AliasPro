@@ -15,6 +15,7 @@ public class Dictionary  extends RealmObject {
     String description;
     String idlanguage;
     String iddifficulty;
+    boolean isfinishgame;
 
     public void setIddictionary(String iddictionary) {
         this.iddictionary = iddictionary;
@@ -71,4 +72,9 @@ public class Dictionary  extends RealmObject {
     public void setPrice(String price) {
         this.price = price;
     }
+
+    public boolean getIsfinishgame(){return isfinishgame;}
+    public void setIsfinishgame(Boolean isfinishgame){this.isfinishgame = isfinishgame;}
+
+
 }

@@ -77,7 +77,7 @@ public class Round extends RealmObject {
         return isTaskComplete;
     }
 
-    public void setTask(Boolean isTaskComplete) {
+    public void setIsTaskComplete(Boolean isTaskComplete) {
         this.isTaskComplete = isTaskComplete;
     }
 

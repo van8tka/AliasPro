@@ -4,22 +4,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Initializer.Emplementations.InitialDataDb;
 import com.devprogram.aliaspro.Initializer.Interfaces.IInitDB;
-import com.devprogram.aliaspro.Models.Language;
-import com.devprogram.aliaspro.Models.Round;
-import com.devprogram.aliaspro.Models.Task;
-import com.devprogram.aliaspro.Models.Team;
-import com.devprogram.aliaspro.Models.Word;
-import com.devprogram.aliaspro.Models.WordStatus;
-
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;

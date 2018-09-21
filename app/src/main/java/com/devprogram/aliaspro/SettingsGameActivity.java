@@ -3,7 +3,6 @@ package com.devprogram.aliaspro;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,22 +12,18 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Dictionary;
-import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Task;
 import com.devprogram.aliaspro.Models.Team;
 
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import io.realm.RealmList;
 

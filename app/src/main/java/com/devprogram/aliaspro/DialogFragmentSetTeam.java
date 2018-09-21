@@ -2,8 +2,6 @@ package com.devprogram.aliaspro;
 
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -14,24 +12,15 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Team;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import io.realm.RealmResults;
 
 public class DialogFragmentSetTeam extends DialogFragment implements View.OnClickListener{
 

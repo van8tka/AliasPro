@@ -29,11 +29,11 @@ public class WordStatus  extends RealmObject {
     }
 
     public String getIdwordShowed() {
-        return idwordstatus;
+        return idwordShowed;
     }
 
-    public void setIdwordShowed(String idword) {
-        this.idwordstatus = idword;
+    public void setIdwordShowed(String idwordShowed) {
+        this.idwordShowed = idwordShowed;
     }
 
     public String getIdGame() {
@@ -43,4 +43,6 @@ public class WordStatus  extends RealmObject {
     public void setIdGame(String idGame) {
         this.idGame = idGame;
     }
+
+
 }

@@ -11,19 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.devprogram.aliaspro.DAL.Emplementations.DbService;
+import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
-import com.devprogram.aliaspro.Models.Dictionary;
 import com.devprogram.aliaspro.Models.Round;
 import com.devprogram.aliaspro.Models.Team;
 import com.devprogram.aliaspro.Models.Word;
 import com.devprogram.aliaspro.Models.WordStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RoundResultActivity extends AppCompatActivity {
