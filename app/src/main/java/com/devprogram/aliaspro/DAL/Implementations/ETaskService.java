@@ -1,0 +1,66 @@
+package com.devprogram.aliaspro.DAL.Implementations;
+
+import com.devprogram.aliaspro.DAL.Interfaces.ITaskService;
+import com.devprogram.aliaspro.Models.Language;
+import com.devprogram.aliaspro.Models.Task;
+
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
+import io.realm.Realm;
+
+public class ETaskService implements ITaskService {
+    Realm realm;
+    public ETaskService(Realm realm){
+        this.realm = realm;
+    }
+    @Override
+    public Task getTask(String idtask) {
+        return realm.where(Task.class).equalTo("idtask",idtask).findFirst();
+    }
+    @Override
+    public Task getTaskRandom() {
+        int count = (int)realm.where(Task.class).count();
+        int index = new Random().nextInt( count-1);
+        Task tsk = realm.where(Task.class).findAll().get(index);
+        return tsk;
+    }
+
+    @Override
+    public List<Task> getTasks() {
+        return realm.where(Task.class).findAll();
+    }
+
+    @Override
+    public String createTask(String name, String description, String avatar, String idlanguage) {
+        String idtask = UUID.randomUUID().toString();
+        realm.beginTransaction();
+        Task task = realm.createObject(Task.class,idtask);
+        task.setName(name);
+        task.setDescription(description);
+        task.setAvatar(avatar);
+        task.setLanguage(idlanguage);
+        realm.commitTransaction();
+        return idtask;
+    }
+
+    @Override
+    public String updateTask(String idtask, String name, String description, String avatar, String idlanguage) {
+        realm.beginTransaction();
+        Task task = realm.where(Task.class).equalTo("idtask",idtask).findFirst();
+        task.setName(name);
+        task.setDescription(description);
+        task.setAvatar(avatar);
+        task.setLanguage(idlanguage);
+        realm.commitTransaction();
+        return idtask;
+    }
+
+
+    @Override
+    public String deleteTask(String idtask) {
+        realm.where(Task.class).equalTo("idtask",idtask).findFirst().deleteFromRealm();
+        return idtask;
+    }
+}
