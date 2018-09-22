@@ -25,7 +25,7 @@ public class Round extends RealmObject {
         this.numberGame = numberGame;
     }
 
-    public void setGame(String game) {
+    public void setGame(String idgame) {
         this.idgame = idgame;
     }
 
@@ -41,7 +41,7 @@ public class Round extends RealmObject {
         return number;
     }
 
-    public void setTeam(String team) {
+    public void setTeam(String idteam) {
             this.idteam = idteam;
     }
 
@@ -77,7 +77,7 @@ public class Round extends RealmObject {
         return isTaskComplete;
     }
 
-    public void setIsTaskComplete(Boolean isTaskComplete) {
+    public void setIsTaskComplete(boolean isTaskComplete) {
         this.isTaskComplete = isTaskComplete;
     }
 

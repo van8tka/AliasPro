@@ -104,7 +104,7 @@ public class RoundResultActivity extends AppCompatActivity {
 ////
 
 
-class RoundResultViewAdapter extends BaseAdapter implements View.OnClickListener{
+class RoundResultViewAdapter extends BaseAdapter {
 
     private final List<Word> items;
     private final Context context;
@@ -172,28 +172,33 @@ class RoundResultViewAdapter extends BaseAdapter implements View.OnClickListener
             btnStatusWord.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int allScore = playingTeams.getScoreAll();
-                    int roundScore = playingTeams.getScoreRound();
-                    switch (wordStatus.getStatus())
-                    {
-                        case 1://если отгадано
-                            //то конвертируем в неотгадано
-                            ((Button)v).setBackgroundResource(R.drawable.round_word_delete64);
-                            dbService.getEWordStatusService().updateWordStatus(0,word.getIdword(),idRound);
-                            dbService.getEPlayingTeamsService().setScoreAll(playingTeams.getId(),--allScore);
-                            dbService.getEPlayingTeamsService().setScoreRound(playingTeams.getId(),--roundScore);
-                            tvScore.setText(String.valueOf(roundScore-1));
-                            break;
-                        case 0:
-                            ((Button)v).setBackgroundResource(R.drawable.round_word_add64);
-                            dbService.getEWordStatusService().updateWordStatus(0,word.getIdword(),idRound);
-                            dbService.getEPlayingTeamsService().setScoreAll(playingTeams.getId(),++allScore);
-                            dbService.getEPlayingTeamsService().setScoreRound(playingTeams.getId(),++roundScore);
-                            tvScore.setText(String.valueOf(roundScore-1));
-                            break;
+                    try{
+                        int allScore = playingTeams.getScoreAll();
+                        int roundScore = playingTeams.getScoreRound();
+                        switch (wordStatus.getStatus())
+                        {
+                            case 1://если отгадано
+                                //то конвертируем в неотгадано
+                                ((Button)v).setBackgroundResource(R.drawable.round_word_delete64);
+                                dbService.getEWordStatusService().updateWordStatus(0,word.getIdword(),idRound);
+                                dbService.getEPlayingTeamsService().setScoreAll(playingTeams.getId(),--allScore);
+                                dbService.getEPlayingTeamsService().setScoreRound(playingTeams.getId(),--roundScore);
+                                tvScore.setText(String.valueOf(roundScore));
+                                break;
+                            case 0:
+                                ((Button)v).setBackgroundResource(R.drawable.round_word_add64);
+                                dbService.getEWordStatusService().updateWordStatus(1,word.getIdword(),idRound);
+                                dbService.getEPlayingTeamsService().setScoreAll(playingTeams.getId(),++allScore);
+                                dbService.getEPlayingTeamsService().setScoreRound(playingTeams.getId(),++roundScore);
+                                tvScore.setText(String.valueOf(roundScore));
+                                break;
+                        }
+                        RoundResultViewAdapter.this.notifyDataSetChanged();
                     }
-
-                    RoundResultViewAdapter.this.notifyDataSetChanged();
+                    catch(Exception er)
+                    {
+                        Log.e("CHANGE_STATUS_WORD",er.getMessage());
+                    }
                 }
             });
         }
@@ -205,8 +210,5 @@ class RoundResultViewAdapter extends BaseAdapter implements View.OnClickListener
     }
 
 
-    @Override
-    public void onClick(View v) {
 
-    }
 }

@@ -65,7 +65,7 @@ public class BeginGameActivity extends AppCompatActivity {
             linRound = findViewById(R.id.linRoundBegin);
             //след играют
             SetNextCommandPlay(idRoundLast);
-            listView.setAdapter(new TeamGameAdapter(this,listTeam, playingTeams));
+            listView.setAdapter(new TeamGameAdapter(this,listTeam, dbService, idGame));
         }catch(Exception er)
         {
             Log.e("ONCREBEGINACT",er.getMessage());
@@ -76,6 +76,7 @@ public class BeginGameActivity extends AppCompatActivity {
         dbService = new DbService();
         currentGame = dbService.getEGameService().getGame(idGame);
         listTeam = dbService.getEPlayingTeamsService().getListTeamByGame(idGame);
+        playingTeams = dbService.getEPlayingTeamsService().getPlayingTeamsByGame(idGame);
         countTeamsInGame = listTeam.size();
     }
 
@@ -145,14 +146,14 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                     {
                         indexNextTeam = 0;
                         numberGameNext = ++lastNumberGame;
-                        numberRoundNext = 1;
+                        numberRoundNext = ++lastNamberRound;
                         //необходима проверка на победителя при нажатии кнопки продолжить
                         isCheckWinnerNeed = true;
 
                     }
                     else
                     {//сброс результатов раунда если новый сет игры
-                        ResetRoundResults(indexLast);
+                        ResetRoundResults(indexLast, lastNumberGame);
                         indexNextTeam = ++indexLast;
                         numberGameNext = lastNumberGame;
                         numberRoundNext = ++lastNamberRound;
@@ -160,8 +161,8 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
 
                 }
                 nexTeam = listTeam.get(indexNextTeam);
-                idNextRound = dbService.getERoundService().createRound(nexTeam.getIdteam(),GetTask(),currentGame.getIdgame(),numberRoundNext,numberGameNext,null,false);
-                //отображение следующего игрока
+                idNextRound = dbService.getERoundService().createRound(nexTeam.getIdteam() ,GetTask(),currentGame.getIdgame(),numberRoundNext,numberGameNext,null,false);
+                             //отображение следующего игрока
                 ShowNextTeamPlay(nexTeam,numberRoundNext);
             }
         }
@@ -171,15 +172,15 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
         }
     }
 //при переходе к новому сету игры сброс показаний раунда на нуль кроме первой команды
-    private void ResetRoundResults(int indexLast) {
-        if(indexLast == 0)
+    private void ResetRoundResults(int indexLast, int lastNumberGame) {
+        if(indexLast == 0 && lastNumberGame>1)
             for(int i = 1;i<playingTeams.size();i++)
                 dbService.getEPlayingTeamsService().setScoreRound(playingTeams.get(i).getId(),0);
     }
 //покажем имя следующей команды
     private void ShowNextTeamPlay(Team nexTeam, int numberRoundNext) {
-        String nameRound = this.getResources().getString(R.string.strRound) + " " + Integer.toString(numberRoundNext);
-        textvRoundName.setText(numberRoundNext);
+        String nameRound = this.getResources().getString(R.string.strRound) + " " + String.valueOf(numberRoundNext);
+        textvRoundName.setText(nameRound);
         tvNameTeamGame.setText(nexTeam.getName());
         int idImg = this.getResources().getIdentifier(nexTeam.getAvatar(), "drawable", this.getPackageName());
         imgAvatarTeamGame.setImageResource(idImg);
@@ -196,16 +197,24 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
 
     //  ПРОВЕРКА РЕЗУЛЬТАТОВ ИГРЫ ДЛЯ ОПРЕДЕЛЕНИЯ ПОБЕДИТЕЛЯ
     private boolean CheckResultGameForDetectWinner() {
-
-        for(PlayingTeams tm: playingTeams)
+        try
         {
-            if((tm.getScoreAll()>=currentGame.getCountwords() && teamPlayerWin==null) || (tm.getScoreAll()>=currentGame.getCountwords() && tm.getScoreAll()> teamPlayerWin.getScoreAll()))
-                teamPlayerWin = dbService.getEPlayingTeamsService ().getPlayingTeams(tm.getId());
+            int wordsToWin = currentGame.getCountwords();
+            for(PlayingTeams tm: playingTeams)
+            {
+                if((tm.getScoreAll()>=wordsToWin && teamPlayerWin==null) || (tm.getScoreAll()>=wordsToWin && tm.getScoreAll()> teamPlayerWin.getScoreAll()))
+                    teamPlayerWin = dbService.getEPlayingTeamsService ().getPlayingTeams(tm.getId());
+            }
+            if(teamPlayerWin!=null)
+                return true;
+            else
+                return false;
         }
-        if(playingTeams!=null)
-            return true;
-        else
+        catch(Exception er)
+        {
+            Log.e("CHECK_WINNER",er.getMessage());
             return false;
+        }
     }
 
 
@@ -257,13 +266,15 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
 
 ///АДАПТЕР ДЛЯ ВЫВОДА СПИСКА КОМАНД УЧАСТВУЮЩИХ В ИГРЕ
     class TeamGameAdapter extends BaseAdapter {
-    final List<PlayingTeams> playingTeams;
+    IDbService dbService;
+    final String idGame;
     final List<Team> listTeam;
     final Context context;
-        public TeamGameAdapter(Context context, List<Team> listTeam, List<PlayingTeams> playingTeams) {
+        public TeamGameAdapter(Context context, List<Team> listTeam, IDbService dbService, String idGame) {
             this.context = context;
             this.listTeam = listTeam;
-            this.playingTeams = playingTeams;
+            this.dbService = dbService;
+            this.idGame = idGame;
         }
 
             @Override
@@ -286,7 +297,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                 View view = convertView;
                 try{
                     Team team = (Team)getItem(position);
-                    PlayingTeams playingTeam = GetPlayingTeamFromTeamid(team.getIdteam());
+                    PlayingTeams playingTeam = dbService.getEPlayingTeamsService().getPlayingTeams(team.getIdteam(), idGame);
                     if(view==null)
                     {
                         view = ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_teamscore,parent,false);
@@ -308,20 +319,5 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                     return view;
                 }
             }
-            private PlayingTeams GetPlayingTeamFromTeamid(String idteam)
-            {
-                try{
-                    for(int i=0;i<playingTeams.size();i++)
-                    {
-                        if(playingTeams.get(i).getIdTeam().equalsIgnoreCase(idteam))
-                            return playingTeams.get(i);
-                    }
-                    return null;
-                }
-                catch(Exception er)
-                {
-                    Log.e("PLTEMSRETURN",er.getMessage());
-                    return null;
-                }
-            }
+
     }

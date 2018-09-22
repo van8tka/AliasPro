@@ -5,7 +5,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 public class Word extends RealmObject{
-   @Required
+    @Required
     @PrimaryKey
     String idword;
     String iddictionary;

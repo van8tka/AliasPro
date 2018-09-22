@@ -6,7 +6,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 public class Game extends RealmObject {
-   @Required
+    @Required
     @PrimaryKey
     String idgame;
     String iddictionary;

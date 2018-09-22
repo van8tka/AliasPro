@@ -170,7 +170,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                 count = DoWordsForShow();
             indexWord = (int)(Math.random()*((count-0)+1))+0;
             showedWord = wordList.get(indexWord);
-            wordList.remove(indexWord);
+            wordList.remove(showedWord);
         }
         catch (Exception er)
         {
@@ -310,7 +310,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            {
                Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
                intent.putExtra("idroundCurrent",round.getIdround());
-               dbService.getEPlayingTeamsService ().setScoreRound(team.getIdteam(),countGuesedWord);
+               dbService.getEPlayingTeamsService ().setScoreRound(team.getIdteam(),round.getGame(),countGuesedWord);
                int countAllscroeTeam =  dbService.getEPlayingTeamsService().getPlayingTeams(team.getIdteam(),game.getIdgame()).getScoreAll();
                dbService.getEPlayingTeamsService().setScoreAll (team.getIdteam(),game.getIdgame(),countGuesedWord+countAllscroeTeam);
                startActivity(intent);

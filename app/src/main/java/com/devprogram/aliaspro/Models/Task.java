@@ -5,7 +5,6 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.Required;
 
 public class Task extends RealmObject {
-   @Required
    @PrimaryKey
    String idtask;
    String name;

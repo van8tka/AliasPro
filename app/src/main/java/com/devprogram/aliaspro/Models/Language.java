@@ -8,7 +8,7 @@ import io.realm.annotations.Required;
 
 public class Language extends RealmObject implements Serializable{
     @Required
-    @PrimaryKey
+   @PrimaryKey
     String idlanguage;
     String name;
     String avatar;

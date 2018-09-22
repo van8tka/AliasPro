@@ -5,8 +5,10 @@ import java.util.List;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class Dictionary  extends RealmObject {
+    @Required
     @PrimaryKey
     String iddictionary;
     String name;

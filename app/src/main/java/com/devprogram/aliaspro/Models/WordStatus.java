@@ -2,8 +2,10 @@ package com.devprogram.aliaspro.Models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class WordStatus  extends RealmObject {
+    @Required
     @PrimaryKey
     String idwordstatus;
     int status;

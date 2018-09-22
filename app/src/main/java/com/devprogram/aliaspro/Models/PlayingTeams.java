@@ -2,8 +2,10 @@ package com.devprogram.aliaspro.Models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class PlayingTeams extends RealmObject {
+    @Required
     @PrimaryKey
     String id;
     String idGame;
