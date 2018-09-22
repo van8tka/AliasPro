@@ -44,13 +44,20 @@
             android:textSize="28sp" />
     </RelativeLayout>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="2"
+    android:orientation="vertical"
+    >
+
 
     <LinearLayout
         android:id="@+id/linGues"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="top"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -67,6 +74,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right"
                     android:text="@string/strTimeLabel"
                     android:textColor="@color/colorPrimaryCustom2"
                     android:textSize="13sp" />
@@ -79,6 +87,7 @@
                     android:paddingTop="5dp"
                     android:text="0"
                     android:textAlignment="center"
+                    android:layout_gravity="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="24sp" />
 
@@ -96,6 +105,7 @@
         </RelativeLayout>
 
         <TextView
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/strIsguessed"
@@ -108,12 +118,14 @@
     <LinearLayout
         android:id="@+id/linSkip"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+
         android:orientation="vertical">
 
         <TextView
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/strIsskipped"
@@ -122,6 +134,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:layout_gravity="center"
             android:id="@+id/tvCountSkipped"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -155,6 +168,6 @@
         </LinearLayout>
 
     </LinearLayout>
-
+</LinearLayout>
 
 </RelativeLayout>

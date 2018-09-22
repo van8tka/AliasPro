@@ -217,11 +217,10 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
         }
     }
 
-
+//НАЧИНАЕМ ИГРУ
     public void btnStartGame_Click(View view) {
         try
         {
-
             if(isCheckWinnerNeed)
             {
                 if(CheckResultGameForDetectWinner())
@@ -229,12 +228,10 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                 else
                     NextGame();
             }
-
             else
             {
                 NextGame();
             }
-
         }
         catch(Exception er)
         {

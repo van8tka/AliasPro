@@ -285,12 +285,11 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 //при перемещении проверяем нахождение слова в границах отгаданого или пропущенного слова и смены состояния
     private boolean CheckStateWord(View v) {
        try{
-           int topWord = (int)v.getY()+150;
-           int bottomWord = (int)v.getY()+v.getHeight()-150;
+           int yCenterWord = (int)(v.getY()+v.getHeight()/2);
            int guessBorder = (int) linearGues.getY()+linearGues.getHeight();
            int skipeBorder = (int) linearSkip.getY();
            boolean isChange = false;
-           if(topWord<guessBorder)
+           if(yCenterWord<guessBorder)
            {
                countGuesedWord++;
                tvGuesed.setText(String.valueOf(countGuesedWord));
@@ -298,7 +297,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                isChange = true;
                ShowNextWord(true);
            }
-           if(bottomWord>skipeBorder)
+           if(yCenterWord>skipeBorder)
            {
                countSkipedWord++;
                tvSkipped.setText(String.valueOf(countSkipedWord));
