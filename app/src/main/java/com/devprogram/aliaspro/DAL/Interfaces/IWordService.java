@@ -14,4 +14,7 @@ public interface IWordService {
     String createWord(String name,String idDictionary ,String idlanguage);
     String updareWord(String idword, String name, String idDictionary ,String idlanguage);
     String deleteWord(String idword);
+    List<Word> getWordsWithOutShowed(String iddictionary, String idGame);
+    List<Word> getWordsFromDictionary(String iddictionary);
+    List<Word> getShowedRoundWords(String idround);
 }

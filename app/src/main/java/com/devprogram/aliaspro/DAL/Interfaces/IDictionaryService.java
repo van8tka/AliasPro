@@ -14,5 +14,5 @@ public interface IDictionaryService {
     String updateDictionary(String iddictionary,   String name, String avatar, String price, String description, String idlanguage, String iddifficulty);
     String deleteDictionary(String iddictionary);
     int getWordsCount(String iddictionary);
-    List<Word> getWordsDictionary(String iddictionary);
+
 }

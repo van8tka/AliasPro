@@ -40,27 +40,31 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
     boolean _timeRoundIsFinish = false;
     IDbService dbService;
+
     Team team;
     Game game;
     Round round;
-    Dictionary dictionary;
+   // Dictionary dictionary;
     Task task;
     List<Word> wordList;
-    List<Word> showedWordList;
-    TextView tvGuesed;
+   // List<Word> showedWordList;
+    Word showedWord;
+
     int countGuesedWord;
     int countSkipedWord;
     private int  _yDelta;
 
+    TextView tvGuesed;
     TextView tvSkipped;
     TextView tvTimeDur;
     TextView tvWord;
+
     RelativeLayout rlDialog;
     RelativeLayout parentDialog;
     ViewConfiguration defView;
     LinearLayout linearGues;
     LinearLayout linearSkip;
-    public static final String TAG_PLAY_GAME = "PlayGameActivity";
+
     float YDef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,34 +73,33 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_play_game);
             GetData();
-            String nameTeam = round.getTeam().getName();
+            String nameTeam = team.getName();
             this.setTitle(nameTeam);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
             tvGuesed = findViewById(R.id.tvCoutGuessed);
             tvSkipped = findViewById(R.id.tvCountSkipped);
             tvTimeDur = findViewById(R.id.tvTimeDuration);
             tvWord = findViewById(R.id.tvWordPlayGame);
-            tvWord.setText(showedWordList.get(showedWordList.size()-1).getName());
             rlDialog = findViewById(R.id.rlDialogFonPlayGame);
             defView = ViewConfiguration.get(rlDialog.getContext());
             parentDialog = findViewById(R.id.rellayrootDialog);
-            tvTimeDur.setText(Integer.toString(game.getSeconds()));
             linearGues = findViewById(R.id.linGues);
             linearSkip = findViewById(R.id.linSkip);
+
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            tvWord.setText(showedWord.getName());
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            tvTimeDur.setText(Integer.toString(game.getSeconds()));
             rlDialog.setOnTouchListener(this);
             countGuesedWord = 0;
             countSkipedWord = 0;
             SetTask();
-            boolean isTask = game.getIstask();
-            if(isTask){
-                CreateDialogTaskDescription();
-            }
+
         }
         catch (Exception er)
         {
-         Log.e(TAG_PLAY_GAME,er.getMessage());
-            Toast.makeText(this,er.getMessage(),Toast.LENGTH_LONG);
+            Log.e("PlayGameActivity",er.getMessage());
+            Toast.makeText(this,er.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -119,13 +122,13 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             LinearLayout llTask = findViewById(R.id.llTaskInGame);
             TextView tvTask = findViewById(R.id.tvTaskNameInGame);
             ImageView imgTask = findViewById(R.id.imgTaskAvatarInGame);
-
             if(game.getIstask())
             {
                 llTask.setVisibility(View.VISIBLE);
                 tvTask.setText(task.getName());
                 int idres = this.getResources().getIdentifier(task.getAvatar(),"drawable",getPackageName());
                 imgTask.setImageResource(idres);
+                CreateDialogTaskDescription();
             }
             else
             {
@@ -142,82 +145,53 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     //установка данных при запуске активити
     private void GetData() {
         try{
-            String idGame = getIntent().getStringExtra("idGame");
             String idRound = getIntent().getStringExtra("idRound");
             dbService = new DbService();
-            game = dbService.getEGameService().getGame(idGame);
             round = dbService.getERoundService().getRound(idRound);
-            team = round.getTeam();
-            task = round.getTask();
-            dictionary = dbService.getEGameService().getGame(idGame).getDictionary();
-            wordList = dbService.getEDictionaryService().getWordsDictionary(dictionary.getIddictionary());
-            showedWordList = new ArrayList<Word>();
-            GetNextShowWord(wordList);
+            game = dbService.getEGameService().getGame(round.getGame());
+            team = dbService.getETeamService().getTeam(round.getTeam());
+            if(game.getIstask())
+                task = dbService.getETaskService().getTask(round.getTask());
+            wordList = dbService.getEWordService().getWordsWithOutShowed(game.getDictionary(), game.getIdgame());
+            showedWord = wordList.get(0);
         }
         catch(Exception er)
         {
             Log.e("ERROR GET DATA",er.getMessage());
         }
     }
-
+//выбор следующего слова для отображения
     private void GetNextShowWord(List<Word> wordList) {
         try{
             boolean isShowedWord = true;
             int indexWord;
             int count = wordList.size()-1;
-//необходима проверка есть ли непоказанные слова в списке если есть то выбираем иначе - слова закочились или заново
-        boolean isNotExistShowedWord = true;
-        for(int i=0;i<wordList.size()-1;i++)
-         {
-            if(!wordList.get(i).getIsshowed())
-            {
-                isNotExistShowedWord = false;
-                break;
-            }
-         }
-         if(isNotExistShowedWord)
-             DoWordsForShow();
-
-            do
-            {
-                indexWord = (int)(Math.random()*((count-0)+1))+0;
-                isShowedWord = wordList.get(indexWord).getIsshowed();
-            }
-            while(isShowedWord);
-            showedWordList.add(wordList.get(indexWord));
-            dbService.getEWordService().updateShowedOfWord(wordList.get(indexWord).getIdword(),true);
+            if(count == 0)
+                count = DoWordsForShow();
+            indexWord = (int)(Math.random()*((count-0)+1))+0;
+            showedWord = wordList.get(indexWord);
+            wordList.remove(indexWord);
         }
         catch (Exception er)
         {
             Log.e("GETNEXTSHWord",er.getMessage());
+            Toast.makeText(this,"No words list error!",Toast.LENGTH_LONG).show();
         }
     }
-//если закончились все слова
-    private void DoWordsForShow() {
-        try{
-          for(int i=0;i<wordList.size()-1;i++)
-          {
-              Boolean contains=false;
 
-              for(int j=0;j<showedWordList.size()-1;j++)
-              {
-                  if(wordList.get(i) == showedWordList.get(i))
-                  {
-                      contains = true;
-                      break;
-                  }
-              }
-              if(!contains)
-              {
-                  dbService.getEWordService().updateShowedOfWord(wordList.get(i).getIdword(),false);
-                  WordStatus ws = dbService.getEWordStatusService().getWordsStatus().get(1);
-                  dbService.getEWordService().updateStatusOfWord(wordList.get(i).getIdword(),ws);
-              }
-          }
+
+
+//если закончились все слова
+    private int DoWordsForShow() {
+        try{
+          wordList = dbService.getEWordService().getWordsFromDictionary(game.getDictionary());
+          dbService.getEWordStatusService().deleteWordStatusForGame(game.getIdgame());
+          return wordList.size()-1;
       }
       catch (Exception er)
       {
           Log.e("finishWORDS", er.getMessage());
+          return -1;
       }
     }
 
@@ -239,7 +213,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
         catch(Exception er)
         {
-            Log.e(TAG_PLAY_GAME,er.getMessage());
+            Log.e("BTNSTARTPLAY",er.getMessage());
         }
 
     }
@@ -292,7 +266,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                     {
                         boolean isChangeState = CheckStateWord(v);
                         if(isChangeState)
-                            tvWord.setText(showedWordList.get(showedWordList.size()-1).getName());
+                            tvWord.setText(showedWord.getName());
                         break;
                     }
                     default: return true;
@@ -336,9 +310,9 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            {
                Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
                intent.putExtra("idroundCurrent",round.getIdround());
-               dbService.getETeamService().setScoreRoundTeam(team.getIdteam(),countGuesedWord);
-               int countAllscroeTeam =  dbService.getETeamService().getScoreAllTeam(team.getIdteam());
-               dbService.getETeamService().setScoreAllTeam(team.getIdteam(),countGuesedWord+countAllscroeTeam);
+               dbService.getEPlayingTeamsService ().setScoreRound(team.getIdteam(),countGuesedWord);
+               int countAllscroeTeam =  dbService.getEPlayingTeamsService().getPlayingTeams(team.getIdteam(),game.getIdgame()).getScoreAll();
+               dbService.getEPlayingTeamsService().setScoreAll (team.getIdteam(),game.getIdgame(),countGuesedWord+countAllscroeTeam);
                startActivity(intent);
            }
            return isChange;
@@ -377,18 +351,16 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 //УСТАНОВКА СТАТУСА СЛОВА
     private void ShowNextWord(boolean isGues) {
         try{
-            WordStatus status;
+           int status = 0;
             if(isGues)
             {
-                status = dbService.getEWordStatusService().getWordsStatus().get(0);
+                status = 1;
             }
             else
             {
-                status = dbService.getEWordStatusService().getWordsStatus().get(1);
+                status = 0;
             }
-            Word showedWord = showedWordList.get(showedWordList.size()-1);
-            dbService.getEWordService().updateStatusOfWord(showedWord.getIdword(),status);
-            dbService.getERoundService().addWordRound(round.getIdround(),showedWord);
+            dbService.getEWordStatusService().createWordStatus(status,showedWord.getIdword(),game.getIdgame(),round.getIdround());
             GetNextShowWord(wordList);
         }
         catch (Exception er)

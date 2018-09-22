@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity   {
         initDb.InitializeItems();
     }
 
-
+//конфиг БД
     private void ConfigRealm() {
         Realm.init(this);
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
@@ -39,16 +39,14 @@ public class MainActivity extends AppCompatActivity   {
         Realm.setDefaultConfiguration(realmConfig);
     }
 
+    //новая игра
     public void btnNewGame_Click(View v)
     {
-        //перед началом игры сбросим все данные
-      //FIXME restore after Win or end game
-     //   initDb.RestoreItems();
         Intent intent = new Intent(MainActivity.this, SettingsGameActivity.class);
         startActivity(intent);
     }
 
-
+   //продолжить
     public void btnContinue_Click(View v)
     {
         //TODO сделать обработку при нажатии на продолжение игры

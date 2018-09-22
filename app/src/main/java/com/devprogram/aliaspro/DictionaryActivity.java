@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Dictionary;
+import com.devprogram.aliaspro.Models.Difficulty;
+import com.devprogram.aliaspro.Models.Language;
 
 
 import java.util.List;
@@ -104,6 +106,8 @@ public class DictionaryActivity  extends AppCompatActivity  {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
         Dictionary dictionary = (Dictionary)getItem(position);
+        Language langDictionary = dbService.getELanguageService().getLanguage(dictionary.getLanguage());
+        Difficulty difficultyDictionary = dbService.getEDifficultyService().getDifficulty(dictionary.getDifficulty());
         if(view==null)
         {
             view = ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_dictionary, parent, false);
@@ -121,9 +125,9 @@ public class DictionaryActivity  extends AppCompatActivity  {
         img.setImageResource(idImg);
         name.setText(dictionary.getName());
         description.setText(dictionary.getDescription());
-        int idImgLang = context.getResources().getIdentifier(dictionary.getLanguage().getAvatar(),"drawable",context.getPackageName());
+        int idImgLang = context.getResources().getIdentifier(langDictionary.getAvatar(),"drawable",context.getPackageName());
         lang.setImageResource(idImgLang);
-        difficulty.setText(dictionary.getDifficulty().getName());
+        difficulty.setText(difficultyDictionary.getName());
         int countWords = dbService.getEDictionaryService().getWordsCount(dictionary.getIddictionary());
         count.setText( Integer.toString(countWords));
         if(dictionary.getPrice()!=null){

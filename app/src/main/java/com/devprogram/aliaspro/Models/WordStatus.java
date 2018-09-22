@@ -9,6 +9,7 @@ public class WordStatus  extends RealmObject {
     int status;
     String idwordShowed;
     String idGame;
+    String idRound;
 
 //1-отгадано 0-неотгадано
 
@@ -44,5 +45,8 @@ public class WordStatus  extends RealmObject {
         this.idGame = idGame;
     }
 
+    public String getIdRound(){return idRound;}
+
+    public void setIdRound(String idRound){this.idRound = idRound;}
 
 }

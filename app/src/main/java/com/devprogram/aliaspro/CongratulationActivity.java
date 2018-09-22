@@ -19,12 +19,13 @@ public class CongratulationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_congratulation);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         String idWinner = getIntent().getStringExtra("idTeam");
+        int score = getIntent().getIntExtra("score",-1);
         dbService = new DbService();
         Team team = dbService.getETeamService().getTeam(idWinner);
         TextView tvName = findViewById(R.id.tvWinerTeamName);
         TextView tvScrore = findViewById(R.id.tvWinerScore);
         tvName.setText(team.getName());
-        tvScrore.setText(Integer.toString(team.getScoreAll()));
+        tvScrore.setText(String.valueOf(score));
     }
 
     //метод выхода из активити
