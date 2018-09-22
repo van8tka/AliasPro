@@ -45,6 +45,8 @@
     <string name="strRoundPointsName">Количество очков</string>
     <string name="strCongratulation">ПОЗДРАВЛЯЕМ!</string>
     <string name="strWinnerIsTeam">Победила команда</string>
+    <string name="setDictionary">Выберите словарь</string>
+
 
     <string name="label_rules_activity">Правила игры</string>
     <string name="label_settings_activity">Настройки игры</string>

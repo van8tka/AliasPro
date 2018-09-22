@@ -1,13 +1,17 @@
 package com.devprogram.aliaspro;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,12 +25,22 @@ import com.devprogram.aliaspro.Models.Language;
 import java.util.List;
 
 
-public class DictionaryActivity  extends AppCompatActivity  {
 
+public class SelectDictionaryDialog extends Dialog {
 
 
  ListView listView;
  IDbService dbService;
+ Activity activity;
+ TextView tvSelectedDictionaryName;
+
+ public SelectDictionaryDialog(@NonNull Activity activity, IDbService dbService, TextView tvSelectedDictionaryName)
+ {
+     super(activity);
+     this.activity = activity;
+     this.dbService = dbService;
+     this.tvSelectedDictionaryName = tvSelectedDictionaryName;
+ }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,18 +48,24 @@ public class DictionaryActivity  extends AppCompatActivity  {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dictionary_list);
             listView = findViewById(R.id.lvdictionary);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+          //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             dbService = new DbService();
             List<Dictionary> listDictionary = dbService.getEDictionaryService().getDicitionaries();
-            DictionaryViewAdapter adapter = new DictionaryViewAdapter(this,listDictionary, dbService);
+            DictionaryViewAdapter adapter = new DictionaryViewAdapter(this.getContext(),listDictionary, dbService);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent();
-                    intent.putExtra("idDictionarySelect",listDictionary.get(position).getIddictionary());
-                    setResult(RESULT_OK,intent);
-                    onSupportNavigateUp();
+                    ((SettingsGameActivity)activity).dictionary = listDictionary.get(position);
+                    tvSelectedDictionaryName.setText(listDictionary.get(position).getName());
+                     cancel();
+                }
+            });
+            Button btnCancel = findViewById(R.id.btnBackDialog);
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cancel();
                 }
             });
         }
@@ -54,19 +74,7 @@ public class DictionaryActivity  extends AppCompatActivity  {
             String error = er.getMessage();
         }
     }
-    @Override
-    public boolean onSupportNavigateUp()
-    {
-        finish();
-        return true;
-    }
 
-    @Override
-    public void onDestroy()
-    {
-        dbService.CloseDb();
-        super.onDestroy();
-    }
 }
 
 ////

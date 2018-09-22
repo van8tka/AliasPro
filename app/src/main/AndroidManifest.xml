@@ -27,11 +27,9 @@
             android:noHistory="true" />
         <activity
             android:name=".SettingsGameActivity"
-            android:label="@string/label_settings_activity" />
-        <activity
-            android:name=".DictionaryActivity"
-            android:label="@string/label_dictionaries_activity"
-            android:noHistory="true" />
+            android:label="@string/label_settings_activity"
+            android:noHistory="true"
+            />
         <activity
             android:name=".RoundResultActivity"
             android:label="@string/label_roundresult_activity"

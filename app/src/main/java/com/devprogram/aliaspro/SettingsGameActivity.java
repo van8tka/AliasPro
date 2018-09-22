@@ -38,9 +38,8 @@ public class SettingsGameActivity extends AppCompatActivity {
     LinearLayout containerView;
     //весь список команд
     List<Team> listTeam;
-    Task taskInGame;
     IDbService dbService;
-    Dictionary dictionary;
+    public Dictionary dictionary;
     RealmList<Team> teamListInGame;
     private static final String  TAG_LOG = "SettingsGameActivity";
 
@@ -173,27 +172,19 @@ public class SettingsGameActivity extends AppCompatActivity {
         {
             Log.e(TAG_LOG, er.getMessage());
         }
-
     }
 
 
 //создаем кастомное диалоговое окно для выбора словаря
-    int REQUEST_CODE_SELECT_DICTIONARY = 1;
 //ВЫБОР СЛОВАРЯ ДЛЯ ИГРЫ
     public void addDictionaryToGame_Click(View view)
     {
-        Intent intent = new Intent(SettingsGameActivity.this,DictionaryActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_SELECT_DICTIONARY);
-    }
-    @Override
-    protected  void onActivityResult(int recuestCode, int resultCode, Intent data)
-    {
-        if(data==null){return;}
-        String idDictionary = data.getStringExtra("idDictionarySelect");
-        dictionary = dbService.getEDictionaryService().getDictionary(idDictionary);
         TextView tvDictionaryName = findViewById(R.id.tvDictionaryName);
-        tvDictionaryName.setText(dictionary.getName());
+        //создание диалогового окна выбора словаря
+        SelectDictionaryDialog selectDictionaryDialog = new SelectDictionaryDialog(this,dbService, tvDictionaryName);
+        selectDictionaryDialog.show();
     }
+
 
 //НАСТРОЙКА КОЛИЧЕСТВА СЛОВ ДЛЯ ПОБЕДЫ
     int increment = 10;
