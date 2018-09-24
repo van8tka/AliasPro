@@ -3,7 +3,6 @@ package com.devprogram.aliaspro.DAL.Implementations;
 import android.util.Log;
 
 import com.devprogram.aliaspro.DAL.Interfaces.IWordService;
-import com.devprogram.aliaspro.Models.Language;
 import com.devprogram.aliaspro.Models.Word;
 import com.devprogram.aliaspro.Models.WordStatus;
 
@@ -11,7 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 import io.realm.Realm;
+
 
 public class EWordService implements IWordService {
     Realm realm;
@@ -63,14 +64,27 @@ public class EWordService implements IWordService {
         try
         {
             List<Word> listAll = realm.where(Word.class).equalTo("iddictionary",iddictionary).findAll();
-            List<Word> listMain = realm.copyFromRealm(listAll);
+            listAll = realm.copyFromRealm(listAll);
             List<WordStatus> deleteListStatus = realm.where(WordStatus.class).equalTo("idGame",idGame).findAll();
-            List<Word> deletedWord = new ArrayList<Word>();
-            for(int i=0;i<deleteListStatus.size();i++)
-                deletedWord.add(this.getWord(deleteListStatus.get(i).getIdwordShowed()));
-            if(deletedWord.size()>0)
-                listMain.removeAll(deletedWord);
-            return listMain;
+
+            if(deleteListStatus.size()>0)
+            {
+                for(int i = 0;i<deleteListStatus.size();i++)
+                {
+                   int index = -1;
+                   WordStatus wd = deleteListStatus.get(i);
+                   for(int j = 0;j<listAll.size();j++)
+                   {
+                       if(listAll.get(j).getIdword().equalsIgnoreCase(wd.getIdwordShowed()))
+                       {
+                           index = j;break;
+                       }
+                   }
+                   if(index>-1)
+                      listAll.remove(index);
+                }
+            }
+            return listAll;
         }
         catch(Exception er)
         {
