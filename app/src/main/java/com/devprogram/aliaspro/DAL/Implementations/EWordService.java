@@ -64,27 +64,26 @@ public class EWordService implements IWordService {
         try
         {
             List<Word> listAll = realm.where(Word.class).equalTo("iddictionary",iddictionary).findAll();
-            listAll = realm.copyFromRealm(listAll);
+           List<Word> listMain = realm.copyFromRealm(listAll);
             List<WordStatus> deleteListStatus = realm.where(WordStatus.class).equalTo("idGame",idGame).findAll();
 
-            if(deleteListStatus.size()>0)
-            {
+
                 for(int i = 0;i<deleteListStatus.size();i++)
                 {
                    int index = -1;
                    WordStatus wd = deleteListStatus.get(i);
-                   for(int j = 0;j<listAll.size();j++)
+                   for(int j = 0;j<listMain.size();j++)
                    {
-                       if(listAll.get(j).getIdword().equalsIgnoreCase(wd.getIdwordShowed()))
+                       if(listMain.get(j).getIdword().equalsIgnoreCase(wd.getIdwordShowed()))
                        {
                            index = j;break;
                        }
                    }
                    if(index>-1)
-                      listAll.remove(index);
+                       listMain.remove(index);
                 }
-            }
-            return listAll;
+
+            return listMain;
         }
         catch(Exception er)
         {

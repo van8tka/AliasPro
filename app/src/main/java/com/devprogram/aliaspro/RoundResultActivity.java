@@ -1,23 +1,31 @@
 package com.devprogram.aliaspro;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
+import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.PlayingTeams;
 import com.devprogram.aliaspro.Models.Round;
+import com.devprogram.aliaspro.Models.Task;
 import com.devprogram.aliaspro.Models.Team;
 import com.devprogram.aliaspro.Models.Word;
 import com.devprogram.aliaspro.Models.WordStatus;
@@ -46,10 +54,38 @@ public class RoundResultActivity extends AppCompatActivity {
             tvScore.setText(String.valueOf(points));
             listView = findViewById(R.id.lvShowWordRound);
             listView.setAdapter(new RoundResultViewAdapter(this,allShowedWords,dbService, team,tvScore,round.getIdround(),playingTeams));
+            TextView tvTaskScore = findViewById(R.id.tvTaskScore);
+            LinearLayout llScoreResult = findViewById(R.id.llTaskScoreResult);
+            SetTaskScore(tvTaskScore,llScoreResult, round);
         }
         catch(Exception er)
         {
             Log.e("OnCREATEROUNDRES",er.getMessage());
+        }
+    }
+
+    private void SetTaskScore(TextView tvTaskScore, LinearLayout llScoreResult, Round round) {
+        try{
+            Game game = dbService.getEGameService().getGame(round.getGame());
+            if(game.getIstask())//если играем с задачами
+            {
+                //спросим выполнена ли задача
+                CustomDialogTaskCompleted ts = new CustomDialogTaskCompleted(this,round,dbService);
+                ts.show();
+            }
+            if(round.getIsTaskComplete())
+            {
+                tvTaskScore.setText("2");
+                dbService.getEPlayingTeamsService().setScoreAll(round.getIdround(),round.getGame(),dbService.getEPlayingTeamsService().getPlayingTeams(round.getTeam(),round.getGame()).getScoreAll()+2);
+            }
+            else
+            {
+                tvTaskScore.setText("0");
+            }
+        }
+        catch(Exception er)
+        {
+            Log.e("SETTASKSCORE",er.getMessage());
         }
     }
 
@@ -89,6 +125,60 @@ public class RoundResultActivity extends AppCompatActivity {
         {
             Log.e("btnGOCHOSEnextTeam", er.getMessage());
         }
+    }
+}
+///
+///CUSTOM IS TASK COMPLETED???
+///
+
+//класс диалогового окна с описанием задачи загружается при первом появлении страницы PlayGameActivity
+class CustomDialogTaskCompleted extends Dialog implements View.OnClickListener {
+
+    IDbService dbService;
+    Round round;
+    Activity activity;
+
+    public CustomDialogTaskCompleted(@NonNull Activity activity, Round round, IDbService dbService) {
+        super(activity);
+        this.activity = activity;
+        this.round = round;
+        this.dbService = dbService;
+    }
+    Button btnIsnt;
+    Button btnComp;
+    @Override
+    protected void onCreate(Bundle instance)
+    {
+        try
+        {
+            super.onCreate(instance);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.custom_dialog_task_completed);
+
+            Button btnIsnt = findViewById(R.id.btnTaskIsntCompleted);
+            Button btnComp = findViewById(R.id.btnTaskCompleted);
+            btnIsnt.setOnClickListener(this);
+            btnComp.setOnClickListener(this);
+        }
+        catch(Exception er)
+        {
+            Log.e("ONCREATECUSTOMDIALDESC",er.getMessage());
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == btnComp.getId())
+            SetRoundTaskCompleted(true);
+        else if(v.getId() == btnIsnt.getId())
+            SetRoundTaskCompleted(true);
+
+    }
+
+    private void SetRoundTaskCompleted(boolean iscompleted)
+    {
+        dbService.getERoundService().changeTaskComplete(round.getIdround(),iscompleted);
+        cancel();
     }
 }
 

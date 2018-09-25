@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textColor="@color/colorPrimaryCustom2"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:text="@string/strTaskScoreName"/>
+
+        <TextView
+            android:gravity="center_horizontal|center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/strTaskCompletedAsk"
+            />
+
+<LinearLayout
+android:layout_margin="10dp"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+    >
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorYellow"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:id="@+id/btnTaskIsntCompleted"
+        android:text="@string/btnTaskIsnCompletedText"
+        android:layout_weight="1"
+        />
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:layout_weight="1"
+        android:id="@+id/btnTaskCompleted"
+        android:text="@string/btnTaskCompletedText"
+        />
+</LinearLayout>
+</LinearLayout>

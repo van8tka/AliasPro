@@ -46,6 +46,10 @@
     <string name="strCongratulation">ПОЗДРАВЛЯЕМ!</string>
     <string name="strWinnerIsTeam">Победила команда</string>
     <string name="setDictionary">Выберите словарь</string>
+    <string name="strTaskScoreName">Выполнение доп. задачи:</string>
+    <string name="strTaskCompletedAsk">Условия дополнительного задания были выполнены?</string>
+    <string name="btnTaskIsnCompletedText">Нет</string>
+    <string name="btnTaskCompletedText">Да</string>
 
 
     <string name="label_rules_activity">Правила игры</string>
