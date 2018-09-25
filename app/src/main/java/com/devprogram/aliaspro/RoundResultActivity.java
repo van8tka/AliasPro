@@ -40,6 +40,7 @@ public class RoundResultActivity extends AppCompatActivity {
     ListView listView;
     Round round;
     PlayingTeams playingTeams;
+    TextView tvScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try
@@ -50,13 +51,13 @@ public class RoundResultActivity extends AppCompatActivity {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             GetData();
             this.setTitle(team.getName());
-            TextView tvScore = findViewById(R.id.tvPointsCountRound);
+            tvScore = findViewById(R.id.tvPointsCountRound);
             tvScore.setText(String.valueOf(points));
             listView = findViewById(R.id.lvShowWordRound);
             listView.setAdapter(new RoundResultViewAdapter(this,allShowedWords,dbService, team,tvScore,round.getIdround(),playingTeams));
             TextView tvTaskScore = findViewById(R.id.tvTaskScore);
-            LinearLayout llScoreResult = findViewById(R.id.llTaskScoreResult);
-            SetTaskScore(tvTaskScore,llScoreResult, round);
+            TextView tvTaskNameScore = findViewById(R.id.tvTaskScoreName);
+            SetTaskScore(tvTaskScore,tvTaskNameScore, round);
         }
         catch(Exception er)
         {
@@ -64,24 +65,23 @@ public class RoundResultActivity extends AppCompatActivity {
         }
     }
 
-    private void SetTaskScore(TextView tvTaskScore, LinearLayout llScoreResult, Round round) {
+    private void SetTaskScore(TextView tvTaskScore, TextView tvTaskNameScore, Round round) {
         try{
             Game game = dbService.getEGameService().getGame(round.getGame());
             if(game.getIstask())//если играем с задачами
             {
+                tvTaskNameScore.setVisibility(View.VISIBLE);
+                tvTaskScore.setVisibility(View.VISIBLE);
                 //спросим выполнена ли задача
-                CustomDialogTaskCompleted ts = new CustomDialogTaskCompleted(this,round,dbService);
+                CustomDialogTaskCompleted ts = new CustomDialogTaskCompleted(this,round,dbService, tvTaskScore, tvScore);
                 ts.show();
-            }
-            if(round.getIsTaskComplete())
-            {
-                tvTaskScore.setText("2");
-                dbService.getEPlayingTeamsService().setScoreAll(round.getIdround(),round.getGame(),dbService.getEPlayingTeamsService().getPlayingTeams(round.getTeam(),round.getGame()).getScoreAll()+2);
             }
             else
             {
-                tvTaskScore.setText("0");
+                tvTaskNameScore.setVisibility(View.GONE);
+                tvTaskScore.setVisibility(View.GONE);
             }
+
         }
         catch(Exception er)
         {
@@ -137,12 +137,16 @@ class CustomDialogTaskCompleted extends Dialog implements View.OnClickListener {
     IDbService dbService;
     Round round;
     Activity activity;
+    TextView tvTaskScore;
+    TextView tvScoreAll;
 
-    public CustomDialogTaskCompleted(@NonNull Activity activity, Round round, IDbService dbService) {
+    public CustomDialogTaskCompleted(@NonNull Activity activity, Round round, IDbService dbService, TextView tvTaskScore,TextView tvScoreAll) {
         super(activity);
         this.activity = activity;
         this.round = round;
         this.dbService = dbService;
+        this.tvTaskScore = tvTaskScore;
+        this.tvScoreAll = tvScoreAll;
     }
     Button btnIsnt;
     Button btnComp;
@@ -154,9 +158,8 @@ class CustomDialogTaskCompleted extends Dialog implements View.OnClickListener {
             super.onCreate(instance);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.custom_dialog_task_completed);
-
-            Button btnIsnt = findViewById(R.id.btnTaskIsntCompleted);
-            Button btnComp = findViewById(R.id.btnTaskCompleted);
+            btnIsnt = findViewById(R.id.btnTaskIsntCompleted);
+            btnComp = findViewById(R.id.btnTaskCompleted);
             btnIsnt.setOnClickListener(this);
             btnComp.setOnClickListener(this);
         }
@@ -169,15 +172,20 @@ class CustomDialogTaskCompleted extends Dialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if(v.getId() == btnComp.getId())
-            SetRoundTaskCompleted(true);
+            SetRoundTaskCompleted(true,2);
         else if(v.getId() == btnIsnt.getId())
-            SetRoundTaskCompleted(true);
+            SetRoundTaskCompleted(false, 0);
 
     }
 
-    private void SetRoundTaskCompleted(boolean iscompleted)
+    private void SetRoundTaskCompleted(boolean iscompleted, int score)
     {
+        tvTaskScore.setText(String.valueOf(score));
         dbService.getERoundService().changeTaskComplete(round.getIdround(),iscompleted);
+        int currentScoreR = dbService.getEPlayingTeamsService().getPlayingTeams(round.getTeam(),round.getGame()).getScoreRound();
+        int currentScoreA = dbService.getEPlayingTeamsService().getPlayingTeams(round.getTeam(),round.getGame()).getScoreAll();
+        dbService.getEPlayingTeamsService().updatePlayingTeams(round.getTeam(),round.getGame(),currentScoreR+score,currentScoreA+score);
+        tvScoreAll.setText(String.valueOf(currentScoreR+score));
         cancel();
     }
 }
@@ -207,7 +215,7 @@ class RoundResultViewAdapter extends BaseAdapter {
     WordStatus stSkip;
     Team team;
 
-    public RoundResultViewAdapter(Context context,List<Word> items, IDbService dbService,Team team, TextView tvScore,String idRound, PlayingTeams playingTeams ) {
+    public RoundResultViewAdapter(Context context, List<Word> items, IDbService dbService, Team team, TextView tvScore, String idRound, PlayingTeams playingTeams) {
         this.items = items;
         this.context = context;
         this.dbService = dbService;
@@ -238,19 +246,16 @@ class RoundResultViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        try
-        {
-            Word word = (Word)getItem(position);
+        try {
+            Word word = (Word) getItem(position);
             WordStatus wordStatus = dbService.getEWordStatusService().getWordStatus(word.getIdword(), idRound);
-            if(view==null)
-            {
-                view = ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_showed_words, parent, false);
+            if (view == null) {
+                view = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_showed_words, parent, false);
             }
             TextView nameWord = view.findViewById(R.id.tvWordNameShowed);
             nameWord.setText(word.getName());
             Button btnStatusWord = view.findViewById(R.id.btnShowGouseWord);
-            switch (wordStatus.getStatus())
-            {
+            switch (wordStatus.getStatus()) {
                 case 0:
                     btnStatusWord.setBackgroundResource(R.drawable.round_word_delete64);
                     break;
@@ -262,43 +267,55 @@ class RoundResultViewAdapter extends BaseAdapter {
             btnStatusWord.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    try{
+                    try {
                         int allScore = playingTeams.getScoreAll();
                         int roundScore = playingTeams.getScoreRound();
-                        switch (wordStatus.getStatus())
-                        {
+                        Game game = dbService.getEGameService().getGame(playingTeams.getIdGame());
+                        switch (wordStatus.getStatus()) {
                             case 1://если отгадано
                                 //то конвертируем в неотгадано
-                                ((Button)v).setBackgroundResource(R.drawable.round_word_delete64);
-                                dbService.getEWordStatusService().updateWordStatus(0,word.getIdword(),idRound);
-                                dbService.getEPlayingTeamsService().setScoreAll(playingTeams.getId(),--allScore);
-                                dbService.getEPlayingTeamsService().setScoreRound(playingTeams.getId(),--roundScore);
-                                tvScore.setText(String.valueOf(roundScore));
+
+                                ((Button) v).setBackgroundResource(R.drawable.round_word_delete64);
+                                dbService.getEWordStatusService().updateWordStatus(0, word.getIdword(), idRound);
+                                roundScore = ChangeScore(roundScore,game.getIspenalty(), false);
+                                allScore = ChangeScore(allScore,game.getIspenalty(), false);
+                                SetValueScore(roundScore, allScore, playingTeams.getId());
                                 break;
                             case 0:
-                                ((Button)v).setBackgroundResource(R.drawable.round_word_add64);
-                                dbService.getEWordStatusService().updateWordStatus(1,word.getIdword(),idRound);
-                                dbService.getEPlayingTeamsService().setScoreAll(playingTeams.getId(),++allScore);
-                                dbService.getEPlayingTeamsService().setScoreRound(playingTeams.getId(),++roundScore);
-                                tvScore.setText(String.valueOf(roundScore));
+                                ((Button) v).setBackgroundResource(R.drawable.round_word_add64);
+                                dbService.getEWordStatusService().updateWordStatus(1, word.getIdword(), idRound);
+                                roundScore = ChangeScore(roundScore,game.getIspenalty(), true);
+                                allScore = ChangeScore(allScore,game.getIspenalty(), true);
+                                SetValueScore(roundScore, allScore, playingTeams.getId());
                                 break;
                         }
                         RoundResultViewAdapter.this.notifyDataSetChanged();
-                    }
-                    catch(Exception er)
-                    {
-                        Log.e("CHANGE_STATUS_WORD",er.getMessage());
+                    } catch (Exception er) {
+                        Log.e("CHANGE_STATUS_WORD", er.getMessage());
                     }
                 }
             });
-        }
-        catch (Exception er)
-        {
-            Log.e("GRTVIEWROUNRES",er.getMessage());
+        } catch (Exception er) {
+            Log.e("GRTVIEWROUNRES", er.getMessage());
         }
         return view;
     }
 
+    private void SetValueScore(int roundScore, int allScore, String idPlayingTeams)
+    {
+        dbService.getEPlayingTeamsService().setScoreAll(playingTeams.getId(), allScore);
+        dbService.getEPlayingTeamsService().setScoreRound(playingTeams.getId(), roundScore);
+        tvScore.setText(String.valueOf(roundScore));
+    }
 
 
+    private int ChangeScore(int score, boolean isPayFineSkeep, boolean isAddScore) {
+        int PayFine = 1;
+        if(isPayFineSkeep)
+            PayFine = 2;
+        if(isAddScore)
+            return score + PayFine;
+        else
+            return score - PayFine;
+    }
 }

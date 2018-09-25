@@ -44,6 +44,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     Team team;
     Game game;
     Round round;
+    boolean IsPayFineForSkeep;
    // Dictionary dictionary;
     Task task;
     List<Word> wordList;
@@ -149,6 +150,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             dbService = new DbService();
             round = dbService.getERoundService().getRound(idRound);
             game = dbService.getEGameService().getGame(round.getGame());
+            IsPayFineForSkeep = game.getIspenalty();
             team = dbService.getETeamService().getTeam(round.getTeam());
             if(game.getIstask())
                 task = dbService.getETaskService().getTask(round.getTask());
@@ -299,21 +301,18 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            }
            if(yCenterWord>skipeBorder)
            {
+               if(IsPayFineForSkeep)//если включен штраф за пропуск слова то минус балл
+               {
+                   countGuesedWord--;
+                   tvGuesed.setText(String.valueOf(countGuesedWord));
+               }
                countSkipedWord++;
                tvSkipped.setText(String.valueOf(countSkipedWord));
                SetAnimationTransitionView(v);
                isChange = true;
                ShowNextWord(false);
            }
-           if(_timeRoundIsFinish)
-           {
-               Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
-               intent.putExtra("idroundCurrent",round.getIdround());
-               dbService.getEPlayingTeamsService ().setScoreRound(team.getIdteam(),round.getGame(),countGuesedWord);
-               int countAllscroeTeam =  dbService.getEPlayingTeamsService().getPlayingTeams(team.getIdteam(),game.getIdgame()).getScoreAll();
-               dbService.getEPlayingTeamsService().setScoreAll (team.getIdteam(),game.getIdgame(),countGuesedWord+countAllscroeTeam);
-               startActivity(intent);
-           }
+         //  CheckTimeFinsh();
            return isChange;
        }
        catch(Exception er)
@@ -341,12 +340,53 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             AnimatorSet setChain = new AnimatorSet();
             setChain.playSequentially(setScale,setDef);
             setChain.start();
+           setChain.addListener(new Animator.AnimatorListener() {
+               @Override
+               public void onAnimationStart(Animator animation) {
+
+               }
+
+               @Override
+               public void onAnimationEnd(Animator animation) {
+                   CheckTimeFinsh();
+               }
+
+               @Override
+               public void onAnimationCancel(Animator animation) {
+
+               }
+
+               @Override
+               public void onAnimationRepeat(Animator animation) {
+
+               }
+           });
         }
         catch(Exception er)
         {
             Log.e("SetANIM",er.getMessage());
         }
     }
+
+
+    boolean isCheck = true;
+    //IF TIME FINISH START RESULT ACTIVITY
+    private void CheckTimeFinsh()
+    {
+        if(_timeRoundIsFinish && isCheck)
+        {
+            isCheck = false;
+            Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
+            intent.putExtra("idroundCurrent",round.getIdround());
+            dbService.getEPlayingTeamsService ().setScoreRound(team.getIdteam(),round.getGame(),countGuesedWord);
+            int countAllscroeTeam =  dbService.getEPlayingTeamsService().getPlayingTeams(team.getIdteam(),game.getIdgame()).getScoreAll();
+            dbService.getEPlayingTeamsService().setScoreAll (team.getIdteam(),game.getIdgame(),countGuesedWord+countAllscroeTeam);
+            startActivity(intent);
+        }
+    }
+
+
+
 //УСТАНОВКА СТАТУСА СЛОВА
     private void ShowNextWord(boolean isGues) {
         try{
