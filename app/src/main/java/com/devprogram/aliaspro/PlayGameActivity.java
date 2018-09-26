@@ -16,9 +16,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +30,7 @@ import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Dictionary;
 import com.devprogram.aliaspro.Models.Game;
+import com.devprogram.aliaspro.Models.PlayingTeams;
 import com.devprogram.aliaspro.Models.Round;
 import com.devprogram.aliaspro.Models.Task;
 import com.devprogram.aliaspro.Models.Team;
@@ -45,10 +49,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     Game game;
     Round round;
     boolean IsPayFineForSkeep;
-   // Dictionary dictionary;
     Task task;
     List<Word> wordList;
-   // List<Word> showedWordList;
     Word showedWord;
 
     int countGuesedWord;
@@ -312,7 +314,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                isChange = true;
                ShowNextWord(false);
            }
-         //  CheckTimeFinsh();
            return isChange;
        }
        catch(Exception er)
@@ -375,19 +376,31 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     {
         if(_timeRoundIsFinish && isCheck)
         {
-            isCheck = false;
-            Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
-            intent.putExtra("idroundCurrent",round.getIdround());
-            dbService.getEPlayingTeamsService ().setScoreRound(team.getIdteam(),round.getGame(),countGuesedWord);
-            int countAllscroeTeam =  dbService.getEPlayingTeamsService().getPlayingTeams(team.getIdteam(),game.getIdgame()).getScoreAll();
-            dbService.getEPlayingTeamsService().setScoreAll (team.getIdteam(),game.getIdgame(),countGuesedWord+countAllscroeTeam);
-            startActivity(intent);
+            if(game.getIslastword())
+            {
+                CustomDialogLastWord last = new CustomDialogLastWord(this,dbService, game);
+                last.show();
+            }
+            else
+            {
+                RoundResultInvoke();
+            }
         }
     }
 
+//ОКОНЧАНИЕ РАУНДА и ВЫВОД РЕЗУЛЬТАТОВ
+    public void RoundResultInvoke() {
+        isCheck = false;
+        Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
+        intent.putExtra("idroundCurrent",round.getIdround());
+        dbService.getEPlayingTeamsService ().setScoreRound(team.getIdteam(),round.getGame(),countGuesedWord);
+        int countAllscroeTeam =  dbService.getEPlayingTeamsService().getPlayingTeams(team.getIdteam(),game.getIdgame()).getScoreAll();
+        dbService.getEPlayingTeamsService().setScoreAll (team.getIdteam(),game.getIdgame(),countGuesedWord+countAllscroeTeam);
+        startActivity(intent);
+    }
 
 
-//УСТАНОВКА СТАТУСА СЛОВА
+    //УСТАНОВКА СТАТУСА СЛОВА
     private void ShowNextWord(boolean isGues) {
         try{
            int status = 0;
@@ -409,23 +422,62 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
     }
 }
-class CustomDialogTimeFinish extends Dialog {
+class CustomDialogLastWord extends Dialog {
 
-    public CustomDialogTimeFinish(@NonNull Activity activity) {
+    IDbService dbService;
+    Game game;
+    Activity activity;
+
+    public CustomDialogLastWord(@NonNull Activity activity, IDbService dbService, Game game) {
         super(activity);
+        this.dbService = dbService;
+        this.game = game;
+        this.activity = activity;
     }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        setContentView(R.layout.custom_dialog);
-//        yes = (Button) findViewById(R.id.btn_yes);
-//        no = (Button) findViewById(R.id.btn_no);
-//        yes.setOnClickListener(this);
-//        no.setOnClickListener(this);
-//
-//    }
+   @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        try
+        {
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.custom_dialog_last_word_win_team);
+            List<Team> Teams = GetTeams(dbService, game);
+            ArrayList<String> teamsName = new ArrayList<String>();
+            for(Team tn:Teams)
+                teamsName.add(tn.getName());
+            teamsName.add("Ни кто не отгадал");
+            ListView listViewTeams = findViewById(R.id.lvLastWordTeamWin);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),R.layout.row_team_name);
+            adapter.addAll(teamsName);
+            listViewTeams.setAdapter(adapter);
+            listViewTeams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        final int position, long id) {
+                   if(position<Teams.size())
+                   {
+                       Team tn = Teams.get(position);
+                       PlayingTeams playingTeams = dbService.getEPlayingTeamsService().getPlayingTeams(tn.getIdteam(),game.getIdgame());
+                       int scoreRound = playingTeams.getScoreRound()+1;
+                       int scoreAll = playingTeams.getScoreAll()+1;
+                       dbService.getEPlayingTeamsService().updatePlayingTeams(tn.getIdteam(),game.getIdgame(),scoreRound, scoreAll);
+                   }
+                    ((PlayGameActivity)activity).RoundResultInvoke();
+                }
+            });
+        }
+        catch(Exception er)
+        {
+            Log.e("DIAL_LAST_WIN",er.getMessage());
+        }
+    }
+
+    private List<Team> GetTeams(IDbService dbService, Game game) {
+       List<Team> teams = dbService.getEPlayingTeamsService().getListTeamByGame(game.getIdgame());
+       return teams;
+    }
 }
 
 //класс диалогового окна с описанием задачи загружается при первом появлении страницы PlayGameActivity
