@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="62dp"
     android:orientation="horizontal"
     android:paddingLeft="20dp"
     android:gravity="center_vertical"
     >
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        >
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tvLastWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/strLastWord"
+            />
     <TextView
         android:id="@+id/tvWordNameShowed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="16dp"
         android:layout_centerVertical="true"
         android:text="Слово"
         android:textColor="@color/colorBlack"
         android:textSize="18sp"
-        android:layout_weight="1"
-        />
 
+        />
+    </LinearLayout>
         <Button
             android:id="@+id/btnShowGouseWord"
             android:layout_width="40dp"
@@ -32,4 +46,5 @@
             android:focusableInTouchMode="false"
 
             />
+
 </LinearLayout>

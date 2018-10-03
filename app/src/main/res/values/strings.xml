@@ -50,6 +50,7 @@
     <string name="strTaskCompletedAsk">Условия дополнительного задания были выполнены?</string>
     <string name="btnTaskIsnCompletedText">Нет</string>
     <string name="btnTaskCompletedText">Да</string>
+    <string name="strLastWord">Последнее слово</string>
 
 
     <string name="label_rules_activity">Правила игры</string>

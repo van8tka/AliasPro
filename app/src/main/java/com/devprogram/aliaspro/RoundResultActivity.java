@@ -35,6 +35,7 @@ import java.util.List;
 public class RoundResultActivity extends AppCompatActivity {
     List<Word> allShowedWords;
     Team team;
+    Team teamWinLastWord;
     int points;
     IDbService dbService;
     ListView listView;
@@ -57,11 +58,29 @@ public class RoundResultActivity extends AppCompatActivity {
             listView.setAdapter(new RoundResultViewAdapter(this,allShowedWords,dbService, team,tvScore,round.getIdround(),playingTeams));
             TextView tvTaskScore = findViewById(R.id.tvTaskScore);
             TextView tvTaskNameScore = findViewById(R.id.tvTaskScoreName);
+            TextView tvNameTeamLastWordWin = findViewById(R.id.tvTeamNameWinLastWord);
+            TextView tvLastWordScoreWin = findViewById(R.id.tvLastWordScore);
             SetTaskScore(tvTaskScore,tvTaskNameScore, round);
+            SetTeamLastWordWin(tvNameTeamLastWordWin,tvLastWordScoreWin, teamWinLastWord);
         }
         catch(Exception er)
         {
             Log.e("OnCREATEROUNDRES",er.getMessage());
+        }
+    }
+
+    private void SetTeamLastWordWin(TextView tvName, TextView tvLast, Team teamWinLastWord) {
+        Game game = dbService.getEGameService().getGame(round.getGame());
+        if(game.getIslastword() && teamWinLastWord!=null)
+        {
+            tvLast.setVisibility(View.VISIBLE);
+            tvName.setVisibility(View.VISIBLE);
+            tvName.setText(teamWinLastWord.getName());
+        }
+        else
+        {
+            tvLast.setVisibility(View.GONE);
+            tvName.setVisibility(View.GONE);
         }
     }
 
@@ -101,10 +120,13 @@ public class RoundResultActivity extends AppCompatActivity {
         try{
             points = 0;
             String idRound = getIntent().getStringExtra("idroundCurrent");
+            String idTeamLastWordWin = getIntent().getStringExtra("idTeamLastWordWin");
             dbService = new DbService();
             round = dbService.getERoundService().getRound(idRound);
             allShowedWords = dbService.getEWordService().getShowedRoundWords(idRound);
             team = dbService.getETeamService().getTeam(round.getTeam());
+            if(!idTeamLastWordWin.isEmpty())
+                teamWinLastWord = dbService.getETeamService().getTeam(idTeamLastWordWin);
             playingTeams = dbService.getEPlayingTeamsService().getPlayingTeams(round.getTeam(),round.getGame());
             points = playingTeams.getScoreRound();
         }
@@ -214,6 +236,7 @@ class RoundResultViewAdapter extends BaseAdapter {
     WordStatus stGues;
     WordStatus stSkip;
     Team team;
+    Boolean isLastWord;
 
     public RoundResultViewAdapter(Context context, List<Word> items, IDbService dbService, Team team, TextView tvScore, String idRound, PlayingTeams playingTeams) {
         this.items = items;
@@ -221,10 +244,12 @@ class RoundResultViewAdapter extends BaseAdapter {
         this.dbService = dbService;
         stGues = dbService.getEWordStatusService().getWordsStatus().get(0);
         stSkip = dbService.getEWordStatusService().getWordsStatus().get(1);
+        isLastWord = dbService.getEGameService().getGame(dbService.getERoundService().getRound(idRound).getGame()).getIslastword();
         this.team = team;
         this.tvScore = tvScore;
         this.idRound = idRound;
         this.playingTeams = playingTeams;
+
     }
 
 
@@ -255,6 +280,17 @@ class RoundResultViewAdapter extends BaseAdapter {
             TextView nameWord = view.findViewById(R.id.tvWordNameShowed);
             nameWord.setText(word.getName());
             Button btnStatusWord = view.findViewById(R.id.btnShowGouseWord);
+
+            TextView lastWord = view.findViewById(R.id.tvLastWord);
+            if(isLastWord && position==getCount()-1)
+            {
+                lastWord.setVisibility(View.VISIBLE);
+                btnStatusWord.setEnabled(false);
+            }
+            else
+                lastWord.setVisibility(View.GONE);
+
+
             switch (wordStatus.getStatus()) {
                 case 0:
                     btnStatusWord.setBackgroundResource(R.drawable.round_word_delete64);

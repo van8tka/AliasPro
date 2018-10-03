@@ -40,6 +40,14 @@
         android:textColor="@color/colorWhite"
         android:textSize="20sp"
         android:textStyle="bold" />
+    <TextView
+        android:id="@+id/tvTeamNameWinLastWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Team guesed last word!"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 </LinearLayout>
 
         <LinearLayout
@@ -63,6 +71,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:textColor="@color/colorPrimaryCustom1"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvLastWordScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
                 android:textColor="@color/colorPrimaryCustom1"
                 android:textSize="20sp"
                 android:textStyle="bold" />

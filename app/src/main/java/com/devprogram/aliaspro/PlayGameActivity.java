@@ -44,7 +44,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
     boolean _timeRoundIsFinish = false;
     IDbService dbService;
-
+    boolean isGuesedLastWord = false;
     Team team;
     Game game;
     Round round;
@@ -295,7 +295,10 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            boolean isChange = false;
            if(yCenterWord<guessBorder)
            {
-               countGuesedWord++;
+               if(!_timeRoundIsFinish)
+                    countGuesedWord++;
+               else
+                   isGuesedLastWord = true;
                tvGuesed.setText(String.valueOf(countGuesedWord));
                SetAnimationTransitionView(v);
                isChange = true;
@@ -376,9 +379,9 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     {
         if(_timeRoundIsFinish && isCheck)
         {
-            if(game.getIslastword())
+            if(game.getIslastword() && isGuesedLastWord)
             {
-                CustomDialogLastWord last = new CustomDialogLastWord(this,dbService, game);
+                CustomDialogLastWord last = new CustomDialogLastWord(this,dbService, game, showedWord.getIdword(),round.getIdround());
                 last.show();
             }
             else
@@ -388,11 +391,15 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
     }
 
+
+    public String idTeamLastWordWin = "";
+
 //ОКОНЧАНИЕ РАУНДА и ВЫВОД РЕЗУЛЬТАТОВ
     public void RoundResultInvoke() {
         isCheck = false;
         Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
         intent.putExtra("idroundCurrent",round.getIdround());
+        intent.putExtra("idTeamLastWordWin",idTeamLastWordWin);
         dbService.getEPlayingTeamsService ().setScoreRound(team.getIdteam(),round.getGame(),countGuesedWord);
         int countAllscroeTeam =  dbService.getEPlayingTeamsService().getPlayingTeams(team.getIdteam(),game.getIdgame()).getScoreAll();
         dbService.getEPlayingTeamsService().setScoreAll (team.getIdteam(),game.getIdgame(),countGuesedWord+countAllscroeTeam);
@@ -403,7 +410,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     //УСТАНОВКА СТАТУСА СЛОВА
     private void ShowNextWord(boolean isGues) {
         try{
-           int status = 0;
+
+            int status = 0;
             if(isGues)
             {
                 status = 1;
@@ -412,8 +420,15 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             {
                 status = 0;
             }
-            dbService.getEWordStatusService().createWordStatus(status,showedWord.getIdword(),game.getIdgame(),round.getIdround());
-            GetNextShowWord(wordList);
+            if(_timeRoundIsFinish && game.getIslastword())
+            {
+                CheckTimeFinsh();
+            }
+            else
+            {
+                dbService.getEWordStatusService().createWordStatus(status,showedWord.getIdword(),game.getIdgame(),round.getIdround());
+                GetNextShowWord(wordList);
+            }
         }
         catch (Exception er)
         {
@@ -422,17 +437,26 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
     }
 }
+
+///------------------------------------------------------------------------------------------------
+/// ПОСЛЕДНЕЕ СЛОВО КТО ВЫЙГРАЛ
+///_______________________________________________________________________________________________
+
+
 class CustomDialogLastWord extends Dialog {
 
     IDbService dbService;
     Game game;
     Activity activity;
-
-    public CustomDialogLastWord(@NonNull Activity activity, IDbService dbService, Game game) {
+    String iDshowedLastWord;
+    String idRound;
+    public CustomDialogLastWord(@NonNull Activity activity, IDbService dbService, Game game, String iDshowedLastWord, String idRound) {
         super(activity);
         this.dbService = dbService;
         this.game = game;
         this.activity = activity;
+        this.iDshowedLastWord = iDshowedLastWord;
+        this.idRound = idRound;
     }
 
    @Override
@@ -456,15 +480,24 @@ class CustomDialogLastWord extends Dialog {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         final int position, long id) {
+                    int status;
                    if(position<Teams.size())
                    {
+                       status = 1;
                        Team tn = Teams.get(position);
                        PlayingTeams playingTeams = dbService.getEPlayingTeamsService().getPlayingTeams(tn.getIdteam(),game.getIdgame());
                        int scoreRound = playingTeams.getScoreRound()+1;
                        int scoreAll = playingTeams.getScoreAll()+1;
                        dbService.getEPlayingTeamsService().updatePlayingTeams(tn.getIdteam(),game.getIdgame(),scoreRound, scoreAll);
+                       ((PlayGameActivity)activity).idTeamLastWordWin = tn.getIdteam();
                    }
-                    ((PlayGameActivity)activity).RoundResultInvoke();
+                   else
+                   {
+                       ((PlayGameActivity)activity).idTeamLastWordWin = "";
+                       status = 0;
+                   }
+                   dbService.getEWordStatusService().createWordStatus(status,iDshowedLastWord,game.getIdgame(),idRound);
+                   ((PlayGameActivity)activity).RoundResultInvoke();
                 }
             });
         }
@@ -480,7 +513,13 @@ class CustomDialogLastWord extends Dialog {
     }
 }
 
-//класс диалогового окна с описанием задачи загружается при первом появлении страницы PlayGameActivity
+
+
+///------------------------------------------------------------------------------------------------
+///класс диалогового окна с описанием задачи загружается при первом появлении страницы PlayGameActivity
+///-------------------------------------------------------------------------------------------------
+
+
 class CustomDialogTaskDescription extends Dialog implements View.OnClickListener {
 
     Task task;
