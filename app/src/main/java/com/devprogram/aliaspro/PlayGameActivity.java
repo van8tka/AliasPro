@@ -167,6 +167,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 //выбор следующего слова для отображения
     private void GetNextShowWord(List<Word> wordList) {
         try{
+            Log.i("GNW","GetNextShowWord - выбор следующего слова для отображения");
             boolean isShowedWord = true;
             int indexWord;
             int count = wordList.size()-1;
@@ -175,6 +176,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             indexWord = (int)(Math.random()*((count-0)+1))+0;
             showedWord = wordList.get(indexWord);
             wordList.remove(showedWord);
+            Log.i("GNW","GetNextShowWord -  следующее слово"+showedWord.getName());
         }
         catch (Exception er)
         {
@@ -210,6 +212,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 //начало игры
     public void btnStartPlay_Click(View view) {
         try{
+            Log.i("GNW","btnStartPlay_Click - начало игры,нажатие старта");
             Button btnStart = findViewById(R.id.btnStartPlayGame);
             btnStart.setVisibility(View.GONE);
             rlDialog.setVisibility(View.VISIBLE);
@@ -234,6 +237,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
             @Override
             public void onFinish() {
+                Log.i("TIMES","onFinish - ВРЕМЯ ВЫШЛО _timeRoundIsFinish = true");
                 tvTimeDur.setText("0");
                  _timeRoundIsFinish = true;
             }
@@ -251,6 +255,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     public boolean onTouch(View v, MotionEvent event) {
         try
         {
+            Log.i("ONT","onTouch - касание для перемещения слова");
             if(v instanceof RelativeLayout)
             {
                 YDef = v.getTop();
@@ -286,6 +291,9 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
 
     }
+
+
+
 //при перемещении проверяем нахождение слова в границах отгаданого или пропущенного слова и смены состояния
     private boolean CheckStateWord(View v) {
        try{
@@ -295,17 +303,27 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            boolean isChange = false;
            if(yCenterWord<guessBorder)
            {
+               Log.i("CHST","CheckStateWord - перемещение слова в отгаданные");
                if(!_timeRoundIsFinish)
-                    countGuesedWord++;
+               {
+                   Log.i("CHST","CheckStateWord - перемещение слова в отгаданные, время не вышло");
+                   countGuesedWord++;
+               }
                else
+               {
+                   Log.i("CHST","CheckStateWord - перемещение слова в отгаданные, время Вышло");
                    isGuesedLastWord = true;
+               }
+
                tvGuesed.setText(String.valueOf(countGuesedWord));
                SetAnimationTransitionView(v);
                isChange = true;
                ShowNextWord(true);
+                 isChange = true;
            }
            if(yCenterWord>skipeBorder)
            {
+               Log.i("CHST","CheckStateWord - перемещение слова в НЕ отгаданные");
                if(IsPayFineForSkeep)//если включен штраф за пропуск слова то минус балл
                {
                    countGuesedWord--;
@@ -315,7 +333,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                tvSkipped.setText(String.valueOf(countSkipedWord));
                SetAnimationTransitionView(v);
                isChange = true;
-               ShowNextWord(false);
+                ShowNextWord(false);
            }
            return isChange;
        }
@@ -325,6 +343,9 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
            return false;
        }
     }
+
+
+    boolean isAnimationEnd = true;
 //for change scale view with word and set default position
     private void SetAnimationTransitionView(View v) {
         try
@@ -344,6 +365,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             AnimatorSet setChain = new AnimatorSet();
             setChain.playSequentially(setScale,setDef);
             setChain.start();
+            isAnimationEnd = false;
            setChain.addListener(new Animator.AnimatorListener() {
                @Override
                public void onAnimationStart(Animator animation) {
@@ -352,7 +374,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
                @Override
                public void onAnimationEnd(Animator animation) {
-                   CheckTimeFinsh();
+                   Log.i("AANIM","SetAnimationTransitionView - конец анимации, вызов CheckTimeFinsh");
+                  //  synchronized (LOCK){isAnimationEnd = true;LOCK.notify();}
                }
 
                @Override
@@ -372,20 +395,23 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
     }
 
-
+ private Object LOCK = new Object();
     boolean isCheck = true;
     //IF TIME FINISH START RESULT ACTIVITY
     private void CheckTimeFinsh()
     {
+        Log.i("CH","CheckTimeFinsh - проверка если время вышло");
         if(_timeRoundIsFinish && isCheck)
         {
             if(game.getIslastword() && isGuesedLastWord)
             {
+                Log.i("CH","CheckTimeFinsh - вызов диалога выбора команды отг последнее слово");
                 CustomDialogLastWord last = new CustomDialogLastWord(this,dbService, game, showedWord.getIdword(),round.getIdround());
                 last.show();
             }
             else
             {
+                Log.i("CH","CheckTimeFinsh - вызов результата");
                 RoundResultInvoke();
             }
         }
@@ -395,7 +421,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     public String idTeamLastWordWin = "";
 
 //ОКОНЧАНИЕ РАУНДА и ВЫВОД РЕЗУЛЬТАТОВ
-    public void RoundResultInvoke() {
+    public void RoundResultInvoke()   {
+        Log.i("RES","RoundResultInvoke - вызов результата");
         isCheck = false;
         Intent intent = new Intent(PlayGameActivity.this,RoundResultActivity.class);
         intent.putExtra("idroundCurrent",round.getIdround());
@@ -403,6 +430,23 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         dbService.getEPlayingTeamsService ().setScoreRound(team.getIdteam(),round.getGame(),countGuesedWord);
         int countAllscroeTeam =  dbService.getEPlayingTeamsService().getPlayingTeams(team.getIdteam(),game.getIdgame()).getScoreAll();
         dbService.getEPlayingTeamsService().setScoreAll (team.getIdteam(),game.getIdgame(),countGuesedWord+countAllscroeTeam);
+        //ожидаем завершения анимации для перехода на др. активити
+//      try{
+//          synchronized (LOCK)
+//          {
+//              while (!isAnimationEnd)
+//              {
+//                  LOCK.wait();
+//              }
+//          }
+//      }
+//      catch (InterruptedException e)
+//      {
+//          Log.e("RES","InterruptedException - ошибка прерывания потока "+e.getMessage());
+//      }
+//        finally {
+//          startActivity(intent);
+//      }
         startActivity(intent);
     }
 
@@ -410,7 +454,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     //УСТАНОВКА СТАТУСА СЛОВА
     private void ShowNextWord(boolean isGues) {
         try{
-
+            Log.i("SHW","ShowNextWord - присвоение статуса отг-неотг");
             int status = 0;
             if(isGues)
             {
@@ -422,11 +466,14 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             }
             if(_timeRoundIsFinish && game.getIslastword())
             {
+                Log.i("SHW","ShowNextWord - время закончтилось и игра имеет посл слово для всех");
                 CheckTimeFinsh();
             }
             else
             {
+                Log.i("SHW","ShowNextWord - установка статуса и вызов смены слова");
                 dbService.getEWordStatusService().createWordStatus(status,showedWord.getIdword(),game.getIdgame(),round.getIdround());
+                CheckTimeFinsh();
                 GetNextShowWord(wordList);
             }
         }

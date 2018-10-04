@@ -3,6 +3,7 @@ package com.devprogram.aliaspro;
 import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,6 +57,7 @@ public class SettingsGameActivity extends AppCompatActivity {
             listTeam = dbService.getETeamService().getTeams();
             //отображение кнопки назад сверху на экране
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             //фрагмент для списка команд
             containerView = findViewById(R.id.llContainerComandItemsFragment);
             CreateDefaultComands();
