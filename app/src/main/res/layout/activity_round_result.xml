@@ -10,61 +10,64 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="12dp"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:background="@color/colorPrimary"
-        >
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
-    <TextView
-        android:id="@+id/tvRoundPointsName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/strRoundPointsName"
-        android:textColor="@color/colorWhite"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/tvTaskScoreName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/strTaskScoreName"
-        android:textColor="@color/colorWhite"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/tvTeamNameWinLastWord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Team guesed last word!"
-        android:textColor="@color/colorWhite"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-</LinearLayout>
+        android:paddingTop="12dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            >
-        <TextView
-            android:id="@+id/tvPointsCountRound"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvRoundPointsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strRoundPointsName"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvTaskScoreName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/strTaskScoreName"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvTeamNameWinLastWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Team guesed last word!"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPointsCountRound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/colorWhite"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTaskScore"
