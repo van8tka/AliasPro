@@ -63,27 +63,12 @@ public class EWordService implements IWordService {
     public List<Word> getWordsWithOutShowed(String iddictionary, String idGame) {
         try
         {
-            List<Word> listAll = realm.where(Word.class).equalTo("iddictionary",iddictionary).findAll();
-           List<Word> listMain = realm.copyFromRealm(listAll);
             List<WordStatus> deleteListStatus = realm.where(WordStatus.class).equalTo("idGame",idGame).findAll();
-
-
-                for(int i = 0;i<deleteListStatus.size();i++)
-                {
-                   int index = -1;
-                   WordStatus wd = deleteListStatus.get(i);
-                   for(int j = 0;j<listMain.size();j++)
-                   {
-                       if(listMain.get(j).getIdword().equalsIgnoreCase(wd.getIdwordShowed()))
-                       {
-                           index = j;break;
-                       }
-                   }
-                   if(index>-1)
-                       listMain.remove(index);
-                }
-
-            return listMain;
+            List<String> idNotExist = new ArrayList<String>();
+            for(int i=0;i<deleteListStatus.size();i++)
+                idNotExist.add(deleteListStatus.get(i).getIdwordShowed());
+            List<Word> listAll = realm.where(Word.class).equalTo("iddictionary",iddictionary).not().in("idword",idNotExist.toArray(new String[0])).findAll();
+            return realm.copyFromRealm(listAll);
         }
         catch(Exception er)
         {
