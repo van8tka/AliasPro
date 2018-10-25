@@ -52,6 +52,9 @@
     <string name="btnTaskCompletedText">Да</string>
     <string name="strLastWord">Последнее слово</string>
 
+    <string name="banner_ad_unit_id">ca-app-pub-5351987413735598/8339138455</string>
+    <string name="admob_pub_id">ca-app-pub-5351987413735598~4651174887</string>
+
 
     <string name="label_rules_activity">Правила игры</string>
     <string name="label_settings_activity">Настройки игры</string>

@@ -36,6 +36,9 @@ import com.devprogram.aliaspro.Models.Task;
 import com.devprogram.aliaspro.Models.Team;
 import com.devprogram.aliaspro.Models.Word;
 import com.devprogram.aliaspro.Models.WordStatus;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +78,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_play_game);
+            InitAdMob();
             GetData();
             String nameTeam = team.getName();
             this.setTitle(nameTeam);
@@ -104,6 +108,13 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             Log.e("PlayGameActivity",er.getMessage());
             Toast.makeText(this,er.getMessage(),Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void InitAdMob() {
+        MobileAds.initialize(getApplicationContext(),  getResources().getString(R.string.admob_pub_id));
+        AdView adViewBanner = findViewById(R.id.banneradmobunitplaygame);
+        AdRequest request = new AdRequest.Builder().build();
+        adViewBanner.loadAd(request);
     }
 
     @Override
