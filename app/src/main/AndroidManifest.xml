@@ -46,6 +46,12 @@
             android:name=".CongratulationActivity"
             android:noHistory="true"
             android:label="@string/label_congratulate_activity"/>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5351987413735598~4651174887"/>
+
+
     </application>
 
 </manifest>
