@@ -16,7 +16,7 @@
             android:id="@+id/rlDialogFonPlayGame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="150dp"
             android:layout_marginTop="100dp"
             android:background="@drawable/dialog_play_game_image512"
             android:visibility="invisible">
@@ -181,15 +181,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/banneradmobunitplaygame"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
 </LinearLayout>
-<com.google.android.gms.AdView
-   android:id="@+id/banneradmobunitplaygame"
-    android:layout_width="wrap_content"
-    android:layout_height="50dp"
-    android:layout_centerHorizontal="true"
-    android:layout_alignParentBottom="true"
-    ads:adSize="SMART_BANNER"
-    ads:adUnitId="@string/banner_ad_unit_id"
-    >
-</com.google.android.gms.AdView>
+
 </RelativeLayout>
