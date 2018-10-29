@@ -43,13 +43,25 @@
         android:onClick="btnHowToPlay_Click"
         android:text="@string/btnHowToPlay"/>
     </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            >
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:text="@string/btnLike"
             android:textColor="@color/colorPrimary"
-            android:layout_alignParentBottom="true"
             android:onClick="btnLike_Click"/>
+        <fragment
+            android:name="com.devprogram.aliaspro.AdMobFragment"
+            android:id="@+id/admobFragmentMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -314,7 +314,8 @@
                 android:background="@drawable/line" />
         </LinearLayout>
     </ScrollView>
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0">
@@ -327,6 +328,11 @@
         android:onClick="btnNextToChooseWords_Click"
         android:background="@color/colorPrimary"
         />
- </RelativeLayout>
+        <fragment
+            android:name="com.devprogram.aliaspro.AdMobFragment"
+            android:id="@+id/admobFragmentMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+ </LinearLayout>
 
 </LinearLayout>

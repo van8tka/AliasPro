@@ -78,7 +78,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_play_game);
-            InitAdMob();
+
             GetData();
             String nameTeam = team.getName();
             this.setTitle(nameTeam);
@@ -110,12 +110,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
     }
 
-    private void InitAdMob() {
-        MobileAds.initialize(getApplicationContext(),  getResources().getString(R.string.admob_pub_id));
-        AdView adViewBanner = findViewById(R.id.banneradmobunitplaygame);
-        AdRequest request = new AdRequest.Builder().build();
-        adViewBanner.loadAd(request);
-    }
 
     @Override
     public void onDestroy()

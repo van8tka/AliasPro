@@ -182,13 +182,11 @@
 
     </LinearLayout>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/banneradmobunitplaygame"
+    <fragment
+        android:name="com.devprogram.aliaspro.AdMobFragment"
+        android:id="@+id/admobFragmentMain"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id">
-    </com.google.android.gms.ads.AdView>
+        android:layout_height="wrap_content" />
 </LinearLayout>
 
 </RelativeLayout>

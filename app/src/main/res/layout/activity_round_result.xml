@@ -98,16 +98,26 @@
 
     </ListView>
 </LinearLayout>
-
-    <Button
-        android:id="@+id/btnGoToChoseNextCommand"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:text="@string/btnNextStep"
-        android:textColor="@color/colorWhite"
-        android:layout_alignParentBottom="true"
-        android:layout_weight="1"
-        android:onClick="btnGoToChoseNextTeam_Click"
-       />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            >
+        <Button
+            android:id="@+id/btnGoToChoseNextCommand"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/btnNextStep"
+            android:textColor="@color/colorWhite"
+            android:onClick="btnGoToChoseNextTeam_Click"
+           />
+        <fragment
+            android:name="com.devprogram.aliaspro.AdMobFragment"
+            android:id="@+id/admobFragmentMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+          </LinearLayout>
 </LinearLayout>

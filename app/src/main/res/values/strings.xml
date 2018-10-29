@@ -63,4 +63,7 @@
     <string name="label_roundresult_activity">Результат раунда</string>
     <string name="label_congratulate_activity">Поздравление победителя</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
