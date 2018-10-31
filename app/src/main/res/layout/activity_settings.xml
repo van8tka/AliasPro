@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-   >
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -328,11 +328,7 @@
         android:onClick="btnNextToChooseWords_Click"
         android:background="@color/colorPrimary"
         />
-        <fragment
-            android:name="com.devprogram.aliaspro.AdMobFragment"
-            android:id="@+id/admobFragmentMain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+
  </LinearLayout>
 
 </LinearLayout>

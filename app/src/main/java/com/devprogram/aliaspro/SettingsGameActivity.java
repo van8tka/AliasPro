@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
+import com.devprogram.aliaspro.Helpers.AdMobCreater;
+import com.devprogram.aliaspro.Helpers.IAdMobCreater;
 import com.devprogram.aliaspro.Models.Dictionary;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Task;
@@ -66,13 +68,13 @@ public class SettingsGameActivity extends AppCompatActivity {
             swTask = findViewById(R.id.swDopTask);
             tvTime = findViewById(R.id.tvTimeSet);
             tvWord = findViewById(R.id.tvWordSet);
+
         }
       catch (Exception er)
       {
           Log.e(TAG_LOG,er.getMessage());
       }
     }
-
 
 
 

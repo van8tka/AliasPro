@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
+import com.devprogram.aliaspro.Helpers.AdMobCreater;
+import com.devprogram.aliaspro.Helpers.IAdMobCreater;
 import com.devprogram.aliaspro.Models.Team;
 
 public class CongratulationActivity extends AppCompatActivity {

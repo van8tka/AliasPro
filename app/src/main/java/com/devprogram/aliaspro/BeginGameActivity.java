@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
+import com.devprogram.aliaspro.Helpers.AdMobCreater;
+import com.devprogram.aliaspro.Helpers.IAdMobCreater;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.PlayingTeams;
 import com.devprogram.aliaspro.Models.Round;
@@ -71,6 +73,9 @@ public class BeginGameActivity extends AppCompatActivity {
             Log.e("ONCREBEGINACT",er.getMessage());
         }
     }
+
+
+
 
     private void GetDefaultData(String idGame) {
         dbService = new DbService();

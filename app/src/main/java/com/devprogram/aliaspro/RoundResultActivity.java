@@ -22,6 +22,8 @@ import android.widget.TextView;
 
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
+import com.devprogram.aliaspro.Helpers.AdMobCreater;
+import com.devprogram.aliaspro.Helpers.IAdMobCreater;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.PlayingTeams;
 import com.devprogram.aliaspro.Models.Round;
@@ -68,6 +70,8 @@ public class RoundResultActivity extends AppCompatActivity {
             Log.e("OnCREATEROUNDRES",er.getMessage());
         }
     }
+
+
 
     private void SetTeamLastWordWin(TextView tvName, TextView tvLast, Team teamWinLastWord) {
         Game game = dbService.getEGameService().getGame(round.getGame());

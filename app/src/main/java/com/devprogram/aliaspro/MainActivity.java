@@ -1,15 +1,22 @@
 package com.devprogram.aliaspro;
 
+
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
+import com.devprogram.aliaspro.Helpers.AdMobCreater;
+import com.devprogram.aliaspro.Helpers.IAdMobCreater;
 import com.devprogram.aliaspro.Initializer.Emplementations.InitialDataDb;
 import com.devprogram.aliaspro.Initializer.Interfaces.IInitDB;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -24,12 +31,19 @@ public class MainActivity extends AppCompatActivity   {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ConfigRealm();
+        CreateAdMob();
         dbService = new DbService();
         initDb = new InitialDataDb(dbService);
         initDb.InitializeItems();
     }
 
-//конфиг БД
+    private void CreateAdMob() {
+        IAdMobCreater adMobCreater = new AdMobCreater();
+        adMobCreater.InitAdMobBanner(findViewById(R.id.bannerAdmobFragmentMain),getApplicationContext(),getResources().getString(R.string.admob_pub_id));
+    }
+
+
+    //конфиг БД
     private void ConfigRealm() {
         Realm.init(this);
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()

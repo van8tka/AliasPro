@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -57,11 +58,13 @@
             android:text="@string/btnLike"
             android:textColor="@color/colorPrimary"
             android:onClick="btnLike_Click"/>
-        <fragment
-            android:name="com.devprogram.aliaspro.AdMobFragment"
-            android:id="@+id/admobFragmentMain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/bannerAdmobFragmentMain"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                ads:adSize="SMART_BANNER"
+                ads:adUnitId="@string/banner_ad_unit_id">
+            </com.google.android.gms.ads.AdView>
         </LinearLayout>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

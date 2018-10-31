@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
+import com.devprogram.aliaspro.Helpers.AdMobCreater;
+import com.devprogram.aliaspro.Helpers.IAdMobCreater;
 import com.devprogram.aliaspro.Models.Dictionary;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.PlayingTeams;
@@ -83,6 +85,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             String nameTeam = team.getName();
             this.setTitle(nameTeam);
 
+            CreateAdMob();
             tvGuesed = findViewById(R.id.tvCoutGuessed);
             tvSkipped = findViewById(R.id.tvCountSkipped);
             tvTimeDur = findViewById(R.id.tvTimeDuration);
@@ -110,7 +113,10 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
     }
 
-
+    private void CreateAdMob() {
+        IAdMobCreater adMobCreater = new AdMobCreater();
+        adMobCreater.InitAdMobBanner(findViewById(R.id.bannerAdmobFragmentPlay),getApplicationContext(),getResources().getString(R.string.admob_pub_id));
+    }
     @Override
     public void onDestroy()
     {
@@ -218,6 +224,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         try{
             Log.i("GNW","btnStartPlay_Click - начало игры,нажатие старта");
             Button btnStart = findViewById(R.id.btnStartPlayGame);
+            View viewFon = findViewById(R.id.viewGrayFon);
+            viewFon.setVisibility(View.GONE);
             btnStart.setVisibility(View.GONE);
             rlDialog.setVisibility(View.VISIBLE);
             TimerStart();
