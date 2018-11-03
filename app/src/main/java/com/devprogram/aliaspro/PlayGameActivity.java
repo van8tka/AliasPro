@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.UserDictionary;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -60,6 +61,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
     int countGuesedWord;
     int countSkipedWord;
+    int timeDuration;
     private int  _yDelta;
 
     TextView tvGuesed;
@@ -99,7 +101,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             tvWord.setText(showedWord.getName());
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            tvTimeDur.setText(Integer.toString(game.getSeconds()));
+
             rlDialog.setOnTouchListener(this);
             countGuesedWord = 0;
             countSkipedWord = 0;
@@ -112,6 +114,41 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             Toast.makeText(this,er.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
+
+//проверка соответствия времени и запуск при продолжении игры
+    @Override
+    public void onResume()
+    {
+        try
+        {
+            super.onResume();
+            //если время раунда меньше то выбранар команда продолжить
+            if(round.getTimeToFinish() < timeDuration)
+            {//установим оставшееся время
+                timeDuration = round.getTimeToFinish();
+                //установим кол-во пропущенных и отгаданных слов
+                List<WordStatus> allShowedWords = dbService.getEWordStatusService().getWordsStatusShowedRound(round.getIdround());
+                int count = 0;
+                for(WordStatus showedWord:allShowedWords)
+                    if(showedWord.getStatus()==1)
+                        countGuesedWord++;
+                    else
+                        countSkipedWord++;
+                if(countGuesedWord>0)
+                    tvGuesed.setText(String.valueOf(countGuesedWord));
+                if(countSkipedWord>0)
+                    tvSkipped.setText(String.valueOf(countSkipedWord));
+            }
+
+            tvTimeDur.setText(Integer.toString(timeDuration));
+        }
+        catch (Exception er)
+        {
+            Log.e("RESUME_PLAYGAME",er.getMessage());
+        }
+    }
+
+
 
     private void CreateAdMob() {
         IAdMobCreater adMobCreater = new AdMobCreater();
@@ -169,6 +206,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                 task = dbService.getETaskService().getTask(round.getTask());
             wordList = dbService.getEWordService().getWordsWithOutShowed(game.getDictionary(), game.getIdgame());
             showedWord = wordList.get(0);
+            timeDuration = game.getSeconds();
         }
         catch(Exception er)
         {
@@ -240,7 +278,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
     //отсечка времени раунда
     private void TimerStart() {
-        new CountDownTimer((long)game.getSeconds()*1000,1000){
+        new CountDownTimer(timeDuration*1000,1000){
 
             @Override
             public void onTick(long millisUntilFinished){
@@ -470,6 +508,14 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             Log.e("SHOWNEXTWORD",er.getMessage());
         }
 
+    }
+
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        dbService.getERoundService().setTimeToFinishRound(round.getIdround(), Integer.parseInt(tvTimeDur.getText().toString()));
     }
 }
 

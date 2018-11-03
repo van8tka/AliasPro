@@ -57,6 +57,17 @@ public class BeginGameActivity extends AppCompatActivity {
             isChangeOrientation = false;
             setContentView(R.layout.activity_begin_game);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }catch(Exception er)
+        {
+            Log.e("ONCREBEGINACT",er.getMessage());
+        }
+    }
+
+    @Override
+    public void onResume()
+    {
+        try{
+            super.onResume();
             String idGame = getIntent().getStringExtra("idGame");
             String idRoundLast = getIntent().getStringExtra("idRound");
             GetDefaultData(idGame);
@@ -68,12 +79,12 @@ public class BeginGameActivity extends AppCompatActivity {
             //след играют
             SetNextCommandPlay(idRoundLast);
             listView.setAdapter(new TeamGameAdapter(this,listTeam, dbService, idGame));
-        }catch(Exception er)
+        }
+        catch (Exception er)
         {
-            Log.e("ONCREBEGINACT",er.getMessage());
+            Log.e("BEGIN_RESUME",er.getMessage());
         }
     }
-
 
 
 
@@ -166,7 +177,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
 
                 }
                 nexTeam = listTeam.get(indexNextTeam);
-                idNextRound = dbService.getERoundService().createRound(nexTeam.getIdteam() ,GetTask(),currentGame.getIdgame(),numberRoundNext,numberGameNext,null,false);
+                idNextRound = dbService.getERoundService().createRound(nexTeam.getIdteam() ,GetTask(),currentGame.getIdgame(),numberRoundNext,numberGameNext,null,false, currentGame.getSeconds());
                              //отображение следующего игрока
                 ShowNextTeamPlay(nexTeam,numberRoundNext);
             }
@@ -246,6 +257,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
     }
 
     private void ConratulationWinner() {
+        dbService.getEGameService().setFinishGame(currentGame.getIdgame(),true);
         Intent intent = new Intent(this, CongratulationActivity.class);
         intent.putExtra("idTeam", teamPlayerWin.getIdTeam());
         intent.putExtra("score", teamPlayerWin.getScoreAll());

@@ -16,6 +16,11 @@ public class Round extends RealmObject {
     int numberGame;
     String idteamLastWord;
     boolean isTaskComplete;
+    int timeToFinish;
+
+    public int getTimeToFinish(){return timeToFinish;}
+
+    public void setTimeToFinish(int timeToFinish){this.timeToFinish = timeToFinish;}
 
     public int getNumberGame() {
         return numberGame;

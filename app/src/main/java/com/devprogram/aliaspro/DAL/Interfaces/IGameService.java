@@ -17,4 +17,5 @@ public interface IGameService {
             ,boolean penalty, int countwords, int seconds,boolean isfinishgame);
     String deleteGame(String idgame);
     String setFinishGame(String idgame,boolean isfinishgame);
+    Game getLastGame();
 }

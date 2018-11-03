@@ -81,4 +81,9 @@ public class EGameService implements IGameService {
         realm.commitTransaction();
         return idgame;
     }
+
+    @Override
+    public Game getLastGame() {
+        return realm.where(Game.class).findAll().last();
+    }
 }

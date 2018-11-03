@@ -127,6 +127,8 @@ public class RoundResultActivity extends AppCompatActivity {
             String idTeamLastWordWin = getIntent().getStringExtra("idTeamLastWordWin");
             dbService = new DbService();
             round = dbService.getERoundService().getRound(idRound);
+            //установим время раунда -1 т.е. при выборе продолжить будет запущено активити BeginGame
+            dbService.getERoundService().setTimeToFinishRound(idRound,-1);
             allShowedWords = dbService.getEWordService().getShowedRoundWords(idRound);
             team = dbService.getETeamService().getTeam(round.getTeam());
             if(!idTeamLastWordWin.isEmpty())

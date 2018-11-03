@@ -33,7 +33,7 @@ public class ERoundService implements IRoundService {
     }
 
     @Override
-    public String createRound(String idteam, String idtask, String idgame, int numberRound, int numberGame, String idTeamLastWord, Boolean taskComplete) {
+    public String createRound(String idteam, String idtask, String idgame, int numberRound, int numberGame, String idTeamLastWord, Boolean taskComplete, int timeToFinish ) {
         String idround = UUID.randomUUID().toString();
         realm.beginTransaction();
         Round round = realm.createObject(Round.class,idround);
@@ -44,12 +44,13 @@ public class ERoundService implements IRoundService {
         round.setNumberGame(numberGame);
         round.setIdteamLastWord(idTeamLastWord);
         round.setIsTaskComplete(taskComplete);
+        round.setTimeToFinish(timeToFinish);
         realm.commitTransaction();
         return idround;
     }
 
     @Override
-    public String updateRound(String idround, String idteam, String idtask, String idgame, int numberRound, int numberGame, String idTeamLastWord, Boolean taskComplete) {
+    public String updateRound(String idround, String idteam, String idtask, String idgame, int numberRound, int numberGame, String idTeamLastWord, Boolean taskComplete, int timeToFinish ) {
         realm.beginTransaction();
         Round round = realm.where(Round.class).equalTo("idround",idround).findFirst();
         round.setTeam(idteam);
@@ -59,6 +60,7 @@ public class ERoundService implements IRoundService {
         round.setNumberGame(numberGame);
         round.setIdteamLastWord(idTeamLastWord);
         round.setIsTaskComplete(taskComplete);
+        round.setTimeToFinish(timeToFinish);
         realm.commitTransaction();
         return idround;
     }
@@ -107,5 +109,20 @@ public class ERoundService implements IRoundService {
         round.setNumberGame(numberGame);
         realm.commitTransaction();
         return idround;
+    }
+
+    @Override
+    public Round getLastRoundByGame(String idgame) {
+        Round round = realm.where(Round.class).equalTo("idgame",idgame).findAll().last();
+        return round;
+    }
+
+    @Override
+    public String setTimeToFinishRound(String idround, int timeToFinish) {
+         realm.beginTransaction();
+         Round round = realm.where(Round.class).equalTo("idround",idround).findFirst();
+         round.setTimeToFinish(timeToFinish);
+         realm.commitTransaction();
+         return idround;
     }
 }

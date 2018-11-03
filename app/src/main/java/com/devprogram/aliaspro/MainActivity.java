@@ -6,7 +6,10 @@ import android.net.Uri;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
@@ -14,6 +17,8 @@ import com.devprogram.aliaspro.Helpers.AdMobCreater;
 import com.devprogram.aliaspro.Helpers.IAdMobCreater;
 import com.devprogram.aliaspro.Initializer.Emplementations.InitialDataDb;
 import com.devprogram.aliaspro.Initializer.Interfaces.IInitDB;
+import com.devprogram.aliaspro.Models.Game;
+import com.devprogram.aliaspro.Models.Round;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -21,11 +26,13 @@ import com.google.android.gms.ads.MobileAds;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class MainActivity extends AppCompatActivity   {
+public class MainActivity extends AppCompatActivity {
 
     private String nameDb = "aliasdb.realm";
     IInitDB initDb;
     IDbService dbService;
+    Game lastGame;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +42,39 @@ public class MainActivity extends AppCompatActivity   {
         dbService = new DbService();
         initDb = new InitialDataDb(dbService);
         initDb.InitializeItems();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        CheckLastGameIsFinish();
+    }
+
+
+    //проверка последней игры - закончена то кнопка продолжить задизэйблена или не закончена то продолжить
+    //необходимо активити для продолжения и время прерывания для старта в playgame
+    private void CheckLastGameIsFinish() {
+        Button btnContinue = findViewById(R.id.btnContinue);
+        if (!dbService.getEGameService().getGames().isEmpty()) {
+            lastGame = dbService.getEGameService().getLastGame();
+            Boolean isFinish = lastGame.getIsfinishgame();
+            if (isFinish) {
+                btnContinue.setEnabled(false);
+                btnContinue.setBackgroundResource(R.drawable.button_round_corner_disable);
+            } else {
+                btnContinue.setEnabled(true);
+                btnContinue.setBackgroundResource(R.drawable.button_rounded_corner);
+            }
+        } else {
+            btnContinue.setEnabled(false);
+            btnContinue.setBackgroundResource(R.drawable.button_round_corner_disable);
+        }
     }
 
     private void CreateAdMob() {
         IAdMobCreater adMobCreater = new AdMobCreater();
-        adMobCreater.InitAdMobBanner(findViewById(R.id.bannerAdmobFragmentMain),getApplicationContext(),getResources().getString(R.string.admob_pub_id));
+        adMobCreater.InitAdMobBanner(findViewById(R.id.bannerAdmobFragmentMain), getApplicationContext(), getResources().getString(R.string.admob_pub_id));
     }
 
 
@@ -54,35 +89,48 @@ public class MainActivity extends AppCompatActivity   {
     }
 
     //новая игра
-    public void btnNewGame_Click(View v)
-    {
+    public void btnNewGame_Click(View v) {
         Intent intent = new Intent(MainActivity.this, SettingsGameActivity.class);
         startActivity(intent);
     }
 
-   //продолжить
-    public void btnContinue_Click(View v)
-    {
-        //TODO сделать обработку при нажатии на продолжение игры
+    //продолжить иру
+    public void btnContinue_Click(View v) {
+        try {
+            Round round = dbService.getERoundService().getLastRoundByGame(lastGame.getIdgame());
+            Intent intent;
+            //если игра прервалась в процессе раунда
+            if (round.getTimeToFinish() > -1) {
+                intent = new Intent(this, PlayGameActivity.class);
+                intent.putExtra("idRound", round.getIdround());
+            } else//если игра прервалась по окончании раунда
+            {
+                intent = new Intent(this, BeginGameActivity.class);
+                intent.putExtra("idRound", round.getIdround());
+                intent.putExtra("idGame", lastGame.getIdgame());
+            }
+            startActivity(intent);
+        } catch (Exception er) {
+            Log.e("MAIN_CONTINUEBTN", er.getMessage());
+        }
     }
 
-    public void btnHowToPlay_Click(View v)
-    {
+    //правила игры
+    public void btnHowToPlay_Click(View v) {
         Intent intent = new Intent(MainActivity.this, RulesActivity.class);
         startActivity(intent);
     }
 
-    public void btnLike_Click(View v)
-    {
+    public void btnLike_Click(View v) {
         //FIXME поменять ссылку на игру
+
         String urlAppInGooglePlay = "https://play.google.com/store/apps/details?id=cardsofwords.cardsofwords";
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlAppInGooglePlay));
         startActivity(intent);
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         dbService.CloseDb();
         super.onDestroy();
     }
