@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
@@ -22,6 +23,7 @@ import com.devprogram.aliaspro.Models.Round;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -35,14 +37,21 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ConfigRealm();
-        CreateAdMob();
-        dbService = new DbService();
-        initDb = new InitialDataDb(dbService);
-        initDb.InitializeItems();
+       try{
+           super.onCreate(savedInstanceState);
 
+           setContentView(R.layout.activity_main);
+           ConfigRealm();
+           CreateAdMob();
+           dbService = new DbService();
+           initDb = new InitialDataDb(dbService);
+           initDb.InitializeItems();
+       }
+       catch(Exception er)
+       {
+            Crashlytics.logException(er);
+            Log.e("MAIN_ERR", er.getMessage());
+       }
     }
 
     @Override
