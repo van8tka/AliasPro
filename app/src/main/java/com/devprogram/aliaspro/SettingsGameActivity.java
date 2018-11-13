@@ -186,8 +186,9 @@ public class SettingsGameActivity extends AppCompatActivity {
     public void addDictionaryToGame_Click(View view)
     {
         TextView tvDictionaryName = findViewById(R.id.tvDictionaryName);
+        TextView tvDictionaryDescription = findViewById(R.id.tvDictionaryDescription);
         //создание диалогового окна выбора словаря
-        SelectDictionaryDialog selectDictionaryDialog = new SelectDictionaryDialog(this,dbService, tvDictionaryName);
+        SelectDictionaryDialog selectDictionaryDialog = new SelectDictionaryDialog(this,dbService, tvDictionaryName,tvDictionaryDescription);
         selectDictionaryDialog.show();
     }
 

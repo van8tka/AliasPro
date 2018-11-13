@@ -35,13 +35,15 @@ public class SelectDictionaryDialog extends Dialog {
  IDbService dbService;
  Activity activity;
  TextView tvSelectedDictionaryName;
+ TextView tvDictionaryDescription;
 
- public SelectDictionaryDialog(@NonNull Activity activity, IDbService dbService, TextView tvSelectedDictionaryName)
+ public SelectDictionaryDialog(@NonNull Activity activity, IDbService dbService, TextView tvSelectedDictionaryName, TextView tvDictionaryDescription)
  {
      super(activity);
      this.activity = activity;
      this.dbService = dbService;
      this.tvSelectedDictionaryName = tvSelectedDictionaryName;
+     this.tvDictionaryDescription = tvDictionaryDescription;
  }
 
     @Override
@@ -60,6 +62,7 @@ public class SelectDictionaryDialog extends Dialog {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     ((SettingsGameActivity)activity).dictionary = listDictionary.get(position);
                     tvSelectedDictionaryName.setText(listDictionary.get(position).getName());
+                    tvDictionaryDescription.setText(listDictionary.get(position).getDescription());
                      cancel();
                 }
             });
