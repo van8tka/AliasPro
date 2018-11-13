@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
@@ -67,6 +68,7 @@ public class RoundResultActivity extends AppCompatActivity {
         }
         catch(Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("OnCREATEROUNDRES",er.getMessage());
         }
     }
@@ -108,6 +110,7 @@ public class RoundResultActivity extends AppCompatActivity {
         }
         catch(Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("SETTASKSCORE",er.getMessage());
         }
     }
@@ -138,6 +141,7 @@ public class RoundResultActivity extends AppCompatActivity {
         }
         catch(Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("ERROR GET DATA R",er.getMessage());
         }
     }
@@ -149,8 +153,10 @@ public class RoundResultActivity extends AppCompatActivity {
             intent.putExtra("idGame",round.getGame());
             intent.putExtra("idRound",round.getIdround());
             startActivity(intent);
-        }catch(Exception er)
+        }
+        catch(Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("btnGOCHOSEnextTeam", er.getMessage());
         }
     }
@@ -193,6 +199,7 @@ class CustomDialogTaskCompleted extends Dialog implements View.OnClickListener {
         }
         catch(Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("ONCREATECUSTOMDIALDESC",er.getMessage());
         }
     }
@@ -208,13 +215,20 @@ class CustomDialogTaskCompleted extends Dialog implements View.OnClickListener {
 
     private void SetRoundTaskCompleted(boolean iscompleted, int score)
     {
-        tvTaskScore.setText(String.valueOf(score));
-        dbService.getERoundService().changeTaskComplete(round.getIdround(),iscompleted);
-        int currentScoreR = dbService.getEPlayingTeamsService().getPlayingTeams(round.getTeam(),round.getGame()).getScoreRound();
-        int currentScoreA = dbService.getEPlayingTeamsService().getPlayingTeams(round.getTeam(),round.getGame()).getScoreAll();
-        dbService.getEPlayingTeamsService().updatePlayingTeams(round.getTeam(),round.getGame(),currentScoreR+score,currentScoreA+score);
-        tvScoreAll.setText(String.valueOf(currentScoreR+score));
-        cancel();
+        try{
+            tvTaskScore.setText(String.valueOf(score));
+            dbService.getERoundService().changeTaskComplete(round.getIdround(),iscompleted);
+            int currentScoreR = dbService.getEPlayingTeamsService().getPlayingTeams(round.getTeam(),round.getGame()).getScoreRound();
+            int currentScoreA = dbService.getEPlayingTeamsService().getPlayingTeams(round.getTeam(),round.getGame()).getScoreAll();
+            dbService.getEPlayingTeamsService().updatePlayingTeams(round.getTeam(),round.getGame(),currentScoreR+score,currentScoreA+score);
+            tvScoreAll.setText(String.valueOf(currentScoreR+score));
+            cancel();
+        }
+        catch (Exception er)
+        {
+            Crashlytics.logException(er);
+            Log.e("ROUNDRES_SETROUN", er.getMessage());
+        }
     }
 }
 

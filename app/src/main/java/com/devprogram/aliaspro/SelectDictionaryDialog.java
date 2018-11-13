@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Dictionary;
@@ -27,7 +30,6 @@ import java.util.List;
 
 
 public class SelectDictionaryDialog extends Dialog {
-
 
  ListView listView;
  IDbService dbService;
@@ -71,7 +73,8 @@ public class SelectDictionaryDialog extends Dialog {
         }
         catch (Exception er)
         {
-            String error = er.getMessage();
+            Crashlytics.logException(er);
+            Log.e("Create_SEL_DIC", er.getMessage());
         }
     }
 
@@ -112,40 +115,46 @@ public class SelectDictionaryDialog extends Dialog {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
-        Dictionary dictionary = (Dictionary)getItem(position);
-        Language langDictionary = dbService.getELanguageService().getLanguage(dictionary.getLanguage());
-        Difficulty difficultyDictionary = dbService.getEDifficultyService().getDifficulty(dictionary.getDifficulty());
-        if(view==null)
+        try{
+            View view = convertView;
+            Dictionary dictionary = (Dictionary)getItem(position);
+            Language langDictionary = dbService.getELanguageService().getLanguage(dictionary.getLanguage());
+            Difficulty difficultyDictionary = dbService.getEDifficultyService().getDifficulty(dictionary.getDifficulty());
+            if(view==null)
+            {
+                view = ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_dictionary, parent, false);
+            }
+            TextView name = view.findViewById(R.id.tvDictionaryName);
+            TextView description = view.findViewById(R.id.tvDictionaryDescription);
+            ImageView lang = view.findViewById(R.id.imgDictionaryLanguage);
+            TextView difficulty = view.findViewById(R.id.tvDictionaryDifficulty);
+            TextView count = view.findViewById(R.id.tvDictionaryCounts);
+            TextView price = view.findViewById(R.id.tvDictionaryPrice);
+            ImageView img = view.findViewById(R.id.imgDictionary);
+            int idImg = context.getResources().getIdentifier(dictionary.getAvatar(),"drawable",context.getPackageName());
+            img.setImageResource(idImg);
+            name.setText(dictionary.getName());
+            description.setText(dictionary.getDescription());
+            int idImgLang = context.getResources().getIdentifier(langDictionary.getAvatar(),"drawable",context.getPackageName());
+            lang.setImageResource(idImgLang);
+            difficulty.setText(difficultyDictionary.getName());
+            int countWords = dbService.getEDictionaryService().getWordsCount(dictionary.getIddictionary());
+            count.setText( Integer.toString(countWords));
+            if(dictionary.getPrice()!=null){
+                price.setText(dictionary.getPrice()+"$");
+            }
+            else
+            {
+                price.setText("");
+            }
+            return view;
+        }
+        catch (Exception er)
         {
-            view = ((LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.row_dictionary, parent, false);
+            Crashlytics.logException(er);
+            Log.e("SEL_DICT", er.getMessage());
+            return  convertView;
         }
-
-        TextView name = view.findViewById(R.id.tvDictionaryName);
-        TextView description = view.findViewById(R.id.tvDictionaryDescription);
-       // TextView lang = view.findViewById(R.id.tvDictionaryLanguage);
-        ImageView lang = view.findViewById(R.id.imgDictionaryLanguage);
-        TextView difficulty = view.findViewById(R.id.tvDictionaryDifficulty);
-        TextView count = view.findViewById(R.id.tvDictionaryCounts);
-        TextView price = view.findViewById(R.id.tvDictionaryPrice);
-        ImageView img = view.findViewById(R.id.imgDictionary);
-        int idImg = context.getResources().getIdentifier(dictionary.getAvatar(),"drawable",context.getPackageName());
-        img.setImageResource(idImg);
-        name.setText(dictionary.getName());
-        description.setText(dictionary.getDescription());
-        int idImgLang = context.getResources().getIdentifier(langDictionary.getAvatar(),"drawable",context.getPackageName());
-        lang.setImageResource(idImgLang);
-        difficulty.setText(difficultyDictionary.getName());
-        int countWords = dbService.getEDictionaryService().getWordsCount(dictionary.getIddictionary());
-        count.setText( Integer.toString(countWords));
-        if(dictionary.getPrice()!=null){
-            price.setText(dictionary.getPrice()+"$");
-        }
-        else
-        {
-            price.setText("");
-        }
-        return view;
     }
 }
 

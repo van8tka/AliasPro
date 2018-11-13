@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
@@ -59,6 +60,7 @@ public class BeginGameActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }catch(Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("ONCREBEGINACT",er.getMessage());
         }
     }
@@ -82,6 +84,7 @@ public class BeginGameActivity extends AppCompatActivity {
         }
         catch (Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("BEGIN_RESUME",er.getMessage());
         }
     }
@@ -89,6 +92,14 @@ public class BeginGameActivity extends AppCompatActivity {
 
 
     private void GetDefaultData(String idGame) {
+        try{
+
+        }
+        catch (Exception er)
+        {
+            Crashlytics.logException(er);
+            Log.e("GETDATBEGING",er.getMessage(),er);
+        }
         dbService = new DbService();
         currentGame = dbService.getEGameService().getGame(idGame);
         listTeam = dbService.getEPlayingTeamsService().getListTeamByGame(idGame);
@@ -125,6 +136,7 @@ public class BeginGameActivity extends AppCompatActivity {
         }
         catch (Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("CONFCHANGE",er.getMessage());
         }
     }
@@ -184,6 +196,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
         }
         catch (Exception er)
         {
+            Crashlytics.logException(er);
             Log.e(TAG_BEGIN_GAME,er.getMessage());
         }
     }
@@ -228,6 +241,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
         }
         catch(Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("CHECK_WINNER",er.getMessage());
             return false;
         }
@@ -329,6 +343,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                 }
                 catch(Exception er)
                 {
+                    Crashlytics.logException(er);
                     Log.e("ADAPTTEAMSCORE", er.getMessage());
                     return view;
                 }

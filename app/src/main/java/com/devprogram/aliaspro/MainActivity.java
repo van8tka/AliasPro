@@ -3,13 +3,13 @@ package com.devprogram.aliaspro;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.FragmentTransaction;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+
 
 import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
@@ -20,9 +20,7 @@ import com.devprogram.aliaspro.Initializer.Emplementations.InitialDataDb;
 import com.devprogram.aliaspro.Initializer.Interfaces.IInitDB;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Round;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
+
 
 
 import io.realm.Realm;
@@ -37,21 +35,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       try{
-           super.onCreate(savedInstanceState);
+        try {
+            super.onCreate(savedInstanceState);
 
-           setContentView(R.layout.activity_main);
-           ConfigRealm();
-           CreateAdMob();
-           dbService = new DbService();
-           initDb = new InitialDataDb(dbService);
-           initDb.InitializeItems();
-       }
-       catch(Exception er)
-       {
+            setContentView(R.layout.activity_main);
+            ConfigRealm();
+            CreateAdMob();
+            dbService = new DbService();
+            initDb = new InitialDataDb(dbService);
+            initDb.InitializeItems();
+        } catch (Exception er) {
             Crashlytics.logException(er);
             Log.e("MAIN_ERR", er.getMessage());
-       }
+        }
     }
 
     @Override
@@ -64,20 +60,25 @@ public class MainActivity extends AppCompatActivity {
     //проверка последней игры - закончена то кнопка продолжить задизэйблена или не закончена то продолжить
     //необходимо активити для продолжения и время прерывания для старта в playgame
     private void CheckLastGameIsFinish() {
-        Button btnContinue = findViewById(R.id.btnContinue);
-        if (!dbService.getEGameService().getGames().isEmpty()) {
-            lastGame = dbService.getEGameService().getLastGame();
-            Boolean isFinish = lastGame.getIsfinishgame();
-            if (isFinish) {
+        try {
+            Button btnContinue = findViewById(R.id.btnContinue);
+            if (!dbService.getEGameService().getGames().isEmpty()) {
+                lastGame = dbService.getEGameService().getLastGame();
+                Boolean isFinish = lastGame.getIsfinishgame();
+                if (isFinish) {
+                    btnContinue.setEnabled(false);
+                    btnContinue.setBackgroundResource(R.drawable.button_round_corner_disable);
+                } else {
+                    btnContinue.setEnabled(true);
+                    btnContinue.setBackgroundResource(R.drawable.button_rounded_corner);
+                }
+            } else {
                 btnContinue.setEnabled(false);
                 btnContinue.setBackgroundResource(R.drawable.button_round_corner_disable);
-            } else {
-                btnContinue.setEnabled(true);
-                btnContinue.setBackgroundResource(R.drawable.button_rounded_corner);
             }
-        } else {
-            btnContinue.setEnabled(false);
-            btnContinue.setBackgroundResource(R.drawable.button_round_corner_disable);
+        } catch (Exception er) {
+            Crashlytics.logException(er);
+            Log.e("MAIN_CHECKLAST", er.getMessage());
         }
     }
 
@@ -120,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             }
             startActivity(intent);
         } catch (Exception er) {
+            Crashlytics.logException(er);
             Log.e("MAIN_CONTINUEBTN", er.getMessage());
         }
     }

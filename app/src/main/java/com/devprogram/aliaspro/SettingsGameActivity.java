@@ -13,6 +13,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
@@ -45,8 +46,7 @@ public class SettingsGameActivity extends AppCompatActivity {
     public Dictionary dictionary;
     RealmList<Team> teamListInGame;
     private static final String  TAG_LOG = "SettingsGameActivity";
-
-
+    private static final String  TAG_LOG1 = "SettingsGameActivity1";
 
 
     @Override
@@ -72,6 +72,7 @@ public class SettingsGameActivity extends AppCompatActivity {
         }
       catch (Exception er)
       {
+          Crashlytics.logException(er);
           Log.e(TAG_LOG,er.getMessage());
       }
     }
@@ -174,7 +175,8 @@ public class SettingsGameActivity extends AppCompatActivity {
         }
         catch(Exception er)
         {
-            Log.e(TAG_LOG, er.getMessage());
+            Crashlytics.logException(er);
+            Log.e(TAG_LOG1, er.getMessage());
         }
     }
 

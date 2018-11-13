@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
@@ -505,6 +506,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
         catch (Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("SHOWNEXTWORD",er.getMessage());
         }
 
@@ -584,6 +586,7 @@ class CustomDialogLastWord extends Dialog {
         }
         catch(Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("DIAL_LAST_WIN",er.getMessage());
         }
     }
@@ -633,6 +636,7 @@ class CustomDialogTaskDescription extends Dialog implements View.OnClickListener
         }
         catch(Exception er)
         {
+            Crashlytics.logException(er);
             Log.e("ONCREATECUSTOMDIALDESC",er.getMessage());
         }
     }
