@@ -32,6 +32,7 @@
             />
         <activity
             android:name=".RoundResultActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/label_roundresult_activity"
             android:noHistory="true" />
         <activity
@@ -41,6 +42,7 @@
             android:noHistory="true" />
         <activity
             android:name=".PlayGameActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:noHistory="true" />
         <activity
             android:name=".CongratulationActivity"

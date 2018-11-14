@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.UserDictionary;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,7 +88,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 
             GetData();
             String nameTeam = team.getName();
-            this.setTitle(nameTeam);
+            setToolbarCustom(nameTeam, team.getAvatar());
+           // this.setTitle(nameTeam);
 
             CreateAdMob();
             tvGuesed = findViewById(R.id.tvCoutGuessed);
@@ -101,13 +104,10 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             _tvLastWordShow = findViewById(R.id.tvLastWordShow);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             tvWord.setText(showedWord.getName());
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
             rlDialog.setOnTouchListener(this);
             countGuesedWord = 0;
             countSkipedWord = 0;
             SetTask();
-
         }
         catch (Exception er)
         {
@@ -116,7 +116,27 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
     }
 
-//проверка соответствия времени и запуск при продолжении игры
+    private void setToolbarCustom(String nameTeam, String avatar) {
+        try
+        {
+            Toolbar tb =  findViewById(R.id.toolbarCustom);
+            TextView tvTeamName =  tb.findViewById(R.id.tvToolbarCommandName);
+            tvTeamName.setText(nameTeam);
+            ImageView imgView = findViewById(R.id.imgToolbarAvatar);
+            int idImg = getResources().getIdentifier(avatar,"drawable",this.getPackageName());
+            imgView.setImageResource(idImg);
+            setSupportActionBar(tb);
+            final ActionBar ab = getSupportActionBar();
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+        catch (Exception er)
+        {
+            Crashlytics.logException(er);
+            Log.e("TOOLBARCUST",er.getMessage());
+        }
+    }
+
+    //проверка соответствия времени и запуск при продолжении игры
     @Override
     public void onResume()
     {

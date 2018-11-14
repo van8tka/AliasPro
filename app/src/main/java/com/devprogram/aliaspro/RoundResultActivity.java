@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,10 +53,10 @@ public class RoundResultActivity extends AppCompatActivity {
         {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_round_result);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+          //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             GetData();
-            this.setTitle(team.getName());
+            setToolbarCustom( team.getName(), team.getAvatar());
             tvScore = findViewById(R.id.tvPointsCountRound);
             tvScore.setText(String.valueOf(points));
             listView = findViewById(R.id.lvShowWordRound);
@@ -73,7 +75,25 @@ public class RoundResultActivity extends AppCompatActivity {
         }
     }
 
-
+    private void setToolbarCustom(String nameTeam, String avatar) {
+        try
+        {
+            Toolbar tb =  findViewById(R.id.toolbarCustom);
+            TextView tvTeamName =  tb.findViewById(R.id.tvToolbarCommandName);
+            tvTeamName.setText(nameTeam);
+            ImageView imgView = findViewById(R.id.imgToolbarAvatar);
+            int idImg = getResources().getIdentifier(avatar,"drawable",this.getPackageName());
+            imgView.setImageResource(idImg);
+            setSupportActionBar(tb);
+            final ActionBar ab = getSupportActionBar();
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+        catch (Exception er)
+        {
+            Crashlytics.logException(er);
+            Log.e("TOOLBARCUST",er.getMessage());
+        }
+    }
 
     private void SetTeamLastWordWin(TextView tvName, TextView tvLast, Team teamWinLastWord) {
         Game game = dbService.getEGameService().getGame(round.getGame());

@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:weightSum="3">
+        <include layout="@layout/toolbar_with_avatar"/>
 <LinearLayout
     android:layout_weight="3"
     android:orientation="vertical"
