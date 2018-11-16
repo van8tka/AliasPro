@@ -37,6 +37,7 @@
             android:noHistory="true" />
         <activity
             android:name=".BeginGameActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"
             android:label="@string/label_rating_activity"
             android:noHistory="true" />

@@ -3,8 +3,10 @@ package com.devprogram.aliaspro;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -57,13 +59,35 @@ public class BeginGameActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             isChangeOrientation = false;
             setContentView(R.layout.activity_begin_game);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+           // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setToolbarCustom(getResources().getString(R.string.label_rating_activity), null);
         }catch(Exception er)
         {
             Crashlytics.logException(er);
             Log.e("ONCREBEGINACT",er.getMessage());
         }
     }
+
+    private void setToolbarCustom(String nameTeam, String avatar) {
+        try
+        {
+            Toolbar tb =  findViewById(R.id.toolbarCustom);
+            TextView tvTeamName =  tb.findViewById(R.id.tvToolbarCommandName);
+            tvTeamName.setText(nameTeam);
+//            ImageView imgView = findViewById(R.id.imgToolbarAvatar);
+//            int idImg = getResources().getIdentifier(avatar,"drawable",this.getPackageName());
+//            imgView.setImageResource(idImg);
+            setSupportActionBar(tb);
+            final ActionBar ab = getSupportActionBar();
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
+        catch (Exception er)
+        {
+            Crashlytics.logException(er);
+            Log.e("TOOLBARCUST",er.getMessage());
+        }
+    }
+
 
     @Override
     public void onResume()

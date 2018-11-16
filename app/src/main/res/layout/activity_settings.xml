@@ -334,12 +334,11 @@
         android:layout_weight="0">
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/btnNext"
+        android:layout_height="50dp"
+        style="@style/StyleButtonGo"
+        android:text="@string/btnNextStep"
         android:id="@+id/btnToWords"
-        android:textColor="@color/colorWhite"
         android:onClick="btnNextToChooseWords_Click"
-        android:background="@color/colorPrimary"
         />
 
  </LinearLayout>

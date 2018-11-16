@@ -6,7 +6,7 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-   <include layout="@layout/toolbar_with_avatar"/>
+    <include layout="@layout/toolbar_with_avatar"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

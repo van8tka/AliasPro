@@ -111,9 +111,8 @@
             android:id="@+id/btnGoToChoseNextCommand"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorPrimary"
+            style="@style/StyleButtonGo"
             android:text="@string/btnNextStep"
-            android:textColor="@color/colorWhite"
             android:onClick="btnGoToChoseNextTeam_Click"
            />
 

@@ -64,12 +64,10 @@
     <Button
         android:id="@+id/btnEndGame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:layout_height="50dp"
         android:onClick="btnEndGame_Click"
         android:text="@string/btnContinue"
-        android:textColor="@color/colorWhite"
-
+        style="@style/StyleButtonGo"
         />
 
     </LinearLayout>
