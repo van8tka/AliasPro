@@ -10,6 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+u
+
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/SplashTheme">
@@ -58,6 +60,12 @@
             android:name="io.fabric.ApiKey"
             android:value="94d0589a26b58235d1e5cad1bab4debc4c1147a9"
             />
+        <service android:name=".Messaging.CustomMessageService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
