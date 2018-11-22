@@ -55,6 +55,7 @@
     <string name="banner_ad_unit_id">ca-app-pub-5351987413735598/8339138455</string>
     <string name="admob_pub_id">ca-app-pub-5351987413735598~4651174887</string>
 
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
     <string name="label_rules_activity">Правила игры</string>
     <string name="label_settings_activity">Настройки игры</string>
@@ -62,8 +63,5 @@
     <string name="label_rating_activity">Рейтинг команд</string>
     <string name="label_roundresult_activity">Результат раунда</string>
     <string name="label_congratulate_activity">Поздравление победителя</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
