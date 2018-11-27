@@ -19,6 +19,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import org.json.JSONObject;
 
+import java.util.Locale;
 import java.util.Map;
 
 public class CustomMessageService extends FirebaseMessagingService
@@ -33,12 +34,14 @@ public class CustomMessageService extends FirebaseMessagingService
     public void onMessageReceived(RemoteMessage remoteMessage)
     {
         super.onMessageReceived(remoteMessage);
-        Map<String,String> params = remoteMessage.getData();
-        JSONObject object = new JSONObject(params);
-        showNotification(remoteMessage.getNotification().getBody());
+        String language = remoteMessage.getData().get("lang");
+        String link = remoteMessage.getData().get("link");
+        String systemLang = Locale.getDefault().getLanguage();
+        if(language == null || language.equalsIgnoreCase(systemLang))
+            showNotification(remoteMessage.getNotification().getBody(), link);
     }
 
-    private void showNotification(String body) {
+    private void showNotification(String body, String link ) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
@@ -61,6 +64,5 @@ public class CustomMessageService extends FirebaseMessagingService
             manager.createNotificationChannel(chan);
         }
         manager.notify(0,notify.build());
-
     }
 }
