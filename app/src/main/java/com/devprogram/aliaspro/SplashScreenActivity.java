@@ -1,6 +1,7 @@
 package com.devprogram.aliaspro;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +20,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         FirebaseMessagingRegister();
+        String link = getIntent().getStringExtra("link");
                 Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                if(link!=null)
+                    intent.putExtra("link",link);
                 startActivity(intent);
                 finish();
     }
@@ -33,4 +37,6 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

@@ -10,8 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-u
-
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/SplashTheme">
@@ -20,9 +18,11 @@ u
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".RulesActivity"
             android:label="@string/label_rules_activity"
@@ -65,7 +65,14 @@ u
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_notify"/>
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming notification message. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorPrimaryDark"/>
     </application>
 
 </manifest>

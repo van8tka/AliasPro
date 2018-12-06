@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            ChechInvokeLinkFromNotification();
             ConfigRealm();
             CreateAdMob();
             dbService = new DbService();
@@ -46,6 +47,24 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception er) {
             Crashlytics.logException(er);
             Log.e("MAIN_ERR", er.getMessage());
+        }
+    }
+
+    //переход по ссылке в уведомлении
+    private void ChechInvokeLinkFromNotification() {
+        try{
+            String link = getIntent().getStringExtra("link");
+            if(link!=null)
+            {
+                Uri uri = Uri.parse(link);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+        }
+        catch(Exception er)
+        {
+            Crashlytics.logException(er);
+            Log.e("CHECKLINKInMAIN",er.getMessage());
         }
     }
 

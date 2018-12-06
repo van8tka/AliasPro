@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -30,6 +31,7 @@ public class CustomMessageService extends FirebaseMessagingService
         super.onNewToken(s);
         Log.e("NEW_TOKEN",s);
     }
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage)
     {
@@ -43,14 +45,16 @@ public class CustomMessageService extends FirebaseMessagingService
 
     private void showNotification(String body, String link ) {
         Intent intent = new Intent(this, MainActivity.class);
+        if(link!=null)
+            intent.putExtra("link",link);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
-
         String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         NotificationCompat.Builder notify = new NotificationCompat.Builder(this,"CHANEL_ID")
                 .setSmallIcon(R.mipmap.ic_notify)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher))
                 .setContentTitle("ALIAS PRO")
                 .setContentText(body)
                 .setAutoCancel(true)
