@@ -31,6 +31,15 @@ public class CustomMessageService extends FirebaseMessagingService
         super.onNewToken(s);
         Log.e("NEW_TOKEN",s);
     }
+    //data notification example
+    //    {
+    //        lang:ru;
+    //        link:https://play.google.com/;
+    //        click_action:MAIN
+    //    }
+    //set Manifest properies, SplashScreenActivity getExtras when background and MainActivity invoke link
+
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage)
