@@ -17,6 +17,7 @@ import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
+import com.devprogram.aliaspro.Helpers.Constants;
 import com.devprogram.aliaspro.Helpers.IAdMobCreater;
 import com.devprogram.aliaspro.Initializer.Emplementations.InitialDataDb;
 import com.devprogram.aliaspro.Initializer.Interfaces.IInitDB;
@@ -40,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
             CheckVersionApp();
+            setContentView(R.layout.activity_main);
             ChechInvokeLinkFromNotification();
             ConfigRealm();
             CreateAdMob();
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(),0);
             Float version = (float)info.versionCode;
-            RestServiceGetVersionApp restService = new RestServiceGetVersionApp(new NetConnection(this), version);
+            RestServiceGetVersionApp restService = new RestServiceGetVersionApp(new NetConnection(this), version, this);
             restService.execute();
         }
         catch (Exception e)
@@ -171,10 +172,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnLike_Click(View v) {
-        //FIXME поменять ссылку на игру
-
-        String urlAppInGooglePlay = "https://play.google.com/store/apps/details?id=cardsofwords.cardsofwords";
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlAppInGooglePlay));
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.URL_GOOGLEPLAY_ALIASPRO));
         startActivity(intent);
     }
 

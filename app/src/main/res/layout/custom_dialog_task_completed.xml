@@ -8,20 +8,23 @@
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:textSize="22sp"
+        android:textSize="21sp"
         android:textColor="@color/colorPrimaryCustom2"
         android:gravity="center_horizontal"
         android:textStyle="bold"
-
+        android:id="@+id/tvCustomDialogTitle"
         android:text="@string/strTaskScoreName"/>
 
         <TextView
+            android:id="@+id/tvCustomDialogContent"
             android:gravity="center_horizontal|center_vertical"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="30dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="20sp"
+            android:textSize="19sp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
             android:textColor="@color/colorPrimaryDark"
             android:text="@string/strTaskCompletedAsk"
             />
