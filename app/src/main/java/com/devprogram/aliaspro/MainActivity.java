@@ -32,7 +32,6 @@ import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String nameDb = "aliasdb.realm";
     IInitDB initDb;
     IDbService dbService;
     Game lastGame;
@@ -131,8 +130,9 @@ public class MainActivity extends AppCompatActivity {
     private void ConfigRealm() {
         Realm.init(this);
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
-                .name(nameDb)
+                .name(Constants.REALM_DB_NAME)
                 .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
     }
