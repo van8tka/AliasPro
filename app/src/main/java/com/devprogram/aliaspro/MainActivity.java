@@ -2,6 +2,8 @@ package com.devprogram.aliaspro;
 
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +22,8 @@ import com.devprogram.aliaspro.Initializer.Emplementations.InitialDataDb;
 import com.devprogram.aliaspro.Initializer.Interfaces.IInitDB;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Round;
-
+import com.devprogram.aliaspro.RestService.NetConnection;
+import com.devprogram.aliaspro.RestService.RestServiceGetVersionApp;
 
 
 import io.realm.Realm;
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            CheckVersionApp();
             ChechInvokeLinkFromNotification();
             ConfigRealm();
             CreateAdMob();
@@ -49,6 +53,22 @@ public class MainActivity extends AppCompatActivity {
             Log.e("MAIN_ERR", er.getMessage());
         }
     }
+///метод проверки обновления приложения и предложения обновить
+    private void CheckVersionApp(){
+        try
+        {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(),0);
+            Float version = (float)info.versionCode;
+            RestServiceGetVersionApp restService = new RestServiceGetVersionApp(new NetConnection(this), version);
+            restService.execute();
+        }
+        catch (Exception e)
+        {
+            Crashlytics.logException(e);
+        }
+    }
+
+
 
     //переход по ссылке в уведомлении
     private void ChechInvokeLinkFromNotification() {
