@@ -1,7 +1,7 @@
 package com.devprogram.aliaspro.Helpers;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface IXmlParser {
-    public ArrayList<String> Parse(String fileName);
+     List<String> Parse(String fileName);
 }

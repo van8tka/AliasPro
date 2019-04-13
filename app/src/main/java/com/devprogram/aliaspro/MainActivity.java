@@ -1,18 +1,13 @@
 package com.devprogram.aliaspro;
-
-
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
-
 import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
@@ -25,8 +20,6 @@ import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Round;
 import com.devprogram.aliaspro.RestService.NetConnection;
 import com.devprogram.aliaspro.RestService.RestServiceGetVersionApp;
-
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -46,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             ConfigRealm();
             CreateAdMob();
             dbService = new DbService();
-            initDb = new InitialDataDb(dbService);
+            initDb = new InitialDataDb(dbService, this);
             initDb.InitializeItems();
         } catch (Exception er) {
             Crashlytics.logException(er);
@@ -58,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         try
         {
             PackageInfo info = getPackageManager().getPackageInfo(getPackageName(),0);
-            Float version = (float)info.versionCode;
+            Float version = Float.parseFloat( info.versionName );
             RestServiceGetVersionApp restService = new RestServiceGetVersionApp(new NetConnection(this), version, this);
             restService.execute();
         }
@@ -132,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         RealmConfiguration realmConfig = new RealmConfiguration.Builder()
                 .name(Constants.REALM_DB_NAME)
                 .schemaVersion(1)
-                .deleteRealmIfMigrationNeeded()
+               .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
     }
