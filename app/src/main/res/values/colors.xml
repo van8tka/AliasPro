@@ -7,6 +7,7 @@
     <color name="colorBlack">#333333</color>
     <!--deep pink-->
     <color name="colorYellow">#EE1289</color>
+    <color name="colorYellowMain">#f0ff00</color>
     <!--green color-->
     <color name="colorPrimaryCustom1">#00CD66</color>
     <!--orange color-->
