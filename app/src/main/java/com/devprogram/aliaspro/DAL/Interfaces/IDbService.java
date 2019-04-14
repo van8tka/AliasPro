@@ -11,9 +11,11 @@ import com.devprogram.aliaspro.DAL.Implementations.ETeamService;
 import com.devprogram.aliaspro.DAL.Implementations.EWordService;
 import com.devprogram.aliaspro.DAL.Implementations.EWordStatusService;
 
+import io.realm.Realm;
+
 public interface IDbService {
    void CloseDb();
-     EDictionaryService getEDictionaryService();
+    EDictionaryService getEDictionaryService();
      EDifficultyService getEDifficultyService();
      EGameService getEGameService();
      ELanguageService getELanguageService();

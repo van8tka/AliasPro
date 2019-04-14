@@ -101,8 +101,8 @@ public class InitialDataDb implements IInitDB {
     //установка слов после парсинга xml
     //список слов,            ID языка,               id словаря
     private void setWords(List<String> parse, String idLanguage, String idDictionary) {
-         for (String word : parse) {
-            dbService.getEWordService().createWord(word, idDictionary, idLanguage);
+         for (int i=0;i<parse.size();i++) {
+            dbService.getEWordService().createWord(parse.get(i), idDictionary, idLanguage);
         }
     }
 }
