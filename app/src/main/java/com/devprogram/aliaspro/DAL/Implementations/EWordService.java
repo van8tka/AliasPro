@@ -32,12 +32,12 @@ public class EWordService implements IWordService {
     @Override
     public String createWord(String name, String idDictionary, String idlanguage) {
         String idword = UUID.randomUUID().toString();
-        realm.beginTransaction();
+     //   realm.beginTransaction();
         Word word = realm.createObject(Word.class,idword);
         word.setIddictionary(idDictionary);
         word.setName(name);
         word.setLanguage(idlanguage);
-        realm.commitTransaction();
+    //    realm.commitTransaction();
         return idword;
     }
 

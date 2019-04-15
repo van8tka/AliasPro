@@ -8,6 +8,7 @@ import io.realm.Realm;
 public class DbService implements IDbService {
 
     private Realm realm;
+
     private EDictionaryService eDictionaryService;
     public EDictionaryService getEDictionaryService() {
         return this.eDictionaryService;
@@ -71,7 +72,28 @@ public class DbService implements IDbService {
 
 
     @Override
+    public void RealmBeginTransaction() {
+        realm.beginTransaction();
+    }
+
+    @Override
+    public void RealmCancelTransaction() {
+        realm.cancelTransaction();
+    }
+
+    @Override
+    public void RealmCommitTransaction() {
+        realm.commitTransaction();
+    }
+
+    @Override
+    public Realm getInstanceRealm() {
+        return realm;
+    }
+
+    @Override
     public void CloseDb() {
         realm.close();
     }
+
 }

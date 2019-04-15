@@ -35,13 +35,13 @@ public class ETaskService implements ITaskService {
     @Override
     public String createTask(String name, String description, String avatar, String idlanguage) {
         String idtask = UUID.randomUUID().toString();
-        realm.beginTransaction();
+     //   realm.beginTransaction();
         Task task = realm.createObject(Task.class,idtask);
         task.setName(name);
         task.setDescription(description);
         task.setAvatar(avatar);
         task.setLanguage(idlanguage);
-        realm.commitTransaction();
+     //   realm.commitTransaction();
         return idtask;
     }
 

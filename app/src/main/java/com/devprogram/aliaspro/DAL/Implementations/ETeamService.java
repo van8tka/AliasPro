@@ -32,13 +32,13 @@ public class ETeamService implements ITeamService {
 
     @Override
     public String createTeam(String name, String avatar, String idlanguage) {
-        realm.beginTransaction();
+      //  realm.beginTransaction();
         String idteam = UUID.randomUUID().toString();
         Team myTeam = realm.createObject(Team.class,idteam);
         myTeam.setName(name);
         myTeam.setAvatar(avatar);
         myTeam.setLanguage(idlanguage);
-        realm.commitTransaction();
+      //  realm.commitTransaction();
         return idteam;
     }
 

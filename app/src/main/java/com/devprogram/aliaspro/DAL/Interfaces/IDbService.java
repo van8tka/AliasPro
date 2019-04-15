@@ -14,8 +14,12 @@ import com.devprogram.aliaspro.DAL.Implementations.EWordStatusService;
 import io.realm.Realm;
 
 public interface IDbService {
-   void CloseDb();
-    EDictionaryService getEDictionaryService();
+     void RealmBeginTransaction();
+     void RealmCancelTransaction();
+     void RealmCommitTransaction();
+     Realm getInstanceRealm();
+     void CloseDb();
+     EDictionaryService getEDictionaryService();
      EDifficultyService getEDifficultyService();
      EGameService getEGameService();
      ELanguageService getELanguageService();
