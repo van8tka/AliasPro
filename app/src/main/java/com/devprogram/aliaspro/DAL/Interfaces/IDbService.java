@@ -17,7 +17,6 @@ public interface IDbService {
      void RealmBeginTransaction();
      void RealmCancelTransaction();
      void RealmCommitTransaction();
-     Realm getInstanceRealm();
      void CloseDb();
      EDictionaryService getEDictionaryService();
      EDifficultyService getEDifficultyService();

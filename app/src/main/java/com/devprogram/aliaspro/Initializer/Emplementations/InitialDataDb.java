@@ -32,13 +32,11 @@ public class InitialDataDb implements IInitDB {
     private IDbService dbService;
     private Context context;
     private IXmlParser parserXml;
-    private Realm realm;
     //ctor
     public InitialDataDb(IDbService dbService, Context context) {
         this.context = context;
         this.dbService = dbService;
         parserXml = new XmlParser(context);
-        realm = dbService.getInstanceRealm();
     }
 
     public void InitializeItems() {
@@ -115,28 +113,17 @@ public class InitialDataDb implements IInitDB {
     }
 
     private void setTeamsData(Map<String, String> teamList, String uuidRus) {
-       // realm.beginTransaction();
         for(Map.Entry<String, String> teamPair:teamList.entrySet())
         {
-            Team myTeam = realm.createObject(Team.class,UUID.randomUUID().toString());
-            myTeam.setName(teamPair.getKey());
-            myTeam.setAvatar(teamPair.getValue());
-            myTeam.setLanguage(uuidRus);
+            dbService.getETeamService().createTeam(teamPair.getKey(),teamPair.getValue(),uuidRus);
         }
-      //  realm.commitTransaction();
     }
 
     //установка слов после парсинга xml
     //список слов,            ID языка,               id словаря
     private void setWords(List<String> parse, String idLanguage, String idDictionary) {
-  //      realm.beginTransaction();
          for (int i=0;i<parse.size();i++) {
-           // dbService.getEWordService().createWord(parse.get(i), idDictionary, idLanguage);
-                 Word word = realm.createObject(Word.class, UUID.randomUUID().toString());
-                 word.setIddictionary(idDictionary);
-                 word.setName(parse.get(i));
-                 word.setLanguage(idLanguage);
+             dbService.getEWordService().createWord(parse.get(i), idDictionary, idLanguage);
         }
-   //     realm.commitTransaction();
     }
 }

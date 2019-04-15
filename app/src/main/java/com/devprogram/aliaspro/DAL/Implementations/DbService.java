@@ -86,10 +86,7 @@ public class DbService implements IDbService {
         realm.commitTransaction();
     }
 
-    @Override
-    public Realm getInstanceRealm() {
-        return realm;
-    }
+
 
     @Override
     public void CloseDb() {
