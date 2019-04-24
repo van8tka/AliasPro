@@ -51,7 +51,7 @@ public class InitialDataDb implements IInitDB {
                 String iddifficultyHard = dbService.getEDifficultyService().createDifficulty("сложный", uuidRus);
                 //словари
                 String idEmptyDictionary = dbService.getEDictionaryService().createDictionary("Простой набор", "cost_free64", null, "Самые простые слова для всех возврастов, легко объяснять, легко отгадывать", uuidRus, iddifficultyEasy);
-                String idMiddleDictionary = dbService.getEDictionaryService().createDictionary("Слова среднего уровня", "cost_free64", null, "Слова средней сложности, болле интересный процесс объяснения слов и интересная игра ", uuidRus, iddifficultyMidle);
+                String idMiddleDictionary = dbService.getEDictionaryService().createDictionary("Слова среднего уровня", "cost_free64", null, "Слова средней сложности, более интересный процесс объяснения слов и более интересная игра", uuidRus, iddifficultyMidle);
                 String idBigDictionary = dbService.getEDictionaryService().createDictionary("Супер слова", "cost_dollar64", "0,99", "Большой набор различных слов, от самых простых до самых сложных. Процесс игры станет очень интересным и увлекательным", uuidRus, iddifficultyHard);
                 String idEnglishDictionary = dbService.getEDictionaryService().createDictionary("Basic english words", "cost_free64", null, "Basic english words, for them who want testing your knowledge", uuidEng, iddifficultyMidle);
                 //teams

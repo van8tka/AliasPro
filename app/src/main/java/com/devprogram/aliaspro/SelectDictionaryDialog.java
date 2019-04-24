@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,14 +37,21 @@ public class SelectDictionaryDialog extends Dialog {
  Activity activity;
  TextView tvSelectedDictionaryName;
  TextView tvDictionaryDescription;
+ TextView tvDictCountWords;
+ ImageView imgDictIsFree;
+ LinearLayout llDictFree;
 
- public SelectDictionaryDialog(@NonNull Activity activity, IDbService dbService, TextView tvSelectedDictionaryName, TextView tvDictionaryDescription)
+
+ public SelectDictionaryDialog(@NonNull Activity activity, IDbService dbService)
  {
      super(activity);
      this.activity = activity;
      this.dbService = dbService;
-     this.tvSelectedDictionaryName = tvSelectedDictionaryName;
-     this.tvDictionaryDescription = tvDictionaryDescription;
+       tvSelectedDictionaryName = activity.findViewById(R.id.tvDictionaryName);
+       tvDictionaryDescription = activity.findViewById(R.id.tvDictionaryDescription);
+       tvDictCountWords = activity.findViewById(R.id.tvDictionaryCountWords);
+       imgDictIsFree = activity.findViewById(R.id.imgDictFree);
+       llDictFree = activity.findViewById(R.id.llDicFree);
  }
 
     @Override
@@ -63,6 +71,10 @@ public class SelectDictionaryDialog extends Dialog {
                     ((SettingsGameActivity)activity).dictionary = listDictionary.get(position);
                     tvSelectedDictionaryName.setText(listDictionary.get(position).getName());
                     tvDictionaryDescription.setText(listDictionary.get(position).getDescription());
+                    tvDictCountWords.setText( Integer.toString( dbService.getEDictionaryService().getWordsCount(listDictionary.get(position).getIddictionary()) ) );
+                    int idImg = activity.getResources().getIdentifier( dbService.getELanguageService().getLanguage( listDictionary.get(position).getLanguage() ).getAvatar(),"drawable",activity.getPackageName());
+                    imgDictIsFree.setImageResource(idImg);
+                    llDictFree.setVisibility(View.VISIBLE);
                      cancel();
                 }
             });

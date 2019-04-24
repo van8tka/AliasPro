@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -185,10 +186,8 @@ public class SettingsGameActivity extends AppCompatActivity {
 //ВЫБОР СЛОВАРЯ ДЛЯ ИГРЫ
     public void addDictionaryToGame_Click(View view)
     {
-        TextView tvDictionaryName = findViewById(R.id.tvDictionaryName);
-        TextView tvDictionaryDescription = findViewById(R.id.tvDictionaryDescription);
         //создание диалогового окна выбора словаря
-        SelectDictionaryDialog selectDictionaryDialog = new SelectDictionaryDialog(this,dbService, tvDictionaryName,tvDictionaryDescription);
+        SelectDictionaryDialog selectDictionaryDialog = new SelectDictionaryDialog(this,dbService);
         selectDictionaryDialog.show();
     }
 
