@@ -89,8 +89,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             GetData();
             String nameTeam = team.getName();
             setToolbarCustom(nameTeam, team.getAvatar());
-           // this.setTitle(nameTeam);
-
             CreateAdMob();
             tvGuesed = findViewById(R.id.tvCoutGuessed);
             tvSkipped = findViewById(R.id.tvCountSkipped);
@@ -160,7 +158,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                 if(countSkipedWord>0)
                     tvSkipped.setText(String.valueOf(countSkipedWord));
             }
-
             tvTimeDur.setText(Integer.toString(timeDuration));
         }
         catch (Exception er)
@@ -168,6 +165,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             Log.e("RESUME_PLAYGAME",er.getMessage());
         }
     }
+
 
 
 
@@ -537,6 +535,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     public void onPause()
     {
         super.onPause();
+        countGuesedWord=0;
+        countSkipedWord=0;
         dbService.getERoundService().setTimeToFinishRound(round.getIdround(), Integer.parseInt(tvTimeDur.getText().toString()));
     }
 }
