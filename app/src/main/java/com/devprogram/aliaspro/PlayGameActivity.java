@@ -3,13 +3,13 @@ package com.devprogram.aliaspro;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.provider.UserDictionary;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -34,7 +34,6 @@ import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
 import com.devprogram.aliaspro.Helpers.IAdMobCreater;
-import com.devprogram.aliaspro.Models.Dictionary;
 import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.PlayingTeams;
 import com.devprogram.aliaspro.Models.Round;
@@ -42,12 +41,10 @@ import com.devprogram.aliaspro.Models.Task;
 import com.devprogram.aliaspro.Models.Team;
 import com.devprogram.aliaspro.Models.Word;
 import com.devprogram.aliaspro.Models.WordStatus;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class PlayGameActivity extends AppCompatActivity implements View.OnTouchListener {
 
@@ -125,6 +122,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             imgView.setImageResource(idImg);
             setSupportActionBar(tb);
             final ActionBar ab = getSupportActionBar();
+            assert ab != null;
             ab.setDisplayHomeAsUpEnabled(true);
         }
         catch (Exception er)
@@ -135,6 +133,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     }
 
     //проверка соответствия времени и запуск при продолжении игры
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume()
     {
@@ -147,7 +146,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                 timeDuration = round.getTimeToFinish();
                 //установим кол-во пропущенных и отгаданных слов
                 List<WordStatus> allShowedWords = dbService.getEWordStatusService().getWordsStatusShowedRound(round.getIdround());
-                int count = 0;
                 for(WordStatus showedWord:allShowedWords)
                     if(showedWord.getStatus()==1)
                         countGuesedWord++;
@@ -224,7 +222,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             if(game.getIstask())
                 task = dbService.getETaskService().getTask(round.getTask());
             wordList = dbService.getEWordService().getWordsWithOutShowed(game.getDictionary(), game.getIdgame());
-            showedWord = wordList.get(0);
+            GetNextShowWord(wordList);
             timeDuration = game.getSeconds();
         }
         catch(Exception er)
@@ -240,7 +238,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                int count = wordList.size()-1;
                if(count == 0)
                    count = DoWordsForShow();
-               indexWord = (int)(Math.random()*((count-0)+1))+0;
+               indexWord = getRandomWordIndex(count);
                showedWord = wordList.get(indexWord);
                wordList.remove(showedWord);
                Log.i("GNW","GetNextShowWord -  следующее слово"+showedWord.getName());
@@ -252,9 +250,13 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
     }
 
+    private int getRandomWordIndex(int count) {
+        Random random = new Random();
+        return random.nextInt(count);
+    }
 
 
-//если закончились все слова
+    //если закончились все слова
     private int DoWordsForShow() {
         try{
           wordList = dbService.getEWordService().getWordsFromDictionary(game.getDictionary());
@@ -500,15 +502,13 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
     private void ShowNextWord(boolean isGues) {
         try{
             Log.i("SHW","ShowNextWord - присвоение статуса отг-неотг");
-            int status = 0;
+            int status;
             if(isGues)
             {
                 status = 1;
             }
             else
-            {
                 status = 0;
-            }
             if(_timeRoundIsFinish && game.getIslastword())
             {
                 Log.i("SHW","ShowNextWord - время закончтилось и игра имеет посл слово для всех");
@@ -546,13 +546,13 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
 ///_______________________________________________________________________________________________
 
 
-class CustomDialogLastWord extends Dialog {
+  class CustomDialogLastWord extends Dialog {
 
-    IDbService dbService;
-    Game game;
-    Activity activity;
-    String iDshowedLastWord;
-    String idRound;
+    private IDbService dbService;
+    private Game game;
+    private Activity activity;
+    private String iDshowedLastWord;
+   private String idRound;
     public CustomDialogLastWord(@NonNull Activity activity, IDbService dbService, Game game, String iDshowedLastWord, String idRound) {
         super(activity);
         this.dbService = dbService;
@@ -570,12 +570,12 @@ class CustomDialogLastWord extends Dialog {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.custom_dialog_last_word_win_team);
             List<Team> Teams = GetTeams(dbService, game);
-            ArrayList<String> teamsName = new ArrayList<String>();
+            ArrayList<String> teamsName = new ArrayList<>();
             for(Team tn:Teams)
                 teamsName.add(tn.getName());
             teamsName.add("Ни кто не отгадал");
             ListView listViewTeams = findViewById(R.id.lvLastWordTeamWin);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),R.layout.row_team_name);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),R.layout.row_team_name);
             adapter.addAll(teamsName);
             listViewTeams.setAdapter(adapter);
             listViewTeams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -612,8 +612,7 @@ class CustomDialogLastWord extends Dialog {
     }
 
     private List<Team> GetTeams(IDbService dbService, Game game) {
-       List<Team> teams = dbService.getEPlayingTeamsService().getListTeamByGame(game.getIdgame());
-       return teams;
+        return dbService.getEPlayingTeamsService().getListTeamByGame(game.getIdgame());
     }
 }
 
@@ -626,8 +625,8 @@ class CustomDialogLastWord extends Dialog {
 
 class CustomDialogTaskDescription extends Dialog implements View.OnClickListener {
 
-    Task task;
-    Activity activity;
+   private Task task;
+   private Activity activity;
 
     public CustomDialogTaskDescription(@NonNull Activity activity, Task task) {
         super(activity);
