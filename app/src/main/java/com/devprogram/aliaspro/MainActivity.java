@@ -3,12 +3,14 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import com.crashlytics.android.Crashlytics;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
@@ -20,6 +22,10 @@ import com.devprogram.aliaspro.Models.Game;
 import com.devprogram.aliaspro.Models.Round;
 import com.devprogram.aliaspro.RestService.NetConnection;
 import com.devprogram.aliaspro.RestService.RestServiceGetVersionApp;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -42,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
             initDb = new InitialDataDb(dbService, this);
             initDb.InitializeItems();
         } catch (Exception er) {
-            Crashlytics.logException(er);
             Log.e("MAIN_ERR", er.getMessage());
         }
     }
@@ -55,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
             RestServiceGetVersionApp restService = new RestServiceGetVersionApp(new NetConnection(this), version, this);
             restService.execute();
         }
-        catch (Exception e)
+        catch (Exception er)
         {
-            Crashlytics.logException(e);
+            Log.e("CheckVersionApp",er.getMessage());
         }
     }
 
@@ -76,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         }
         catch(Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("CHECKLINKInMAIN",er.getMessage());
         }
     }
@@ -108,14 +113,21 @@ public class MainActivity extends AppCompatActivity {
                 btnContinue.setBackgroundResource(R.drawable.button_round_corner_disable);
             }
         } catch (Exception er) {
-            Crashlytics.logException(er);
+
             Log.e("MAIN_CHECKLAST", er.getMessage());
         }
     }
 
     private void CreateAdMob() {
-        IAdMobCreater adMobCreater = new AdMobCreater();
-        adMobCreater.InitAdMobBanner(findViewById(R.id.bannerAdmobFragmentMain), getApplicationContext(), getResources().getString(R.string.admob_pub_id));
+        try{
+            IAdMobCreater adMobCreater = new AdMobCreater();
+            adMobCreater.InitAdMobBanner(findViewById(R.id.bannerAdmobFragmentMain), getApplicationContext(), getResources().getString(R.string.admob_pub_id));
+        }
+        catch (Exception e)
+        {
+
+              Log.e("MAIN_ADMOB", e.getMessage());
+        }
     }
 
 
@@ -153,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             }
             startActivity(intent);
         } catch (Exception er) {
-            Crashlytics.logException(er);
+
             Log.e("MAIN_CONTINUEBTN", er.getMessage());
         }
     }

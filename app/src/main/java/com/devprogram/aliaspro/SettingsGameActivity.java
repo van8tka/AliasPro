@@ -4,7 +4,7 @@ import android.app.DialogFragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +14,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
@@ -73,7 +75,7 @@ public class SettingsGameActivity extends AppCompatActivity {
         }
       catch (Exception er)
       {
-          Crashlytics.logException(er);
+
           Log.e(TAG_LOG,er.getMessage());
       }
     }
@@ -176,7 +178,7 @@ public class SettingsGameActivity extends AppCompatActivity {
         }
         catch(Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e(TAG_LOG1, er.getMessage());
         }
     }

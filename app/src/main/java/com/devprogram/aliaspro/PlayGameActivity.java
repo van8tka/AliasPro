@@ -10,10 +10,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,7 +26,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
@@ -127,7 +128,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("TOOLBARCUST",er.getMessage());
         }
     }
@@ -524,7 +525,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("SHOWNEXTWORD",er.getMessage());
         }
 
@@ -606,7 +607,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
         catch(Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("DIAL_LAST_WIN",er.getMessage());
         }
     }
@@ -655,7 +656,7 @@ class CustomDialogTaskDescription extends Dialog implements View.OnClickListener
         }
         catch(Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("ONCREATECUSTOMDIALDESC",er.getMessage());
         }
     }

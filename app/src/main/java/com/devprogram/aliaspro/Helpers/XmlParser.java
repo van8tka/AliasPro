@@ -1,7 +1,6 @@
 package com.devprogram.aliaspro.Helpers;
 import android.content.Context;
 import android.content.res.AssetManager;
-import com.crashlytics.android.Crashlytics;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,12 +15,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class XmlParser implements IXmlParser {
 
-    private Context context;
+
     private AssetManager managerAsset;
     private int version;
 
     public XmlParser( Context context ){
-        this.context = context;
         managerAsset = context.getAssets();
     }
 
@@ -60,7 +58,7 @@ public class XmlParser implements IXmlParser {
             }
             return list;
         } catch (Exception e) {
-            Crashlytics.logException(e);
+
             return new ArrayList<String>();
         }
     }
@@ -91,7 +89,7 @@ public class XmlParser implements IXmlParser {
         }
         catch(Exception e)
         {
-            Crashlytics.logException(e);
+
             return Constants.DATA_FOLDER+1;
         }
     }

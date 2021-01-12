@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.Constants;
 import com.devprogram.aliaspro.Helpers.IXmlParser;
@@ -108,7 +107,7 @@ public class InitialDataDb implements IInitDB {
            dbService.RealmCommitTransaction();
             }
         } catch (Exception e) {
-            Crashlytics.logException(e);
+
         }
     }
 

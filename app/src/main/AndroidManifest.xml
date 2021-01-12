@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.devprogram.aliaspro">
-    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="28" />
-    <uses-permission android:name="android.permission.INTERNET" />
+     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
@@ -53,9 +52,7 @@
             android:noHistory="true"
             android:label="@string/label_congratulate_activity"/>
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5351987413735598~4651174887"/>
+
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -74,5 +71,8 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimaryDark"/>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-5993977371632312~7449347787"/>
     </application>
 </manifest>

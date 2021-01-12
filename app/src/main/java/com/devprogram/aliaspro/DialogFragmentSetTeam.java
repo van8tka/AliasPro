@@ -4,7 +4,6 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.os.Bundle;
 
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
+import androidx.annotation.Nullable;
+
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Team;
@@ -64,7 +64,7 @@ public class DialogFragmentSetTeam extends DialogFragment implements View.OnClic
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("SEt_TEAM",er.getMessage());
             return v;
         }

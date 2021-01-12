@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
+import androidx.annotation.NonNull;
+
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Models.Dictionary;
@@ -88,7 +87,6 @@ public class SelectDictionaryDialog extends Dialog {
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
             Log.e("Create_SEL_DIC", er.getMessage());
         }
     }
@@ -166,7 +164,6 @@ public class SelectDictionaryDialog extends Dialog {
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
             Log.e("SEL_DICT", er.getMessage());
             return  convertView;
         }

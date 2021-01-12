@@ -3,10 +3,9 @@ package com.devprogram.aliaspro;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,7 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.devprogram.aliaspro.DAL.Implementations.DbService;
 import com.devprogram.aliaspro.DAL.Interfaces.IDbService;
 import com.devprogram.aliaspro.Helpers.AdMobCreater;
@@ -63,7 +66,7 @@ public class BeginGameActivity extends AppCompatActivity {
             setToolbarCustom(getResources().getString(R.string.label_rating_activity), null);
         }catch(Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("ONCREBEGINACT",er.getMessage());
         }
     }
@@ -83,7 +86,7 @@ public class BeginGameActivity extends AppCompatActivity {
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("TOOLBARCUST",er.getMessage());
         }
     }
@@ -108,7 +111,7 @@ public class BeginGameActivity extends AppCompatActivity {
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("BEGIN_RESUME",er.getMessage());
         }
     }
@@ -121,7 +124,7 @@ public class BeginGameActivity extends AppCompatActivity {
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("GETDATBEGING",er.getMessage(),er);
         }
         dbService = new DbService();
@@ -160,7 +163,7 @@ public class BeginGameActivity extends AppCompatActivity {
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("CONFCHANGE",er.getMessage());
         }
     }
@@ -220,7 +223,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
         }
         catch (Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e(TAG_BEGIN_GAME,er.getMessage());
         }
     }
@@ -265,7 +268,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
         }
         catch(Exception er)
         {
-            Crashlytics.logException(er);
+
             Log.e("CHECK_WINNER",er.getMessage());
             return false;
         }
@@ -367,7 +370,7 @@ private static final String TAG_BEGIN_GAME ="BeginGameActivity";
                 }
                 catch(Exception er)
                 {
-                    Crashlytics.logException(er);
+
                     Log.e("ADAPTTEAMSCORE", er.getMessage());
                     return view;
                 }

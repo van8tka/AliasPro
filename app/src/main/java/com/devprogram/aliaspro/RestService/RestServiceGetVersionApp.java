@@ -14,7 +14,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.devprogram.aliaspro.Helpers.Constants;
 import com.devprogram.aliaspro.R;
 import com.google.android.gms.tasks.Task;
@@ -59,11 +58,9 @@ public class RestServiceGetVersionApp extends   AsyncTask<Void,Void,Float> {
             }
             return 0f;
         } catch (MalformedURLException e) {
-            Crashlytics.logException(e);
             Log.e("getAppVersion", e.getMessage());
             return 0f;
         } catch (IOException e) {
-            Crashlytics.logException(e);
             Log.e("getAppVersion2", e.getMessage());
             return 0f;
         }
@@ -93,7 +90,6 @@ public class RestServiceGetVersionApp extends   AsyncTask<Void,Void,Float> {
                 throw e;
             }
         } catch (Exception e) {
-            Crashlytics.logException(e);
             return 0f;
         }
     }
