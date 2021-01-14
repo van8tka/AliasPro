@@ -25,6 +25,8 @@ import com.devprogram.aliaspro.Models.Difficulty;
 import com.devprogram.aliaspro.Models.Language;
 
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -62,7 +64,7 @@ public class SelectDictionaryDialog extends Dialog {
           //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             dbService = new DbService();
             List<Dictionary> listDictionary = dbService.getEDictionaryService().getDicitionaries();
-            DictionaryViewAdapter adapter = new DictionaryViewAdapter(this.getContext(),listDictionary, dbService);
+            DictionaryViewAdapter adapter = new DictionaryViewAdapter(this.getContext(), listDictionary , dbService);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

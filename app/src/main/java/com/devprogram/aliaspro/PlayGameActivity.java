@@ -165,9 +165,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         }
     }
 
-
-
-
     private void CreateAdMob() {
         IAdMobCreater adMobCreater = new AdMobCreater();
         adMobCreater.InitAdMobBanner(findViewById(R.id.bannerAdmobFragmentPlay),getApplicationContext(),getResources().getString(R.string.admob_pub_id));
@@ -209,7 +206,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             Log.e("SETTASK",er.getMessage());
         }
     }
-
 
     //установка данных при запуске активити
     private void GetData() {
@@ -322,8 +318,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
         Toast.makeText(this, task.getDescription(), Toast.LENGTH_LONG).show();
     }
 
-
-
+private boolean _showNextWord;
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         try
@@ -347,8 +342,9 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                     case MotionEvent.ACTION_UP :
                     {
                         boolean isChangeState = CheckStateWord(v);
-                        if(isChangeState)
-                            tvWord.setText(showedWord.getName());
+                        _showNextWord = isChangeState;
+//                        if(isChangeState)
+//                            tvWord.setText(showedWord.getName());
                         break;
                     }
                     default: return true;
@@ -386,7 +382,6 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                    Log.i("CHST","CheckStateWord - перемещение слова в отгаданные, время Вышло");
                    isGuesedLastWord = true;
                }
-
                tvGuesed.setText(String.valueOf(countGuesedWord));
                SetAnimationTransitionView(v);
                ShowNextWord(true);
@@ -424,7 +419,7 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
             Animator scaleX = ObjectAnimator.ofFloat(v,"scaleX",0);
             Animator scaleY = ObjectAnimator.ofFloat(v,"scaleY",0);
             setScale.playTogether(scaleX,scaleY);
-            setScale.setDuration(800);
+            setScale.setDuration(550);
             setScale.start();
             Animator defPosition = ObjectAnimator.ofFloat(v,"Y",YDef);
             Animator scaleXdef = ObjectAnimator.ofFloat(v,"scaleX",1f);
@@ -445,6 +440,8 @@ public class PlayGameActivity extends AppCompatActivity implements View.OnTouchL
                    Log.i("AANIM","SetAnimationTransitionView - конец анимации, вызов CheckTimeFinsh");
                    if(isStartActivityResult)
                         startActivity(intentRoundResultActivity);
+                   if(_showNextWord)
+                       tvWord.setText(showedWord.getName());
                }
                @Override
                public void onAnimationCancel(Animator animation) {     }

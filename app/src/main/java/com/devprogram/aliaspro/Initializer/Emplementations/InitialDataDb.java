@@ -51,8 +51,11 @@ public class InitialDataDb implements IInitDB {
                 //словари
                 String idEmptyDictionary = dbService.getEDictionaryService().createDictionary("Простой набор", "cost_free64", null, "Самые простые слова для всех возврастов, легко объяснять, легко отгадывать", uuidRus, iddifficultyEasy);
                 String idMiddleDictionary = dbService.getEDictionaryService().createDictionary("Слова среднего уровня", "cost_free64", null, "Слова средней сложности, более интересный процесс объяснения слов и более интересная игра", uuidRus, iddifficultyMidle);
-                String idBigDictionary = dbService.getEDictionaryService().createDictionary("Супер слова", "cost_dollar64", "0,99", "Большой набор различных слов, от самых простых до самых сложных. Процесс игры станет очень интересным и увлекательным", uuidRus, iddifficultyHard);
-                String idEnglishDictionary = dbService.getEDictionaryService().createDictionary("Basic english words", "cost_free64", null, "Basic english words, for them who want testing your knowledge", uuidEng, iddifficultyMidle);
+                String idMiddleDictionary_1500 = dbService.getEDictionaryService().createDictionary("Продвинутый набор", "cost_free64", null, "Слова средней сложности, более интересный процесс объяснения слов и более интересная игра. Расширенный набор слов, нет повторений с предыдущими словарями.", uuidRus, iddifficultyMidle);
+                String idBigDictionary = dbService.getEDictionaryService().createDictionary("Сложный набор слов", "cost_free64", null, "Большой набор различных слов, от самых простых до самых сложных. Процесс игры станет очень интересным и увлекательным", uuidRus, iddifficultyHard);
+                String idBigDictionary_3000 = dbService.getEDictionaryService().createDictionary("Супер слова", "cost_free64", null, "Самый большой набор сложных слов. Процесс игры очень интересный и увлекательнй. Под силу не каждому.", uuidRus, iddifficultyHard);
+                String idEnglishDictionary = dbService.getEDictionaryService().createDictionary("Basic English words", "cost_free64", null, "Basic english words, for them who want testing your knowledge", uuidEng, iddifficultyMidle);
+                String idEnglishDictionary_1000 = dbService.getEDictionaryService().createDictionary("The most used English words", "cost_free64", null, "The most used English words, for them who want showing your knowledge", uuidEng, iddifficultyHard);
                 //teams
               dbService.RealmBeginTransaction();
                 Map<String,String> teamList = new HashMap<String, String>(){
@@ -63,7 +66,7 @@ public class InitialDataDb implements IInitDB {
                         put("Бесстрашные воины","teamimage_helmet64");
                         put("Проворные калибри","teamimage_hummingbird64");
                         put("Летающие в небесах","teamimage_airplane64");
-                        put("Зелёные человчки","teamimage_alien");
+                        put("Инопланетяшки","teamimage_alien");
                         put("Молот и ки","teamimage_auction64");
                         put("Боевые орлы","teamimage_armyhelicopter64");
                         put("Смехатворы","teamimage_alien64");
@@ -101,13 +104,16 @@ public class InitialDataDb implements IInitDB {
                 dbService.getETaskService().createTask("Закрытые глазки", "Объяснять слова необходимо с закрытыми глазами", "taskimage_closeyes64", uuidRus);
                 //words
                 setWords(parserXml.Parse(Constants.EMPTY_WORDS_FILE), uuidRus, idEmptyDictionary);
-                setWords(parserXml.Parse(Constants.MIDDLE_WORDS_FILE), uuidRus, idMiddleDictionary);
-                setWords(parserXml.Parse(Constants.BIG_WORDS_FILE), uuidRus, idBigDictionary);
+                setWords(parserXml.Parse(Constants.MIDDLE_WORDS_FILE_1000), uuidRus, idMiddleDictionary);
+                setWords(parserXml.Parse(Constants.MIDDLE_WORDS_FILE_1500), uuidRus, idMiddleDictionary_1500);
+                setWords(parserXml.Parse(Constants.HIGHT_WORDS_FILE_2000), uuidRus, idBigDictionary);
+                setWords(parserXml.Parse(Constants.HIGHT_WORDS_FILE_3000), uuidRus, idBigDictionary_3000);
                 setWords(parserXml.Parse(Constants.ENG_WORDS_FILE), uuidRus, idEnglishDictionary);
+                setWords(parserXml.Parse(Constants.ENG_WORDS_FILE_1000), uuidRus, idEnglishDictionary_1000);
            dbService.RealmCommitTransaction();
             }
         } catch (Exception e) {
-
+            Log.e("PARSE_XML",e.getMessage());
         }
     }
 
